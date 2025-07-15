@@ -1,0 +1,5 @@
+com\erp\db\SQLiteConnector.class
+com\erp\App.class
+com\erp\controller\ProductoController.class
+com\erp\model\Producto.class
+com\erp\controller\ProductoViewController.class

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Declaración estándar XML -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<!-- Importa clases necesarias de JavaFX -->
+
+<!-- Contenedor raíz con su controlador asignado -->
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.erp.controller.ProductoViewController">
+
+    <!-- VBox: layout vertical para organizar los elementos del formulario -->
+    <VBox spacing="10"
+      minWidth="300"
+      minHeight="350"
+      maxHeight="Infinity"
+      prefWidth="600"
+      prefHeight="400"
+      AnchorPane.topAnchor="10"
+      AnchorPane.leftAnchor="10"
+      AnchorPane.rightAnchor="10"
+      AnchorPane.bottomAnchor="10">
+
+        
+
+        <!-- Padding interno del VBox -->
+        <padding>
+            <Insets top="15" right="15" bottom="15" left="15" />
+        </padding>
+
+        <!-- Título principal del formulario -->
+        <Label text="Formulario de Producto" style="-fx-font-size: 16px;" />
+
+        <!-- GridPane: layout en rejilla para los campos del formulario -->
+        <GridPane hgap="10" vgap="10">
+            <!-- Campo: Nombre del producto -->
+            <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="nombreField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <!-- Campo: Descripción del producto -->
+            <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="descripcionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <!-- Campo: Categoría del producto -->
+            <Label text="Categoría:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="categoriaField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <!-- Campo: Precio del producto -->
+            <Label text="Precio:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="precioField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <!-- Campo: Stock disponible -->
+            <Label text="Stock:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="stockField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        </GridPane>
+
+        <!-- Botón que ejecuta el método 'insertarProducto' del controlador -->
+        <Button text="Añadir producto" onAction="#insertarProducto" />
+
+        <!-- Tabla para mostrar lista de productos añadidos -->
+        <TableView fx:id="tablaProductos" VBox.vgrow="ALWAYS" prefHeight="200">
+            <columns>
+                <!-- Columnas que se deben enlazar con las propiedades del modelo -->
+                <TableColumn text="ID" fx:id="colId" />
+                <TableColumn text="Nombre" fx:id="colNombre" />
+                <TableColumn text="Categoría" fx:id="colCategoria" />
+                <TableColumn text="Precio" fx:id="colPrecio" />
+                <TableColumn text="Stock" fx:id="colStock" />
+            </columns>
+        </TableView>
+
+    </VBox>
+</AnchorPane>

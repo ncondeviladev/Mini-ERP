@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.erp.controller.MenuController"
+    spacing="10">
+
+    <!-- Padding interno del VBox -->
+    <padding>
+        <Insets top="15" right="15" bottom="15" left="15" />
+    </padding>
+
+    <Label text="Mini ERP - Menú principal" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+
+    <!-- Botón para abrir el formulario de producto -->
+    <Button text="Añadir Producto" onAction="#abrirFormularioProducto" />
+
+    <!-- Botón para abrir el formulario de cliente -->
+    <Button text="Añadir Cliente" onAction="#abrirFormularioCliente" />
+
+    <!-- Botón para abrir el formulario de venta -->
+    <Button text="Añadir Venta" onAction="#abrirFormularioVenta" />
+
+    <!-- Botón para salir de la aplicación -->
+    <Button text="Salir" onAction="#salirAplicacion" style="-fx-text-fill: red;" />
+
+</VBox>

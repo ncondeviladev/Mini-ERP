@@ -1,0 +1,28 @@
+{
+  "java.configuration.updateBuildConfiguration": "interactive"
+}{
+  "java.jdt.ls.java.home": "C:\\Java\\OpenJDK-23",
+  "java.configuration.runtimes": [
+    {
+      "name": "JavaSE-17",
+      "path": "C:\\Java\\OpenJDK-23",
+      "default": true
+    }
+  ],
+  "java.debug.settings.vmArgs": "--module-path C:\\Java\\javafx-sdk-24.0.1\\lib --add-modules javafx.controls,javafx.fxml",
+  "java.debug.configuration.resolve": "launch",
+  "java.debug.settings.console": "integratedTerminal",
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "maven.executable.path": "C:\\Users\\ncond\\.vscode\\extensions\\oracle.oracle-java-24.0.0\\nbcode\\java\\maven\\bin\\mvn.cmd",
+  "files.autoSave": "afterDelay",
+  "editor.wordWrap": "on",
+  "editor.guides.bracketPairs": true,
+  "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+  "workbench.colorTheme": "Dark Lion",
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  }
+}

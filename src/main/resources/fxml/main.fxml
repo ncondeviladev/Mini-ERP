@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.erp.controller.MainController">
+
+    <left>
+        <VBox spacing="12" alignment="CENTER" prefWidth="200" style="-fx-background-color: #F4F4F4;">
+            <padding>
+                <Insets top="20" right="10" bottom="20" left="10" />
+            </padding>
+            <Label text="Mini ERP" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Button text="Productos" onAction="#mostrarProductos" />
+            <Button text="Clientes" onAction="#mostrarClientes" />
+            <Button text="Ventas" onAction="#mostrarVentas" />
+            <Button text="Salir" onAction="#salirAplicacion" style="-fx-text-fill: red;" />
+        </VBox>
+    </left>
+
+    <center>
+        <StackPane fx:id="contenedorCentral" />
+    </center>
+
+</BorderPane>
