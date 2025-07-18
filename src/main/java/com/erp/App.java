@@ -45,6 +45,8 @@ public class App extends Application {
         );
 
         // Asigna la escena a la ventana y muestra el título de la aplicación
+        stage.setMinWidth(600);
+        stage.setMinHeight(450);
         stage.setScene(scene);
         stage.setTitle("Mini ERP: Productos");
         stage.show(); // Muestra la ventana al usuario

@@ -8,9 +8,11 @@ import javafx.collections.FXCollections; // Controlador lógico que gestiona ope
 import javafx.collections.ObservableList; // Anotaciones FXML para vincular campos con la vista
 import javafx.fxml.FXML; // Controles JavaFX como TextField, TableView, etc.
 import javafx.scene.control.Alert; // Para inicializar ObservableList
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn; // Lista observable para mantener tabla sincronizada
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.StackPane;
 
 public class ProductoViewController {
 
@@ -28,6 +30,10 @@ public class ProductoViewController {
     @FXML private TableColumn<Producto, String> colCategoria;
     @FXML private TableColumn<Producto, Double> colPrecio;
     @FXML private TableColumn<Producto, Integer> colStock;
+
+    @FXML private ComboBox<String> selectorAccion;
+    @FXML private StackPane contenedorFormulario;
+    
 
     // 👨‍💼 Controlador que maneja lógica de inserción y recuperación
     private final ProductoController controller = new ProductoController();
@@ -120,4 +126,13 @@ public class ProductoViewController {
         alerta.setContentText(mensaje); // Mensaje principal
         alerta.showAndWait(); // Bloquea hasta que se cierre
     }
+
+    @FXML public void cambiarAccion() {
+        String seleccion = selectorAccion.getValue();
+
+        if(seleccion.equals("Añadir producto")){
+            
+        }
+    }
+
 }
