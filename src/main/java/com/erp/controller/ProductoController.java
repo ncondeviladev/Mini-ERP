@@ -23,25 +23,39 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Controlador de la vista de productos en el sistema ERP.
+ * Permite añadir, buscar y visualizar productos almacenados en la base de datos.
+ */
 public class ProductoController {
 
+    // 📝 Campos de entrada del formulario de añadir producto
     @FXML private TextField nombreField, descripcionField, categoriaField, precioField, stockField;
+
+    // 🔍 Campos de búsqueda
     @FXML private TextField buscarIdField, buscarNombreField, buscarCategoriaField;
 
+    // 📊 Tabla de productos y columnas
     @FXML private TableView<Producto> tablaProductos;
     @FXML private TableColumn<Producto, Integer> colId, colStock;
-    @FXML private TableColumn<Producto, String> colNombre, colCategoria;
+    @FXML private TableColumn<Producto, String> colNombre, colCategoria, colDescripcion;
     @FXML private TableColumn<Producto, Double> colPrecio;
-    @FXML private TableColumn<Producto, String> colDescripcion;
 
+    // 🧩 Zona dinámica de contenido (formulario de añadir/buscar)
     @FXML private StackPane zonaContenido;
-    @FXML private Label mensajeInicio;
+    @FXML private Label inicio;
     @FXML private VBox formularioAñadirProducto, formularioBuscarProducto;
 
+    // 📦 Lista original de productos (para filtrar)
     private List<Producto> productosOriginales = new ArrayList<>();
 
+    /**
+     * Método que se ejecuta al cargar el FXML.
+     * Configura las columnas de la tabla y los eventos de teclado.
+     */
     @FXML
     public void initialize() {
+        // Configuración de columnas
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
         colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
@@ -49,10 +63,15 @@ public class ProductoController {
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
+        // Carga productos iniciales
         tablaProductos.getItems().addAll(listarProductos());
-        mostrarVista(mensajeInicio);
 
-        // Listener de tecla Enter en campos del formulario de añadir
+        // Muestra mensaje de inicio (puede dejarse vacío)
+        mostrarVista(inicio);
+        zonaContenido.setVisible(false);
+        zonaContenido.setManaged(false);
+
+        // Listener de tecla Enter en todos los campos del formulario de añadir
         TextField[] campos = {nombreField, descripcionField, categoriaField, precioField, stockField};
         for (TextField campo : campos) {
             campo.setOnKeyPressed(event -> {
@@ -63,15 +82,32 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Método genérico para mostrar una vista dentro del panel dinámico.
+     * @param vista nodo que se va a mostrar en zonaContenido
+     */
     private void mostrarVista(Node vista) {
         zonaContenido.getChildren().setAll(vista);
     }
 
-    @FXML public void mostrarVistaAñadir() {
+    /**
+     * Muestra el formulario para añadir productos.
+     */
+    @FXML
+    public void mostrarVistaAñadir() {
+        zonaContenido.setVisible(true);
+        zonaContenido.setManaged(true);
         mostrarVista(formularioAñadirProducto);
     }
 
-    @FXML public void mostrarVistaBuscar() {
+    /**
+     * Muestra el formulario de búsqueda de productos y configura los filtros.
+     */
+    @FXML
+    public void mostrarVistaBuscar() {
+        zonaContenido.setVisible(true);
+        zonaContenido.setManaged(true);
+
         productosOriginales = listarProductos();
         tablaProductos.getItems().setAll(productosOriginales);
 
@@ -82,18 +118,35 @@ public class ProductoController {
         mostrarVista(formularioBuscarProducto);
     }
 
-    @FXML public void mostrarVistaModificar() {
+    /**
+     * Vista placeholder para modificar producto.
+     */
+    @FXML
+    public void mostrarVistaModificar() {
         mostrarVista(new Label("Vista de modificar aún no disponible"));
     }
 
-    @FXML public void mostrarVistaEliminar() {
+    /**
+     * Vista placeholder para eliminar producto.
+     */
+    @FXML
+    public void mostrarVistaEliminar() {
         mostrarVista(new Label("Vista de eliminar aún no disponible"));
     }
 
-    @FXML private void insertarProducto(ActionEvent event) {
+    /**
+     * Evento de clic en el botón de añadir producto.
+     * @param event evento de acción
+     */
+    @FXML
+    private void insertarProducto(ActionEvent event) {
         procesarInsertarProducto();
     }
 
+    /**
+     * Procesa los campos del formulario, capitaliza entradas,
+     * crea objeto Producto y lo inserta en BD.
+     */
     private void procesarInsertarProducto() {
         try {
             Producto nuevo = new Producto(
@@ -115,6 +168,11 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Inserta un producto en la base de datos.
+     * @param producto objeto Producto a insertar
+     * @return true si se insertó correctamente
+     */
     public boolean insertarProducto(Producto producto) {
         String sql = "INSERT INTO productos (nombre, descripcion, categoria, precioUnitario, stock) VALUES (?, ?, ?, ?, ?)";
 
@@ -140,6 +198,10 @@ public class ProductoController {
         return false;
     }
 
+    /**
+     * Recupera la lista de productos almacenados en la base de datos.
+     * @return lista de objetos Producto
+     */
     public List<Producto> listarProductos() {
         List<Producto> lista = new ArrayList<>();
         String sql = "SELECT * FROM productos";
@@ -166,6 +228,9 @@ public class ProductoController {
         return lista;
     }
 
+    /**
+     * Filtra productos según ID, nombre y categoría usando valores ingresados.
+     */
     private void filtrarProductos() {
         String filtroId = buscarIdField.getText().trim().toLowerCase();
         String filtroNombre = buscarNombreField.getText().trim().toLowerCase();
@@ -186,6 +251,11 @@ public class ProductoController {
         tablaProductos.getItems().setAll(filtrados);
     }
 
+    /**
+     * Muestra una alerta modal de tipo ERROR.
+     * @param titulo título de la ventana
+     * @param mensaje contenido de la alerta
+     */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(titulo);
@@ -193,9 +263,13 @@ public class ProductoController {
         alert.showAndWait();
     }
 
+    /**
+     * Capitaliza solo la primera letra de un texto y convierte el resto a minúsculas.
+     * @param texto entrada original
+     * @return texto capitalizado
+     */
     private String capitalizar(String texto) {
         if (texto == null || texto.isEmpty()) return texto;
         return texto.substring(0, 1).toUpperCase() + texto.substring(1).toLowerCase();
     }
-
 }
