@@ -37,7 +37,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
 
         // Crea la escena principal con el contenido del FXML y establece tamaño inicial
-        Scene scene = new Scene(root, 600, 450);
+        Scene scene = new Scene(root, 700, 550);
 
         // Aplica la hoja de estilos CSS desde el directorio /css
         scene.getStylesheets().add(
@@ -45,8 +45,8 @@ public class App extends Application {
         );
 
         // Asigna la escena a la ventana y muestra el título de la aplicación
-        stage.setMinWidth(600);
-        stage.setMinHeight(450);
+        stage.setMinWidth(700);
+        stage.setMinHeight(550);
         stage.setScene(scene);
         stage.setTitle("Mini ERP: Productos");
         stage.show(); // Muestra la ventana al usuario

@@ -108,6 +108,7 @@ public class ProductoController {
 
         } catch (Exception e) {
             // ⚠️ Captura cualquier error y muestra alerta
+            e.printStackTrace();
             mostrarAlerta("Error", "Verifica los campos ingresados.\n" + e.getMessage());
         }
     }
@@ -156,6 +157,7 @@ public class ProductoController {
 
         } catch (SQLException e) {
             // Muestra alerta si hay error en la base de datos
+            e.printStackTrace();
             mostrarAlerta("Base de Datos", "Error al insertar producto:\n" + e.getMessage());
         }
 
@@ -188,6 +190,7 @@ public class ProductoController {
 
         } catch (SQLException e) {
             // Muestra alerta si falla la lectura
+            e.printStackTrace();
             mostrarAlerta("Base de Datos", "Error al listar productos:\n" + e.getMessage());
         }
 

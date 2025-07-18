@@ -36,13 +36,17 @@ public class Producto {
     }
 
     /**
-     * Constructor alternativo (incompleto) con menos parámetros.
-     * ⚠️ No implementado aún: lanza excepción.
-     * Podría usarse en futuras validaciones de entrada de formulario.
+     * 
      */
-    public Producto(String text, String text0, String text1, double parseDouble, int parseInt) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public Producto(String nombre, String descripcion, String categoria, double precioUnitario, int stock) {
+    this.id = null; 
+    this.nombre = nombre;
+    this.descripcion = descripcion;
+    this.categoria = categoria;
+    this.precioUnitario = precioUnitario;
+    this.stock = stock;
+}
+
 
     // === MÉTODOS GETTERS Y SETTERS ===
 
