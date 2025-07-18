@@ -68,8 +68,8 @@
                     style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-alignment: center; -fx-alignment: center;" />
 
 
-                <!-- 📝 Formulario de añadir producto -->
-                <VBox fx:id="formularioAñadirProducto" visible="false" managed="false" spacing="10"
+                <!-- 📝 Formulario de añadir producto oculto en panel principal -->
+                <VBox fx:id="formularioAñadirProducto"  spacing="10"
                     prefWidth="600" style="-fx-background-color: #FFFFFF;">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
@@ -96,6 +96,33 @@
 
                     <Button text="Añadir producto" onAction="#insertarProducto" />
                 </VBox>
+
+                <!-- 🕵️‍♂️ Formulario de buscar producto oculto en panel principal -->
+
+                <VBox fx:id="formularioBuscarProducto"  spacing="10"
+                    prefWidth="600"
+                    style="-fx-background-color: #FFFFFF;">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10" />
+                    </padding>
+
+                    <Label text="Formulario buscar Producto" style="-fx-font-size: 16px;" />
+
+                    <GridPane hgap="10" vgap="10">
+                        <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="buscarIdField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="0" />
+                        <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="buscarNombreField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="1" />
+                        <Label text="Categoría:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="buscarCategoriaField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="2" />
+                    </GridPane>
+
+                    <Label fx:id="resultadoBusquedaLabel" text="" style="-fx-font-size: 14px;" />
+
+                </VBox>
             </StackPane>
 
 
@@ -108,6 +135,7 @@
                     <TableColumn text="Categoría" fx:id="colCategoria" />
                     <TableColumn text="Precio" fx:id="colPrecio" />
                     <TableColumn text="Stock" fx:id="colStock" />
+                    <TableColumn text="Descripción" fx:id="colDescripcion" />
                 </columns>
             </TableView>
 
