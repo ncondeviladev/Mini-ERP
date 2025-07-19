@@ -2,7 +2,8 @@
   Archivo: pom.xml
   Autor: Noé
   Proyecto: Mini ERP
-  Descripción: Configuración Maven para compilar y ejecutar una aplicación JavaFX con base de datos SQLite.
+  Descripción: Configuración Maven para compilar y ejecutar una aplicación JavaFX con base de datos
+SQLite.
 -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -70,6 +71,20 @@
           <include>**/*.css</include>
         </includes>
       </resource>
+
+
+      <!-- Recursos adicionales como imágenes -->
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*.css</include>
+          <include>**/*.jpg</include>
+          <include>**/*.png</include>
+          <include>**/*.fxml</include>
+        </includes>
+      </resource>
+
+
     </resources>
 
     <plugins>

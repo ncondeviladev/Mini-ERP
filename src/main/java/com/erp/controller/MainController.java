@@ -1,5 +1,7 @@
 package com.erp.controller;
 
+import java.net.URL;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +15,15 @@ public class MainController {
     @FXML
     public void initialize() {
         cargarVista("inicio.fxml"); // Esto carga el mensaje de bienvenida
+
+        URL url = getClass().getResource("/images/colorPattern.jpg");
+
+        if (url != null) {
+            System.out.println("✅ Imagen encontrada: " + url);
+        } else {
+            System.out.println("❌ Imagen NO encontrada. Revisa la ruta.");
+        }
+
     }
 
     @FXML

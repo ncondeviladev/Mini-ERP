@@ -5,10 +5,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.erp.controller.MainController" stylesheets="@css/estilo.css">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.erp.controller.MainController" stylesheets="@../css/estilo.css">
 
     <left>
-        <VBox fx:id="panelLateral" id="panelLateral" spacing="12" alignment="CENTER" prefWidth="200"/>
+        <VBox fx:id="panelLateral" id="panelLateral" spacing="12" alignment="CENTER" prefWidth="200">
             <padding>
                 <Insets top="20" right="10" bottom="20" left="10" />
             </padding>
@@ -17,7 +18,8 @@
             <Button text="Clientes" onAction="#mostrarClientes" />
             <Button text="Ventas" onAction="#mostrarVentas" />
             <Button text="Salir" onAction="#salirAplicacion" style="-fx-text-fill: red;" />
-        
+        </VBox>
+
     </left>
 
     <center>

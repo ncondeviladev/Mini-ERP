@@ -45,9 +45,9 @@
   -fx-font-weight: bold;
 }
 #panelLateral{
-  -fx-background-image:url("/images/colorPattern.jpg");
-  -fx-background-size: cover;
-  -fx-background-position: center;
-  -fx-background-repeat: no-repeat;
-  -fx-background-size: contain;
+ 
+  -fx-background-color: linear-gradient(to bottom, #2e4854, #0ecfd2);
+  -fx-border-color: #ced4da;
+  -fx-border-width: 1px;
+
 }
