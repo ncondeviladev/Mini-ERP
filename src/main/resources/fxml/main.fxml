@@ -17,7 +17,7 @@
             <Button text="Productos" onAction="#mostrarProductos" />
             <Button text="Clientes" onAction="#mostrarClientes" />
             <Button text="Ventas" onAction="#mostrarVentas" />
-            <Button text="Salir" onAction="#salirAplicacion" id="botonSalir" />
+            <Button text="Salir" onAction="#salirAplicacion" styleClass="botonSalir" />
         </VBox>
 
     </left>

@@ -6,16 +6,16 @@
 <?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.erp.controller.ProductoController"
-            prefWidth="800" prefHeight="600"
-            stylesheets="@estilos.css">
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.erp.controller.ProductoController"
+    prefWidth="800" prefHeight="600"
+    stylesheets="@estilos.css">
 
     <StackPane fx:id="contenedorProducto"
-               AnchorPane.topAnchor="10"
-               AnchorPane.leftAnchor="10"
-               AnchorPane.rightAnchor="10"
-               AnchorPane.bottomAnchor="10">
+        AnchorPane.topAnchor="10"
+        AnchorPane.leftAnchor="10"
+        AnchorPane.rightAnchor="10"
+        AnchorPane.bottomAnchor="10">
 
         <VBox spacing="10" prefWidth="600" style="-fx-background-color: #FFFFFF;">
             <padding>
@@ -28,59 +28,71 @@
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10" />
                 </padding>
-                <Button text="Añadir" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaAñadir" styleClass="boton-principal producto" />
-                <Button text="Buscar" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaBuscar" styleClass="boton-principal producto" />
+                <Button fx:id="botonMostrarAñadir" id="botonMostrarAñadir"
+                    text="Añadir" prefWidth="100" prefHeight="40"
+                    onAction="#mostrarVistaAñadir" styleClass="boton-principal-producto" />
+                <Button fx:id="botonMostrarBuscar" id="botonMostrarBuscar"
+                    text="Buscar" prefWidth="100" prefHeight="40"
+                    onAction="#mostrarVistaBuscar" styleClass="boton-principal-producto" />
             </HBox>
 
             <StackPane fx:id="zonaContenido" VBox.vgrow="ALWAYS">
                 <Label fx:id="inicio" managed="true" />
 
-                <VBox fx:id="formularioAñadirProducto" spacing="10" prefWidth="600"
-                      style="-fx-background-color: #FFFFFF;">
+                <VBox fx:id="formularioAñadirProducto" id="formularioProducto"
+                    spacing="10" prefWidth="600" styleClass="formulario-panel">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
                     </padding>
-                    <Label fx:id="tituloFormulario" text="Formulario añadir Producto"
-                           styleClass="subtitulo-panel" />
+                    <Label fx:id="tituloFormulario" id="tituloFormulario"
+                        text="Formulario añadir Producto" styleClass="subtitulo-panel" />
 
                     <GridPane hgap="10" vgap="10">
                         <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="nombreField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
+                        <TextField fx:id="nombreField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="0" styleClass="campo-formulario" />
                         <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="descripcionField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="campo-formulario" />
+                        <TextField fx:id="descripcionField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="1" styleClass="campo-formulario" />
                         <Label text="Categoría:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField fx:id="categoriaField" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="campo-formulario" />
+                        <TextField fx:id="categoriaField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="2" styleClass="campo-formulario" />
                         <Label text="Precio:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <TextField fx:id="precioField" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="campo-formulario" />
+                        <TextField fx:id="precioField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="3" styleClass="campo-formulario" />
                         <Label text="Stock:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <TextField fx:id="stockField" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="campo-formulario" />
+                        <TextField fx:id="stockField" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                            styleClass="campo-formulario" />
                     </GridPane>
 
-                    <Button fx:id="botonGuardarProducto" text="Añadir producto"
-                            onAction="#insertarProducto" styleClass="boton-principal producto" />
+                    <Button fx:id="botonGuardarProducto" id="botonGuardarProducto"
+                        text="Añadir producto" onAction="#insertarProducto"
+                        styleClass="boton-principal-producto" />
                 </VBox>
 
-                <VBox fx:id="formularioBuscarProducto" spacing="10" prefWidth="600"
-                      style="-fx-background-color: #FFFFFF;">
+                <VBox fx:id="formularioBuscarProducto" id="formularioBusquedaProducto"
+                    spacing="10" prefWidth="600" styleClass="formulario-panel">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
                     </padding>
                     <Label text="Formulario buscar Producto" styleClass="subtitulo-panel" />
                     <GridPane hgap="10" vgap="10">
                         <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="buscarIdField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
+                        <TextField fx:id="buscarIdField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="0" styleClass="campo-formulario" />
                         <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="buscarNombreField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="campo-formulario" />
+                        <TextField fx:id="buscarNombreField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="1" styleClass="campo-formulario" />
                         <Label text="Categoría:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField fx:id="buscarCategoriaField" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="campo-formulario" />
+                        <TextField fx:id="buscarCategoriaField" GridPane.columnIndex="1"
+                            GridPane.rowIndex="2" styleClass="campo-formulario" />
                     </GridPane>
                     <Label fx:id="resultadoBusquedaLabel" text="" styleClass="label" />
                 </VBox>
             </StackPane>
 
-            <TableView fx:id="tablaProductos" prefHeight="200" VBox.vgrow="NEVER" styleClass="table-view table-producto">
+            <TableView fx:id="tablaProductos" prefHeight="200" VBox.vgrow="NEVER"
+                styleClass="table-view table-producto">
                 <columns>
                     <TableColumn text="ID" fx:id="colId" />
                     <TableColumn text="Nombre" fx:id="colNombre" />
@@ -92,12 +104,12 @@
             </TableView>
 
             <HBox fx:id="accionesProducto" spacing="10" alignment="CENTER_RIGHT">
-                <Button fx:id="botonModificar" text="Modificar producto"
-                        onAction="#modificarProductoSeleccionado"
-                        disable="true" styleClass="boton-principal producto" />
-                <Button fx:id="botonEliminar" text="Eliminar producto"
-                        onAction="#eliminarProductoSeleccionado"
-                        disable="true" styleClass="boton-peligro" />
+                <Button fx:id="botonModificar" id="botonModificar"
+                    text="Modificar producto" onAction="#modificarProductoSeleccionado"
+                    disable="true" styleClass="boton-principal-producto" />
+                <Button fx:id="botonEliminar" id="botonEliminar"
+                    text="Eliminar producto" onAction="#eliminarProductoSeleccionado"
+                    disable="true" styleClass="botonSalir" />
             </HBox>
         </VBox>
 
