@@ -37,8 +37,6 @@
                 </padding>
                 <Button text="Añadir" prefWidth="100" prefHeight="40" onAction="#mostrarVistaAñadir" />
                 <Button text="Buscar" prefWidth="100" prefHeight="40" onAction="#mostrarVistaBuscar" />
-                <Button text="Modificar" prefWidth="100" prefHeight="40" onAction="#mostrarVistaModificar" />
-                <Button text="Eliminar" prefWidth="100" prefHeight="40" onAction="#mostrarVistaEliminar" />
             </HBox>
 
             <!-- 🔄 Panel dinámico para cargar formularios -->
@@ -52,7 +50,7 @@
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
                     </padding>
-                    <Label text="Formulario añadir Producto" style="-fx-font-size: 16px;" />
+                    <Label fx:id="tituloFormulario" text="Formulario añadir Producto" style="-fx-font-size: 16px;" />
 
                     <GridPane hgap="10" vgap="10">
                         <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
@@ -67,7 +65,7 @@
                         <TextField fx:id="stockField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                     </GridPane>
 
-                    <Button text="Añadir producto" onAction="#insertarProducto" />
+                    <Button fx:id="botonGuardarProducto" text="Añadir producto" onAction="#insertarProducto" />
                 </VBox>
 
                 <!-- 🔎 Formulario para buscar productos -->
@@ -101,6 +99,10 @@
                     <TableColumn text="Descripción" fx:id="colDescripcion" />
                 </columns>
             </TableView>
+            <HBox fx:id="accionesProducto" spacing="10" alignment="CENTER_RIGHT">
+                <Button fx:id="botonModificar" text="Modificar producto" onAction="#modificarProductoSeleccionado" disable="true"></Button>
+                <Button fx:id="botonBorrar" text="Borrar producto" onAction="#borrarProductoSeleccionado" disable="true"></Button>
+            </HBox>
 
         </VBox>
 

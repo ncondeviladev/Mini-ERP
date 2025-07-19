@@ -92,7 +92,7 @@ public class ProductoViewController {
             Producto producto = new Producto(0, nombre, descripcion, categoria, precio, stock);
 
             // ✅ Inserta producto usando el controlador y actualiza tabla si tiene éxito
-            if (controller.insertarProducto(producto)) {
+            if (controller.guardarProductoDb(producto)) {
                 listaProductos.add(producto); // Añade a la lista visual
                 limpiarCampos(); // Limpia formulario para nuevos datos
             }
