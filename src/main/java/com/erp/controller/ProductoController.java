@@ -1,13 +1,9 @@
 package com.erp.controller;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.erp.db.SQLiteConnector;
+import com.erp.dao.ProductoDAO;
 import com.erp.model.Producto;
 
 import javafx.event.ActionEvent;
@@ -27,6 +23,7 @@ import javafx.scene.layout.VBox;
 
 public class ProductoController {
 
+    private ProductoDAO productoDAO = new ProductoDAO();
     // 📝 Campos del formulario
     @FXML
     private TextField nombreField, descripcionField, categoriaField, precioField, stockField;
@@ -78,7 +75,7 @@ public class ProductoController {
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
-        tablaProductos.getItems().addAll(listarProductos());
+        tablaProductos.getItems().addAll(productoDAO.listarProductos());
 
         mostrarVista(inicio);
         zonaContenido.setVisible(false);
@@ -135,7 +132,7 @@ public class ProductoController {
         zonaContenido.setVisible(true);
         zonaContenido.setManaged(true);
 
-        productosOriginales = listarProductos();
+        productosOriginales = productoDAO.listarProductos();
         tablaProductos.getItems().setAll(productosOriginales);
 
         buscarIdField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
@@ -169,7 +166,7 @@ public class ProductoController {
                     Double.parseDouble(precioField.getText().replace(",", ".")),
                     Integer.parseInt(stockField.getText()));
 
-            if (guardarProductoDb(nuevo)) {
+            if (productoDAO.guardarProductoDb(nuevo)) {
                 tablaProductos.getItems().add(nuevo);
                 limpiarFormulario();
             }
@@ -189,7 +186,7 @@ public class ProductoController {
             producto.setPrecioUnitario(Double.parseDouble(precioField.getText().replace(",", ".")));
             producto.setStock(Integer.parseInt(stockField.getText()));
 
-            if (actualizarProductoEnDb(producto)) {
+            if (productoDAO.actualizarProductoEnDb(producto)) {
                 tablaProductos.refresh();
                 limpiarFormulario();
                 mostrarAlertaTemporal("Éxito", "Producto actualizado");
@@ -232,7 +229,7 @@ public class ProductoController {
     }
 
     @FXML
-    public void borrarProductoSeleccionado() {
+    public void eliminarProductoSeleccionado() {
         Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
 
         if (seleccionado != null) {
@@ -244,8 +241,9 @@ public class ProductoController {
 
             alerta.showAndWait().ifPresent(respuesta -> {
                 if (respuesta == ButtonType.OK) {
-                    if (eliminarProductoPorId(seleccionado.getId())) {
-                        tablaProductos.getItems().remove(seleccionado);
+                    if (productoDAO.eliminarProductoPorId(seleccionado.getId())) {
+                        tablaProductos.getItems().setAll(productoDAO.listarProductos());
+                        mostrarAlertaTemporal("Éxito", "Producto eliminado correctamente.");
                     } else {
                         mostrarAlerta("Error", "No se pudo eliminar el producto.");
                     }
@@ -254,95 +252,6 @@ public class ProductoController {
         } else {
             mostrarAlerta("Aviso", "Selecciona un producto en la tabla para eliminarlo.");
         }
-    }
-
-    // 💾 Acceso a base de datos
-    public boolean guardarProductoDb(Producto producto) {
-        String sql = "INSERT INTO productos (nombre, descripcion, categoria, precioUnitario, stock) VALUES (?, ?, ?, ?, ?)";
-
-        try (PreparedStatement stmt = SQLiteConnector.connect().prepareStatement(sql,
-                Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, producto.getNombre());
-            stmt.setString(2, producto.getDescripcion());
-            stmt.setString(3, producto.getCategoria());
-            stmt.setDouble(4, producto.getPrecioUnitario());
-            stmt.setInt(5, producto.getStock());
-
-            int rows = stmt.executeUpdate();
-            if (rows > 0) {
-                ResultSet rs = stmt.getGeneratedKeys();
-                if (rs.next())
-                    producto.setId(rs.getInt(1));
-                return true;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            mostrarAlerta("Base de Datos", "Error al insertar producto:\n" + e.getMessage());
-        }
-
-        return false;
-    }
-
-    public boolean actualizarProductoEnDb(Producto producto) {
-        String sql = "UPDATE productos SET nombre = ?, descripcion = ?, categoria = ?, precioUnitario = ?, stock = ? WHERE id = ?";
-
-        try (PreparedStatement stmt = SQLiteConnector.connect().prepareStatement(sql)) {
-            stmt.setString(1, producto.getNombre());
-            stmt.setString(2, producto.getDescripcion());
-            stmt.setString(3, producto.getCategoria());
-            stmt.setDouble(4, producto.getPrecioUnitario());
-            stmt.setInt(5, producto.getStock());
-            stmt.setInt(6, producto.getId());
-
-            return stmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            mostrarAlerta("Base de datos", "Error al actualizar en base de datos \n" + e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean eliminarProductoPorId(Integer id) {
-        String sql = "DELETE FROM productos WHERE id = ?";
-
-        try (PreparedStatement stmt = SQLiteConnector.connect().prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            int filasAfectadas = stmt.executeUpdate();
-            return filasAfectadas > 0;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            mostrarAlerta("Base de Datos", "Error al eliminar producto:\n" + e.getMessage());
-            return false;
-        }
-    }
-
-    public List<Producto> listarProductos() {
-        List<Producto> lista = new ArrayList<>();
-        String sql = "SELECT * FROM productos";
-
-        try (Statement stmt = SQLiteConnector.connect().createStatement();
-                ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                Producto p = new Producto(
-                        rs.getInt("id"),
-                        rs.getString("nombre"),
-                        rs.getString("descripcion"),
-                        rs.getString("categoria"),
-                        rs.getDouble("precioUnitario"),
-                        rs.getInt("stock"));
-                lista.add(p);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            mostrarAlerta("Base de Datos", "Error al listar productos:\n" + e.getMessage());
-        }
-
-        return lista;
     }
 
     // 🧠 Filtro de búsqueda
@@ -376,7 +285,7 @@ public class ProductoController {
         stockField.clear();
     }
 
-    private void mostrarAlerta(String titulo, String mensaje) {
+    public void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(titulo);
         alert.setContentText(mensaje);
@@ -386,14 +295,13 @@ public class ProductoController {
     private void mostrarAlertaTemporal(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
-        alert.setContentText(mensaje);
         alert.setHeaderText(null);
-
-        // ⚡ Cierra tras 2 segundos
-        new javafx.animation.PauseTransition(javafx.util.Duration.seconds(2))
-                .setOnFinished(event -> alert.close());
-
+        alert.setContentText(mensaje);
         alert.show();
+
+        javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(1));
+        delay.setOnFinished(event -> alert.close());
+        delay.play(); // 🔥 Aquí está la clave
     }
 
     private String capitalizar(String texto) {

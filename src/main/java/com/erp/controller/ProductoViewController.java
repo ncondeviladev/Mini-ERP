@@ -2,7 +2,8 @@ package com.erp.controller;
 
 // Controlador vinculado a la vista FXML, responsable de gestionar interacción entre la UI y los datos
 
-import com.erp.model.Producto; // Modelo de datos: clase Producto
+import com.erp.dao.ProductoDAO; // Modelo de datos: clase Producto
+import com.erp.model.Producto; // DAO para acceso a datos de productos
 
 import javafx.collections.FXCollections; // Controlador lógico que gestiona operaciones con Productos
 import javafx.collections.ObservableList; // Anotaciones FXML para vincular campos con la vista
@@ -33,6 +34,8 @@ public class ProductoViewController {
 
     @FXML private ComboBox<String> selectorAccion;
     @FXML private StackPane contenedorFormulario;
+
+    private final ProductoDAO productoDAO = new ProductoDAO(); // DAO para acceso a datos
     
 
     // 👨‍💼 Controlador que maneja lógica de inserción y recuperación
@@ -71,7 +74,7 @@ public class ProductoViewController {
         tablaProductos.setItems(listaProductos);
 
         // Recupera productos existentes desde el controlador y los muestra
-        listaProductos.setAll(controller.listarProductos());
+        listaProductos.setAll(productoDAO.listarProductos());
     }
 
     /**
@@ -92,7 +95,7 @@ public class ProductoViewController {
             Producto producto = new Producto(0, nombre, descripcion, categoria, precio, stock);
 
             // ✅ Inserta producto usando el controlador y actualiza tabla si tiene éxito
-            if (controller.guardarProductoDb(producto)) {
+            if (productoDAO.guardarProductoDb(producto)) {
                 listaProductos.add(producto); // Añade a la lista visual
                 limpiarCampos(); // Limpia formulario para nuevos datos
             }

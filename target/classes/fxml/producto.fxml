@@ -1,95 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 📦 Importaciones necesarias -->
-<?import java.lang.String?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.collections.FXCollections?>
 
-<!-- 🌐 Contenedor raíz con controlador vinculado -->
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.erp.controller.ProductoController"
-            prefWidth="800" prefHeight="600">
+            prefWidth="800" prefHeight="600"
+            stylesheets="@estilos.css">
 
-    <!-- 🎯 Área principal anclada dentro del AnchorPane -->
     <StackPane fx:id="contenedorProducto"
                AnchorPane.topAnchor="10"
                AnchorPane.leftAnchor="10"
                AnchorPane.rightAnchor="10"
                AnchorPane.bottomAnchor="10">
 
-        <!-- 📦 Contenedor vertical principal -->
         <VBox spacing="10" prefWidth="600" style="-fx-background-color: #FFFFFF;">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
 
-            <!-- 📘 Título del módulo -->
-            <Label text="Gestión de Productos"
-                   style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-alignment: center; -fx-alignment: center;" />
+            <Label text="Gestión de Productos" styleClass="titulo-panel" />
 
-            <!-- 🧭 Submenú con botones de acción -->
             <HBox fx:id="subMenuAcciones" spacing="10" alignment="CENTER_LEFT">
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10" />
                 </padding>
-                <Button text="Añadir" prefWidth="100" prefHeight="40" onAction="#mostrarVistaAñadir" />
-                <Button text="Buscar" prefWidth="100" prefHeight="40" onAction="#mostrarVistaBuscar" />
+                <Button text="Añadir" prefWidth="100" prefHeight="40"
+                        onAction="#mostrarVistaAñadir" styleClass="boton-principal producto" />
+                <Button text="Buscar" prefWidth="100" prefHeight="40"
+                        onAction="#mostrarVistaBuscar" styleClass="boton-principal producto" />
             </HBox>
 
-            <!-- 🔄 Panel dinámico para cargar formularios -->
             <StackPane fx:id="zonaContenido" VBox.vgrow="ALWAYS">
+                <Label fx:id="inicio" managed="true" />
 
-                <!-- 🟦 Etiqueta inicial de bienvenida (puede estar vacía) -->
-                <Label fx:id="inicio" managed="true"/>
-
-                <!-- 📥 Formulario para añadir producto -->
-                <VBox fx:id="formularioAñadirProducto" spacing="10" prefWidth="600" style="-fx-background-color: #FFFFFF;">
+                <VBox fx:id="formularioAñadirProducto" spacing="10" prefWidth="600"
+                      style="-fx-background-color: #FFFFFF;">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
                     </padding>
-                    <Label fx:id="tituloFormulario" text="Formulario añadir Producto" style="-fx-font-size: 16px;" />
+                    <Label fx:id="tituloFormulario" text="Formulario añadir Producto"
+                           styleClass="subtitulo-panel" />
 
                     <GridPane hgap="10" vgap="10">
                         <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="nombreField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="nombreField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
                         <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="descripcionField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="descripcionField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="campo-formulario" />
                         <Label text="Categoría:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField fx:id="categoriaField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="categoriaField" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="campo-formulario" />
                         <Label text="Precio:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <TextField fx:id="precioField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="precioField" GridPane.columnIndex="1" GridPane.rowIndex="3" styleClass="campo-formulario" />
                         <Label text="Stock:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                        <TextField fx:id="stockField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="stockField" GridPane.columnIndex="1" GridPane.rowIndex="4" styleClass="campo-formulario" />
                     </GridPane>
 
-                    <Button fx:id="botonGuardarProducto" text="Añadir producto" onAction="#insertarProducto" />
+                    <Button fx:id="botonGuardarProducto" text="Añadir producto"
+                            onAction="#insertarProducto" styleClass="boton-principal producto" />
                 </VBox>
 
-                <!-- 🔎 Formulario para buscar productos -->
-                <VBox fx:id="formularioBuscarProducto" spacing="10" prefWidth="600" style="-fx-background-color: #FFFFFF;">
+                <VBox fx:id="formularioBuscarProducto" spacing="10" prefWidth="600"
+                      style="-fx-background-color: #FFFFFF;">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
                     </padding>
-                    <Label text="Formulario buscar Producto" style="-fx-font-size: 16px;" />
-
+                    <Label text="Formulario buscar Producto" styleClass="subtitulo-panel" />
                     <GridPane hgap="10" vgap="10">
                         <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <TextField fx:id="buscarIdField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="buscarIdField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
                         <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <TextField fx:id="buscarNombreField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="buscarNombreField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="campo-formulario" />
                         <Label text="Categoría:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <TextField fx:id="buscarCategoriaField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="buscarCategoriaField" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="campo-formulario" />
                     </GridPane>
-
-                    <Label fx:id="resultadoBusquedaLabel" text="" style="-fx-font-size: 14px;" />
+                    <Label fx:id="resultadoBusquedaLabel" text="" styleClass="label" />
                 </VBox>
             </StackPane>
 
-            <!-- 📊 Tabla fija de productos -->
-            <TableView fx:id="tablaProductos" prefHeight="200" VBox.vgrow="NEVER">
+            <TableView fx:id="tablaProductos" prefHeight="200" VBox.vgrow="NEVER" styleClass="table-view table-producto">
                 <columns>
                     <TableColumn text="ID" fx:id="colId" />
                     <TableColumn text="Nombre" fx:id="colNombre" />
@@ -99,13 +90,16 @@
                     <TableColumn text="Descripción" fx:id="colDescripcion" />
                 </columns>
             </TableView>
-            <HBox fx:id="accionesProducto" spacing="10" alignment="CENTER_RIGHT">
-                <Button fx:id="botonModificar" text="Modificar producto" onAction="#modificarProductoSeleccionado" disable="true"></Button>
-                <Button fx:id="botonBorrar" text="Borrar producto" onAction="#borrarProductoSeleccionado" disable="true"></Button>
-            </HBox>
 
+            <HBox fx:id="accionesProducto" spacing="10" alignment="CENTER_RIGHT">
+                <Button fx:id="botonModificar" text="Modificar producto"
+                        onAction="#modificarProductoSeleccionado"
+                        disable="true" styleClass="boton-principal producto" />
+                <Button fx:id="botonEliminar" text="Eliminar producto"
+                        onAction="#eliminarProductoSeleccionado"
+                        disable="true" styleClass="boton-peligro" />
+            </HBox>
         </VBox>
 
     </StackPane>
-
 </AnchorPane>

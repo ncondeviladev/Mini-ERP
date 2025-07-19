@@ -1,5 +1,8 @@
 com\erp\db\SQLiteConnector.class
 com\erp\App.class
-com\erp\controller\ProductoController.class
-com\erp\model\Producto.class
+com\erp\controller\MenuController.class
+com\erp\dao\ProductoDAO.class
 com\erp\controller\ProductoViewController.class
+com\erp\model\Producto.class
+com\erp\controller\MainController.class
+com\erp\controller\ProductoController.class

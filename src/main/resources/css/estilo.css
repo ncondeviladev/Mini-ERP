@@ -1,53 +1,114 @@
+/* 🌐 Estilo global */
 .root {
-  -fx-font-family: "Segoe UI";
-  -fx-background-color: #F5F5F5; /* Fondo gris muy claro */
-  -fx-text-fill: #212121;        /* Texto gris oscuro */
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-background-color: #F5F5F5;   /* Fondo general claro */
+    -fx-text-fill: #212121;          /* Texto gris oscuro para contraste */
 }
 
+/* 🧾 Etiquetas */
 .label {
-  -fx-text-fill: #424242; /* Gris medio para las etiquetas */
+    -fx-text-fill: #424242;          /* Gris medio */
 }
 
-.button {
-  -fx-background-color: #E0E0E0;  /* Gris claro para botones */
-  -fx-text-fill: #333333;         /* Texto gris oscuro */
-  -fx-background-radius: 6;
-  -fx-border-color: #BDBDBD;
-}
-
-.button:hover {
-  -fx-background-color: #D6D6D6;  /* Sutileza al pasar el cursor */
-}
-
-.table-view {
-  -fx-background-color: #FAFAFA;
-  -fx-border-color: #E0E0E0;
-  -fx-table-cell-border-color: #EEEEEE;
-}
-
-.text-field {
-  -fx-background-color: #FFFFFF;
-  -fx-text-fill: #424242;
-  -fx-prompt-text-fill: #9E9E9E;
-  -fx-border-color: #B0BEC5;
-  -fx-background-radius: 4;
-}
-
-.table-column {
-  -fx-alignment: CENTER;
-  -fx-font-size: 12px;
-  -fx-text-fill: #616161;
-}
-
+/* 🖊️ Título destacado */
 .title {
-  -fx-text-fill: #607D8B; /* Azul pastel como color de acento */
-  -fx-font-size: 18px;
-  -fx-font-weight: bold;
+    -fx-text-fill: #3A8DAD;          /* Azul elegante como acento */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
 }
-#panelLateral{
- 
-  -fx-background-color: linear-gradient(to bottom, #2e4854, #0ecfd2);
-  -fx-border-color: #ced4da;
-  -fx-border-width: 1px;
 
+/* 📥 Panel lateral */
+#panelLateral {
+    -fx-background-color: linear-gradient(to bottom, #2e4854, #0ecfd2); /* Azul profundo degradado */
+    -fx-border-color: #CED4DA;
+    -fx-border-width: 1px;
+}
+#tituloMiniErp {
+    -fx-text-fill: #F0F0F0;       /* Blanco suave */
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+
+/* 🔘 Botones */
+.button {
+    -fx-background-color: linear-gradient(to bottom, #3A8DAD, #227C97); /* Azul combinable con fondo */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+    -fx-padding: 8 16;
+}
+#botonSalir {
+    -fx-background-color: linear-gradient(to bottom, #f44336, #d32f2f); /* Rojo elegante */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+    -fx-padding: 8 16;
+}
+
+
+
+
+/* 🔘 Botón al pasar el cursor */
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #57B6D4, #289EBE); /* Azul claro vibrante */
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);
+}
+#botonSalir:hover {
+    -fx-background-color: linear-gradient(to bottom, #e57373, #c62828); /* Rojo vibrante al pasar cursor */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0, 0, 2);
+}
+
+/* ✏️ Campos de texto */
+.text-field, .text-area {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #B0BEC5;
+    -fx-border-radius: 5;
+    -fx-padding: 6 8;
+    -fx-text-fill: #424242;
+    -fx-prompt-text-fill: #9E9E9E;
+    -fx-font-size: 13px;
+}
+
+/* ✏️ Cuando está enfocado */
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #3A8DAD;            /* Azul acento */
+    -fx-background-color: #FAFAFA;
+}
+
+/* ⚠️ Estilo para texto de error */
+.text-field:focused:invalid {
+    -fx-border-color: #E57373;            /* Rojo suave */
+}
+
+/* 📋 Tabla */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-control-inner-background: #f9f9f9;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: #D0EAF2;  /* Tonos azul pálido en lugar de gris o verde */
+    -fx-font-family: 'Segoe UI';
+    -fx-font-size: 13px;
+}
+
+/* 📋 Encabezados */
+.table-column-header {
+    -fx-background-color: #e0f7fa;         /* Azul cielo claro */
+    -fx-font-weight: bold;
+    -fx-text-fill: #37474F;
+}
+
+/* 📋 Fila seleccionada */
+.table-row-cell:filled:selected {
+    -fx-background-color: #CDEFFD;         /* Azul pastel para selección */
+}
+
+/* 📋 Columnas centradas */
+.table-column {
+    -fx-alignment: CENTER;
+    -fx-text-fill: #616161;
 }

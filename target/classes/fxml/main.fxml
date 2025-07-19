@@ -13,11 +13,11 @@
             <padding>
                 <Insets top="20" right="10" bottom="20" left="10" />
             </padding>
-            <Label text="Mini ERP" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+            <Label text="Mini ERP" id="tituloMiniErp" />
             <Button text="Productos" onAction="#mostrarProductos" />
             <Button text="Clientes" onAction="#mostrarClientes" />
             <Button text="Ventas" onAction="#mostrarVentas" />
-            <Button text="Salir" onAction="#salirAplicacion" style="-fx-text-fill: red;" />
+            <Button text="Salir" onAction="#salirAplicacion" id="botonSalir" />
         </VBox>
 
     </left>
