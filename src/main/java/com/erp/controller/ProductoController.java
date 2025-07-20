@@ -12,7 +12,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -20,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class ProductoController {
 
@@ -75,6 +78,17 @@ public class ProductoController {
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
         colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
+        // 🎨 Configurar el ajuste de texto para la columna de descripción
+        colDescripcion.setCellFactory(tc -> {
+            TableCell<Producto, String> cell = new TableCell<>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            text.wrappingWidthProperty().bind(colDescripcion.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell;
+        });
+
         tablaProductos.getItems().addAll(productoDAO.listarProductos());
 
         mostrarVista(inicio);
@@ -91,7 +105,7 @@ public class ProductoController {
     }
 
     public void activarENterEnCampos() {
-        TextField[] campos = { nombreField, descripcionField, categoriaField, precioField, stockField };
+        TextField[] campos = {nombreField, descripcionField, categoriaField, precioField, stockField};
         for (TextField campo : campos) {
             campo.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {

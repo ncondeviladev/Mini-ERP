@@ -37,7 +37,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
 
         // Crea la escena principal con el contenido del FXML y establece tamaño inicial
-        Scene scene = new Scene(root, 700, 550);
+        Scene scene = new Scene(root, 802, 600);
 
         // Aplica la hoja de estilos CSS desde el directorio /css
         scene.getStylesheets().add(

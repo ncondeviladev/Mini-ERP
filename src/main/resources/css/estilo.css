@@ -11,12 +11,18 @@
     -fx-text-fill: #424242;
 }
 
-.subtitulo-panel {
-    -fx-font-size: 16px;
+.titulo-panel {
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #3A8DAD;
+    -fx-text-fill: #2C3E50;
+    -fx-font-family: "Oswald"; 
 }
-
+.subtitulo-panel {
+    -fx-font-size:16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+    -fx-font-family: "Oswald"; 
+}
 .title {
     -fx-text-fill: #3A8DAD;
     -fx-font-size: 18px;
@@ -133,27 +139,41 @@
 #tablaProductos .table-cell:filled:selected:focused {
     -fx-background-color: #C6F6D7;
 }
-
-
+.table-cell .text {
+    -fx-fill: #616161; /* Asegura que el texto en celdas con ajuste tenga el color correcto */
+    -fx-text-alignment: justify;
+}
 
 .table-column {
-    -fx-alignment: CENTER;
+    -fx-alignment: CENTER_LEFT; /* Mejora la legibilidad para texto de varias líneas */
     -fx-text-fill: #616161;
 }
 
-/* 🧱 10. Paneles de formulario */
-.formulario-panel {
+/* 🧱 10. Paneles y Contenedores */
+.panel-contenido {
     -fx-background-color: #FFFFFF;
+    -fx-background-radius: 5; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); /* Sombra sutil */
+}
+
+/* 
+   Clase genérica para cualquier panel de formulario (Añadir, Buscar, etc.)
+   Esto reemplaza los IDs específicos y lo hace reutilizable.
+*/
+.formulario-panel {
+    -fx-background-color: #FDFEFE; /* Un blanco ligeramente distinto para destacar */
     -fx-border-color: #D0EAF2;
     -fx-border-radius: 8;
     -fx-border-width: 1;
     -fx-padding: 12;
 }
 
-#formularioProducto,
-#formularioBusquedaProducto {
-    -fx-border-color: #CDEFFD;
-    -fx-border-radius: 8;
-    -fx-border-width: 1;
-    -fx-background-color: #FFFFFF;
+/* 🧱 11. ScrollPane personalizado */
+/*
+   Hacemos el ScrollPane transparente para que el fondo del contenedor
+   padre (StackPane) sea visible. Esto es clave para layouts donde
+   el contenido tiene un ancho fijo pero el fondo debe expandirse.
+*/
+.panel-scroll-pane, .panel-scroll-pane > .viewport {
+    -fx-background-color: transparent;
 }

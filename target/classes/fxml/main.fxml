@@ -9,12 +9,12 @@
     fx:controller="com.erp.controller.MainController" stylesheets="@../css/estilo.css">
 
     <left>
-        <VBox fx:id="panelLateral" id="panelLateral" spacing="12" alignment="CENTER" prefWidth="200">
+        <VBox fx:id="panelLateral" id="panelLateral" spacing="12" alignment="CENTER" prefWidth="180">
             <padding>
                 <Insets top="20" right="10" bottom="20" left="10" />
             </padding>
             <Label text="Mini ERP" id="tituloMiniErp" />
-            <Button text="Productos" onAction="#mostrarProductos" />
+            <Button text="Productos" onAction="#mostrarProductos" styleClass="boton-principal-producto"/>
             <Button text="Clientes" onAction="#mostrarClientes" />
             <Button text="Ventas" onAction="#mostrarVentas" />
             <Button text="Salir" onAction="#salirAplicacion" styleClass="botonSalir" />
