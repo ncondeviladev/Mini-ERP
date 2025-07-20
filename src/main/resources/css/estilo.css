@@ -1,174 +1,199 @@
-/* 🎨 1. Estilo base global */
+/* ==========================================================================
+   1. RAÍZ Y VARIABLES GLOBALES
+   ========================================================================== 
+   Aquí definimos los colores, fuentes y tamaños principales como variables.
+   Esto permite cambiar el aspecto de toda la aplicación modificando un solo lugar.
+*/
 .root {
-    -fx-font-family: "Segoe UI";
-    -fx-font-size: 13px;
-    -fx-background-color: #F5F5F5;
-    -fx-text-fill: #212121;
+    /* --- Paleta de Colores --- */
+    -fx-color-primary: #3A8DAD;
+    -fx-color-primary-light: #57B6D4;
+    -fx-color-primary-dark: #227C97;
+    
+    -fx-color-success-start: #a6eeaa;
+    -fx-color-success-end: #3b8d3f;
+    -fx-color-success-start-hover: #8ac58d;
+    -fx-color-success-end-hover: #2e6c31;
+
+    -fx-color-danger-start: #f96f65;
+    -fx-color-danger-end: #d14747;
+    -fx-color-danger-start-hover: #e69090;
+    -fx-color-danger-end-hover: #c83e3e;
+
+    -fx-color-background: #F5F5F5; /* Fondo general de la aplicación */
+    -fx-color-content-background: #FFFFFF; /* Fondo de los paneles principales */
+    -fx-color-sidebar-start: #2e4854;
+    -fx-color-sidebar-end: #0ecfd2;
+
+    /* --- Colores de Texto --- */
+    -fx-text-color-base: #424242; /* Texto normal */
+    -fx-text-color-light: white; /* Texto sobre fondos oscuros */
+    -fx-text-color-header: #2C3E50; /* Títulos principales */
+    -fx-text-color-muted: #616161; /* Texto secundario o en tablas */
+
+    /* --- Tipografía --- */
+    -fx-font-family-base: "Segoe UI";
+    -fx-font-family-header: "Oswald";
+    -fx-font-size-base: 13px;
+
+    /* --- Aplicación de Estilos Base --- */
+    -fx-font-family: -fx-font-family-base;
+    -fx-font-size: -fx-font-size-base;
+    -fx-background-color: -fx-color-background;
 }
 
-/* 🏷️ 2. Etiquetas */
+/* ==========================================================================
+   2. TIPOGRAFÍA (Títulos y Etiquetas)
+   ========================================================================== */
 .label {
-    -fx-text-fill: #424242;
+    -fx-text-fill: -fx-text-color-base;
 }
 
 .titulo-panel {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
-    -fx-text-fill: #2C3E50;
-    -fx-font-family: "Oswald"; 
+    -fx-text-fill: -fx-text-color-header;
+    -fx-font-family: -fx-font-family-header; 
 }
 .subtitulo-panel {
     -fx-font-size:16px;
     -fx-font-weight: bold;
-    -fx-text-fill: #2C3E50;
-    -fx-font-family: "Oswald"; 
+    -fx-text-fill: -fx-text-color-header;
+    -fx-font-family: -fx-font-family-header; 
 }
 .title {
-    -fx-text-fill: #3A8DAD;
+    -fx-text-fill: -fx-color-primary;
     -fx-font-size: 18px;
     -fx-font-weight: bold;
 }
 
-/* 🧩 3. Panel lateral */
+/* ==========================================================================
+   3. LAYOUT Y PANELES PRINCIPALES
+   ========================================================================== */
 #panelLateral {
-    -fx-background-color: linear-gradient(to bottom, #2e4854, #0ecfd2);
+    -fx-background-color: linear-gradient(to bottom, -fx-color-sidebar-start, -fx-color-sidebar-end);
     -fx-border-color: #CED4DA;
     -fx-border-width: 1px;
 }
 
 #tituloMiniErp {
-    -fx-text-fill: #F0F0F0;
+    -fx-text-fill: -fx-text-color-light;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
-/* 🔘 4. Botones base por tipo */
+/* Panel principal donde se muestra el contenido de cada módulo */
+.panel-contenido {
+    -fx-background-color: -fx-color-content-background;
+    -fx-background-radius: 5; /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); /* Sombra sutil */
+}
+
+/* Panel para los formularios de Añadir, Buscar, etc. */
+.formulario-panel {
+    -fx-background-color: derive(-fx-color-content-background, -2%); /* Un blanco ligeramente distinto para destacar */
+    -fx-border-color: derive(-fx-color-primary, 70%);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 12;
+}
+
+/* ==========================================================================
+   4. COMPONENTES REUTILIZABLES
+   ========================================================================== */
+
+/* 🔘 BOTONES */
 .button {
-    -fx-background-color: linear-gradient(to top, #3A8DAD, #227C97);
-    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to top, -fx-color-primary-dark, -fx-color-primary);
+    -fx-text-fill: -fx-text-color-light;
     -fx-font-weight: bold;
     -fx-background-radius: 8;
     -fx-border-color: transparent;
     -fx-padding: 8 16;
 }
-
 .button:hover {
-    -fx-background-color: linear-gradient(to bottom, #57B6D4, #289EBE);
+    -fx-background-color: linear-gradient(to bottom, -fx-color-primary-light, -fx-color-primary);
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, #0000004D, 6, 0, 0, 2); /* reemplaza rgba */
 }
 
-/* 🚀 5. Botones principales */
-.boton-principal {
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-background-radius: 8;
-    -fx-padding: 8 16;
-    -fx-border-color: transparent;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, #0000004D, 6, 0, 0, 2);
-}
-
-.boton-principal:hover {
-    -fx-background-color: linear-gradient(to bottom, #57B6D4, #289EBE);
-}
-
-/* 🟩 6. Colores del módulo Producto */
+/* Botón de éxito (verde), usado en el módulo de productos */
 .boton-principal-producto {
-    -fx-background-color: linear-gradient(to bottom, #a6eeaa, #3b8d3f);
+    -fx-background-color: linear-gradient(to bottom, -fx-color-success-start, -fx-color-success-end);
 }
-
 .boton-principal-producto:hover {
-    -fx-background-color: linear-gradient(to bottom, #8ac58d, #2e6c31);
+    -fx-background-color: linear-gradient(to bottom, -fx-color-success-start-hover, -fx-color-success-end-hover);
 }
 
-/* 🔴 7. Botón salir y eliminar */
+/* Botón de peligro (rojo), para Salir o Eliminar */
 .botonSalir {
-    -fx-background-color: linear-gradient(to bottom, #f96f65, #d14747);
+    -fx-background-color: linear-gradient(to bottom, -fx-color-danger-start, -fx-color-danger-end);
 }
-
 .botonSalir:hover {
-    -fx-background-color: linear-gradient(to bottom, #e69090, #c83e3e);
+    -fx-background-color: linear-gradient(to bottom, -fx-color-danger-start-hover, -fx-color-danger-end-hover);
 }
 
-/* ✏️ 8. Campos de texto */
+/* ✏️ CAMPOS DE TEXTO */
 .text-field,
 .text-area,
 .campo-formulario {
-    -fx-background-color: #FFFFFF;
+    -fx-background-color: -fx-color-content-background;
     -fx-border-color: #B0BEC5;
     -fx-border-radius: 5;
     -fx-padding: 6 8;
-    -fx-text-fill: #424242;
+    -fx-text-fill: -fx-text-color-base;
     -fx-prompt-text-fill: #9E9E9E;
-    -fx-font-size: 13px;
+    -fx-font-size: -fx-font-size-base;
 }
-
 .text-field:focused,
 .text-area:focused {
-    -fx-border-color: #3A8DAD;
+    -fx-border-color: -fx-color-primary;
     -fx-background-color: #FAFAFA;
 }
-
 .text-field:focused:invalid {
     -fx-border-color: #E57373;
 }
 
-/* 📋 9. Tabla general */
+/* 📋 TABLAS */
 .table-view {
-    -fx-background-color: #ffffff;
+    -fx-background-color: -fx-color-content-background;
     -fx-control-inner-background: #f9f9f9;
     -fx-border-color: transparent;
     -fx-table-cell-border-color: #e3e3e3;
-    -fx-font-family: 'Segoe UI';
-    -fx-font-size: 13px;
+    -fx-font-family: -fx-font-family-base;
+    -fx-font-size: -fx-font-size-base;
 }
-
 .table-column-header {
     -fx-background-color: #e0f7fa;
     -fx-font-weight: bold;
     -fx-text-fill: #37474F;
 }
+.table-column {
+    -fx-alignment: CENTER_LEFT; /* Mejora la legibilidad para texto de varias líneas */
+    -fx-text-fill: -fx-text-color-muted;
+}
+.table-cell .text {
+    -fx-fill: -fx-text-color-muted; /* Asegura que el texto en celdas con ajuste tenga el color correcto */
+    -fx-text-alignment: justify;
+}
 
-/* 📋 Personalización completa de selección SOLO para tabla de producto */
+/* ==========================================================================
+   5. ESTILOS ESPECÍFICOS POR MÓDULO
+   ========================================================================== */
+
+/* Personalización de selección de fila SOLO para la tabla de Productos */
 #tablaProductos .table-row-cell:selected,
 #tablaProductos .table-row-cell:filled:selected,
 #tablaProductos .table-row-cell:filled:selected:focused,
 #tablaProductos .table-cell:selected,
 #tablaProductos .table-cell:filled:selected,
 #tablaProductos .table-cell:filled:selected:focused {
-    -fx-background-color: #C6F6D7;
-}
-.table-cell .text {
-    -fx-fill: #616161; /* Asegura que el texto en celdas con ajuste tenga el color correcto */
-    -fx-text-alignment: justify;
+    -fx-background-color: derive(-fx-color-success-end, 80%); /* Un verde muy claro derivado del color de éxito */
 }
 
-.table-column {
-    -fx-alignment: CENTER_LEFT; /* Mejora la legibilidad para texto de varias líneas */
-    -fx-text-fill: #616161;
-}
-
-/* 🧱 10. Paneles y Contenedores */
-.panel-contenido {
-    -fx-background-color: #FFFFFF;
-    -fx-background-radius: 5; /* Bordes ligeramente redondeados */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); /* Sombra sutil */
-}
-
-/* 
-   Clase genérica para cualquier panel de formulario (Añadir, Buscar, etc.)
-   Esto reemplaza los IDs específicos y lo hace reutilizable.
-*/
-.formulario-panel {
-    -fx-background-color: #FDFEFE; /* Un blanco ligeramente distinto para destacar */
-    -fx-border-color: #D0EAF2;
-    -fx-border-radius: 8;
-    -fx-border-width: 1;
-    -fx-padding: 12;
-}
-
-/* 🧱 11. ScrollPane personalizado */
+/* ==========================================================================
+   6. CLASES DE UTILIDAD
+   ========================================================================== */
 /*
    Hacemos el ScrollPane transparente para que el fondo del contenedor
    padre (StackPane) sea visible. Esto es clave para layouts donde
