@@ -17,7 +17,7 @@
         AnchorPane.bottomAnchor="10"
         styleClass="panel-contenido">
 
-        <ScrollPane styleClass="panel-scroll-pane">
+        <ScrollPane styleClass="panel-scroll-pane" fitToWidth="true">
 
             <VBox spacing="10" prefWidth="600">
                 <padding>
@@ -102,7 +102,7 @@
 
                     <columns>
                         <TableColumn fx:id="colId" text="ID" minWidth="30" prefWidth="30"
-                         maxWidth="30" />
+                            maxWidth="30" />
                         <TableColumn fx:id="colNombre" text="Nombre" minWidth="80" prefWidth="80"
                             maxWidth="80" />
                         <TableColumn fx:id="colCategoria" text="Categoría" minWidth="100"
