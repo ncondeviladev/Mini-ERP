@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.erp.db.SQLiteConnector;
 import com.erp.model.Cliente;
@@ -130,7 +132,7 @@ public class ClienteDAO {
 
         String sql = "DELETE FROM clientes WHERE id = ?";
 
-        try(PreparedStatement stmt = conexion.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setInt(1, id);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -143,12 +145,59 @@ public class ClienteDAO {
 
         String sql = "SELECT * FROM clientes WHERE id = ?";
 
-        try(PreparedStatement stmt = conexion.prepareStatement(sql)) {
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return construirCliente(rs);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Cliente> listarClientes() {
+        List<Cliente> clientes = new ArrayList<>();
+        String sql = "SELECT * FROM clientes";
+        try (Statement stmt = conexion.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                clientes.add(construirCliente(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return clientes;
+
+    }
+
+    private Cliente construirCliente(ResultSet rs) throws SQLException {
+        String tipoCliente = rs.getString("tipoCliente");
+        if ("Particular".equals(tipoCliente)) {
+            return Cliente.crearParticular(
+                rs.getInt("id"),
+                rs.getString("email"),
+                rs.getString("telefono"),
+                rs.getString("direccion"),
+                rs.getString("cifnif"),
+                rs.getDate("fechaAlta").toLocalDate(),
+                rs.getString("nombre"),
+                rs.getString("apellidos")
+            );
+        } else if ("Empresa".equals(tipoCliente)) {
+            return Cliente.crearEmpresa(
+                rs.getInt("id"),
+                rs.getString("email"),
+                rs.getString("telefono"),
+                rs.getString("direccion"),
+                rs.getString("cifnif"),
+                rs.getDate("fechaAlta").toLocalDate(),
+                rs.getString("razonSocial"),
+                rs.getString("personaContacto")
+            );
+        } else {
+            return null; // Tipo desconocido
         }
     }
+
 }

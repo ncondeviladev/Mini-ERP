@@ -29,6 +29,7 @@ public class ProductoDAO {
 
     /**
      * Guarda un nuevo producto en la base de datos
+     * 
      * @param producto objeto Producto con datos
      * @return true si se inserta correctamente
      */
@@ -59,6 +60,7 @@ public class ProductoDAO {
 
     /**
      * Actualiza un producto existente en la base de datos
+     * 
      * @param producto objeto Producto con ID y nuevos valores
      * @return true si se actualiza correctamente
      */
@@ -80,6 +82,7 @@ public class ProductoDAO {
 
     /**
      * Elimina un producto por ID
+     * 
      * @param id identificador del producto
      * @return true si se elimina correctamente
      */
@@ -96,6 +99,7 @@ public class ProductoDAO {
 
     /**
      * Busca un producto por ID
+     * 
      * @param id identificador
      * @return Producto si se encuentra, null si no
      */
@@ -115,13 +119,14 @@ public class ProductoDAO {
 
     /**
      * Obtiene todos los productos existentes
+     * 
      * @return lista de productos
      */
     public List<Producto> listarProductos() {
         List<Producto> productos = new ArrayList<>();
         String sql = "SELECT * FROM productos";
         try (Statement stmt = conexion.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+                ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 productos.add(construirProducto(rs));
             }
@@ -141,7 +146,6 @@ public class ProductoDAO {
                 rs.getString("descripcion"),
                 rs.getString("categoria"),
                 rs.getDouble("precioUnitario"),
-                rs.getInt("stock")
-        );
+                rs.getInt("stock"));
     }
 }
