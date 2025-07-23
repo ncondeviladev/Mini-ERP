@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.erp.controller.ClienteController"
+    prefWidth="800" prefHeight="600" stylesheets="@../css/estilo.css">
+
+    <StackPane fx:id="zonaContenidoCliente"
+        AnchorPane.topAnchor="10"
+        AnchorPane.leftAnchor="10"
+        AnchorPane.rightAnchor="10"
+        AnchorPane.bottomAnchor="10"
+        styleClass="panel-contenido">
+
+
+        <ScrollPane styleClass="panel-scroll-pane" fitToWidth="true">
+
+            <VBox spacing="10" prefWidth="600">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10" />
+                </padding>
+
+                <Label text="Gestión de Clientes" styleClass="titulo-panel" />
+
+                <HBox fx:id="subMenuAcciones" spacing="10" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="10" right="10" bottom="10" left="10" />
+                    </padding>
+                    <Button fx:id="botonAñadirCliente" id="botonAñadirCliente"
+                        text="Añadir" prefWidth="100" prefHeight="40"
+                        onAction="#mostrarVistaAñadir" styleClass="boton-principal boton-principal-cliente" />
+                    <Button fx:id="botonMostrarBuscarCliente" id="botonMostrarBuscarCliente"
+                        text="Buscar" prefWidth="100" prefHeight="40"
+                        onAction="#mostrarVistaBuscar" styleClass="boton-principal boton-principal-cliente" />
+                </HBox>
+
+
+
+
+
+            </VBox>
+
+
+
+        </ScrollPane>
+    </StackPane>
+</AnchorPane>

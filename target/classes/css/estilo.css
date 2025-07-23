@@ -36,7 +36,7 @@
     /* --- Tipografía --- */
     -fx-font-family-base: "Segoe UI";
     -fx-font-family-header: "Oswald";
-    -fx-font-size-base: 13px;
+    -fx-font-size-base: 13; /* Cambiado de 13px a 13 */
 
     /* --- Aplicación de Estilos Base --- */
     -fx-font-family: -fx-font-family-base;
@@ -52,21 +52,21 @@
 }
 
 .titulo-panel {
-    -fx-font-size: 24px;
+    -fx-font-size: 24; /* Cambiado de 24px a 24 */
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
     -fx-font-family: -fx-font-family-header; 
 }
 .subtitulo-panel {
-    -fx-font-size:16px;
+    -fx-font-size: 16; /* Cambiado de 16px a 16 */
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
     -fx-font-family: -fx-font-family-header; 
 }
 .title {
-    -fx-text-fill: -fx-color-primario;
-    -fx-font-size: 18px;
+    -fx-font-size: 18; /* Cambiado de 18px a 18 */
     -fx-font-weight: bold;
+    -fx-text-fill: -fx-color-primario;
 }
 
 /* ==========================================================================
@@ -122,6 +122,7 @@
 /* Botón de éxito (verde), usado en el módulo de productos */
 .boton-principal-producto {
     -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio, -fx-color-producto-fin);
+    -fx-font-size: 16; /* Asegura tamaño igual que el base */
 }
 .boton-principal-producto:hover {
     -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio-hover, -fx-color-producto-fin-hover);
@@ -145,7 +146,7 @@
     -fx-padding: 6 8;
     -fx-text-fill: -fx-texto-color-base;
     -fx-prompt-text-fill: #9E9E9E;
-    -fx-font-size: -fx-font-size-base;
+    -fx-font-size: -fx-font-size-base; /* Ya corregido arriba */
 }
 .text-field:focused,
 .text-area:focused {
@@ -163,7 +164,7 @@
     -fx-border-color: transparent;
     -fx-table-cell-border-color: #e3e3e3;
     -fx-font-family: -fx-font-family-base;
-    -fx-font-size: -fx-font-size-base;
+    -fx-font-size: -fx-font-size-base; /* Ya corregido arriba */
 }
 .table-column-header {
     -fx-background-color: #e0f7fa;
@@ -203,4 +204,32 @@
 */
 .panel-scroll-pane, .panel-scroll-pane > .viewport {
     -fx-background-color: transparent;
+}
+
+/* ==========================================================================
+   7. CLASES DE BOTONES PRINCIPALES
+   ========================================================================== */
+.boton-principal {
+    -fx-background-color: linear-gradient(to top, -fx-color-primario-oscuro, -fx-color-primario);
+    -fx-text-fill: -fx-texto-color-claro;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+    -fx-padding: 8 16;
+    -fx-font-size: 16; /* Añadido para asegurar tamaño base, sin px */
+}
+.boton-principal:hover {
+    -fx-background-color: linear-gradient(to bottom, -fx-color-primario-claro, -fx-color-primario);
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #0000004D, 6, 0, 0, 2);
+}
+.boton-principal-producto {
+    -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio, -fx-color-producto-fin);
+    -fx-font-size: 16; /* Asegura tamaño igual que el base */
+}
+.boton-principal-producto:hover {
+    -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio-hover, -fx-color-producto-fin-hover);
+}
+.boton-principal-cliente {
+    -fx-font-size: 16; /* Puedes añadir estilos específicos aquí si lo deseas */
 }

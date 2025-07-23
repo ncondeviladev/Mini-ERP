@@ -18,19 +18,19 @@ import javafx.scene.layout.StackPane;
 public class ProductoViewController {
 
     // 📦 Campos de entrada del formulario, vinculados por fx:id desde FXML
-    @FXML private TextField nombreField;
-    @FXML private TextField descripcionField;
-    @FXML private TextField categoriaField;
-    @FXML private TextField precioField;
-    @FXML private TextField stockField;
+    @FXML private TextField nombreProductoField;
+    @FXML private TextField descripcionProductoField;
+    @FXML private TextField categoriaProductoField;
+    @FXML private TextField precioProductoField;
+    @FXML private TextField stockProductoField;
 
     // 🗃️ Tabla y columnas para mostrar productos existentes
-    @FXML private TableView<Producto> tablaProductos;
-    @FXML private TableColumn<Producto, Integer> colId;
-    @FXML private TableColumn<Producto, String> colNombre;
-    @FXML private TableColumn<Producto, String> colCategoria;
-    @FXML private TableColumn<Producto, Double> colPrecio;
-    @FXML private TableColumn<Producto, Integer> colStock;
+    @FXML private TableView<Producto> tablaProducto;
+    @FXML private TableColumn<Producto, Integer> colIdProducto;
+    @FXML private TableColumn<Producto, String> colNombreProducto;
+    @FXML private TableColumn<Producto, String> colCategoriaProducto;
+    @FXML private TableColumn<Producto, Double> colPrecioProducto;
+    @FXML private TableColumn<Producto, Integer> colStockProducto;
 
     @FXML private ComboBox<String> selectorAccion;
     @FXML private StackPane contenedorFormulario;
@@ -51,27 +51,27 @@ public class ProductoViewController {
     @FXML
     public void initialize() {
         // Vincula columna de ID con propiedad 'id' del producto
-        colId.setCellValueFactory(cell -> new javafx.beans.property.SimpleIntegerProperty(
+        colIdProducto.setCellValueFactory(cell -> new javafx.beans.property.SimpleIntegerProperty(
             cell.getValue().getId()).asObject());
 
         // Vincula columna 'Nombre' con propiedad 'nombre'
-        colNombre.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(
+        colNombreProducto.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(
             cell.getValue().getNombre()));
 
         // Vincula columna 'Categoría' con propiedad 'categoria'
-        colCategoria.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(
+        colCategoriaProducto.setCellValueFactory(cell -> new javafx.beans.property.SimpleStringProperty(
             cell.getValue().getCategoria()));
 
         // Vincula columna 'Precio' con propiedad 'precioUnitario'
-        colPrecio.setCellValueFactory(cell -> new javafx.beans.property.SimpleDoubleProperty(
+        colPrecioProducto.setCellValueFactory(cell -> new javafx.beans.property.SimpleDoubleProperty(
             cell.getValue().getPrecioUnitario()).asObject());
 
         // Vincula columna 'Stock' con propiedad 'stock'
-        colStock.setCellValueFactory(cell -> new javafx.beans.property.SimpleIntegerProperty(
+        colStockProducto.setCellValueFactory(cell -> new javafx.beans.property.SimpleIntegerProperty(
             cell.getValue().getStock()).asObject());
 
         // Asocia lista observable a la tabla
-        tablaProductos.setItems(listaProductos);
+        tablaProducto.setItems(listaProductos);
 
         // Recupera productos existentes desde el controlador y los muestra
         listaProductos.setAll(productoDAO.listarProductos());
@@ -85,11 +85,11 @@ public class ProductoViewController {
     public void insertarProducto() {
         try {
             // 🟢 Recolecta datos desde los campos del formulario
-            String nombre = nombreField.getText();
-            String descripcion = descripcionField.getText();
-            String categoria = categoriaField.getText();
-            double precio = Double.parseDouble(precioField.getText());
-            int stock = Integer.parseInt(stockField.getText());
+            String nombre = nombreProductoField.getText();
+            String descripcion = descripcionProductoField.getText();
+            String categoria = categoriaProductoField.getText();
+            double precio = Double.parseDouble(precioProductoField.getText());
+            int stock = Integer.parseInt(stockProductoField.getText());
 
             // 🆕 Crea un nuevo objeto Producto (id = 0 se asignará en DB)
             Producto producto = new Producto(0, nombre, descripcion, categoria, precio, stock);
@@ -110,11 +110,11 @@ public class ProductoViewController {
      * Limpia los campos del formulario para permitir una nueva entrada.
      */
     private void limpiarCampos() {
-        nombreField.clear();
-        descripcionField.clear();
-        categoriaField.clear();
-        precioField.clear();
-        stockField.clear();
+        nombreProductoField.clear();
+        descripcionProductoField.clear();
+        categoriaProductoField.clear();
+        precioProductoField.clear();
+        stockProductoField.clear();
     }
 
     /**

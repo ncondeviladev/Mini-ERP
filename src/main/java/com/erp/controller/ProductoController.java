@@ -24,88 +24,97 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * Controlador para la gestión de productos en la interfaz.
+ * Maneja la lógica de añadir, modificar, eliminar y buscar productos.
+ */
 public class ProductoController {
 
-    private ProductoDAO productoDAO = new ProductoDAO();
-    // 📝 Campos del formulario
-    @FXML
-    private TextField nombreField, descripcionField, categoriaField, precioField, stockField;
+    private ProductoDAO productoDAO = new ProductoDAO(); // Acceso a datos de producto
 
-    // 🔍 Campos de búsqueda
     @FXML
-    private TextField buscarIdField, buscarNombreField, buscarCategoriaField;
+    private TextField nombreProductoField, descripcionProductoField, categoriaProductoField, precioProductoField, stockProductoField;
 
-    // 📊 Tabla y columnas
     @FXML
-    private TableView<Producto> tablaProductos;
-    @FXML
-    private TableColumn<Producto, Integer> colId, colStock;
-    @FXML
-    private TableColumn<Producto, String> colNombre, colCategoria, colDescripcion;
-    @FXML
-    private TableColumn<Producto, Double> colPrecio;
+    private TextField buscarIdProductoField, buscarNombreProductoField, buscarCategoriaProductoField;
 
-    // 🧩 Vistas dinámicas
     @FXML
-    private StackPane zonaContenido;
+    private TableView<Producto> tablaProducto;
     @FXML
-    private Label inicio;
+    private TableColumn<Producto, Integer> colIdProducto, colStockProducto;
+    @FXML
+    private TableColumn<Producto, String> colNombreProducto, colCategoriaProducto, colDescripcionProducto;
+    @FXML
+    private TableColumn<Producto, Double> colPrecioProducto;
+
+    @FXML
+    private StackPane zonaContenidoProducto;
+    @FXML
+    private Label inicioProducto;
     @FXML
     private VBox formularioAñadirProducto, formularioBuscarProducto;
 
-    // 🎮 Botones de acción
     @FXML
-    private Button botonModificar;
+    private Button modificarProductoButton;
     @FXML
-    private Button botonEliminar;
+    private Button eliminarProductoButton;
     @FXML
-    private Button botonGuardarProducto;
+    private Button guardarProductoButton;
     @FXML
-    private Label tituloFormulario;
+    private Label tituloFormularioProducto;
 
-    // ⚙️ Estado de edición
-    private List<Producto> productosOriginales = new ArrayList<>();
-    private boolean modoEdicion = false;
-    private Producto productoAEditar = null;
+    private List<Producto> productosOriginales = new ArrayList<>(); // Lista completa de productos para filtrar
+    private boolean modoEdicion = false; // Indica si se está editando un producto
+    private Producto productoAEditar = null; // Producto que se está editando
 
-    // 🔄 Inicialización
+    /**
+     * Inicializa la vista y configura la tabla y los eventos.
+     */
     @FXML
     public void initialize() {
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        colCategoria.setCellValueFactory(new PropertyValueFactory<>("categoria"));
-        colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
-        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        colDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+        // Configura las columnas de la tabla con las propiedades del modelo
+        colIdProducto.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNombreProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        colCategoriaProducto.setCellValueFactory(new PropertyValueFactory<>("categoria"));
+        colPrecioProducto.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
+        colStockProducto.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        colDescripcionProducto.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
-        // 🎨 Configurar el ajuste de texto para la columna de descripción
-        colDescripcion.setCellFactory(tc -> {
+        // Personaliza la celda de descripción para mostrar texto ajustado
+        colDescripcionProducto.setCellFactory(tc -> {
             TableCell<Producto, String> cell = new TableCell<>();
             Text text = new Text();
             cell.setGraphic(text);
             cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
-            text.wrappingWidthProperty().bind(colDescripcion.widthProperty());
+            text.wrappingWidthProperty().bind(colDescripcionProducto.widthProperty());
             text.textProperty().bind(cell.itemProperty());
             return cell;
         });
 
-        tablaProductos.getItems().addAll(productoDAO.listarProductos());
+        // Carga los productos en la tabla
+        tablaProducto.getItems().addAll(productoDAO.listarProductos());
 
-        mostrarVista(inicio);
-        zonaContenido.setVisible(false);
-        zonaContenido.setManaged(false);
+        // Muestra la vista de inicio y oculta el contenido dinámico
+        mostrarVista(inicioProducto);
+        zonaContenidoProducto.setVisible(false);
+        zonaContenidoProducto.setManaged(false);
 
+        // Activa el evento Enter en los campos del formulario
         activarENterEnCampos();
 
-        tablaProductos.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, nuevoSel) -> {
+        // Habilita/deshabilita botones según la selección en la tabla
+        tablaProducto.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, nuevoSel) -> {
             boolean haySeleccion = nuevoSel != null;
-            botonModificar.setDisable(!haySeleccion);
-            botonEliminar.setDisable(!haySeleccion);
+            modificarProductoButton.setDisable(!haySeleccion);
+            eliminarProductoButton.setDisable(!haySeleccion);
         });
     }
 
+    /**
+     * Asigna el evento Enter a los campos del formulario para crear o actualizar productos.
+     */
     public void activarENterEnCampos() {
-        TextField[] campos = {nombreField, descripcionField, categoriaField, precioField, stockField};
+        TextField[] campos = {nombreProductoField, descripcionProductoField, categoriaProductoField, precioProductoField, stockProductoField};
         for (TextField campo : campos) {
             campo.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {
@@ -119,49 +128,54 @@ public class ProductoController {
         }
     }
 
-    // 🌐 Navegación entre vistas
+    /**
+     * Muestra la vista indicada en el área dinámica.
+     */
     private void mostrarVista(Node vista) {
-        zonaContenido.getChildren().setAll(vista);
+        zonaContenidoProducto.getChildren().setAll(vista);
     }
 
+    /**
+     * Prepara y muestra el formulario para añadir un producto.
+     */
     @FXML
     public void mostrarVistaAñadir() {
-        zonaContenido.setVisible(true);
-        zonaContenido.setManaged(true);
+        zonaContenidoProducto.setVisible(true);
+        zonaContenidoProducto.setManaged(true);
         mostrarVista(formularioAñadirProducto);
 
-        // 🔁 Reiniciar el estado visual
-        tituloFormulario.setText("Formulario añadir Producto");
-        botonGuardarProducto.setText("Añadir producto");
+        tituloFormularioProducto.setText("Formulario añadir Producto");
+        guardarProductoButton.setText("Añadir producto");
 
-        // 🔄 Asegúrate también que NO estás en modo edición
         modoEdicion = false;
         productoAEditar = null;
         limpiarFormulario();
         activarENterEnCampos();
     }
 
+    /**
+     * Prepara y muestra el formulario para buscar productos.
+     */
     @FXML
     public void mostrarVistaBuscar() {
-        zonaContenido.setVisible(true);
-        zonaContenido.setManaged(true);
+        zonaContenidoProducto.setVisible(true);
+        zonaContenidoProducto.setManaged(true);
 
         productosOriginales = productoDAO.listarProductos();
-        tablaProductos.getItems().setAll(productosOriginales);
+        tablaProducto.getItems().setAll(productosOriginales);
 
-        buscarIdField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
-        buscarNombreField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
-        buscarCategoriaField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
+        buscarIdProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
+        buscarNombreProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
+        buscarCategoriaProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
 
         mostrarVista(formularioBuscarProducto);
     }
 
-    // ➕ Añadir o modificar producto
+    /**
+     * Inserta o actualiza un producto según el modo actual.
+     */
     @FXML
     private void insertarProducto(ActionEvent event) {
-        // Si estamos en modo edición, actualizamos el producto seleccionado
-        // Si no, creamos un nuevo producto desde el formulario
-
         if (modoEdicion && productoAEditar != null) {
             actualizarProductoDesdeFormulario(productoAEditar);
             modoEdicion = false;
@@ -171,17 +185,20 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Crea un producto a partir de los datos del formulario y lo guarda.
+     */
     private void crearProductoDesdeFormulario() {
         try {
             Producto nuevo = new Producto(
-                    capitalizar(nombreField.getText()),
-                    capitalizar(descripcionField.getText()),
-                    capitalizar(categoriaField.getText()),
-                    Double.parseDouble(precioField.getText().replace(",", ".")),
-                    Integer.parseInt(stockField.getText()));
+                    capitalizar(nombreProductoField.getText()),
+                    capitalizar(descripcionProductoField.getText()),
+                    capitalizar(categoriaProductoField.getText()),
+                    Double.parseDouble(precioProductoField.getText().replace(",", ".")),
+                    Integer.parseInt(stockProductoField.getText()));
 
             if (productoDAO.guardarProductoDb(nuevo)) {
-                tablaProductos.getItems().add(nuevo);
+                tablaProducto.getItems().add(nuevo);
                 limpiarFormulario();
             }
 
@@ -191,17 +208,19 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Actualiza los datos de un producto existente con los valores del formulario.
+     */
     private void actualizarProductoDesdeFormulario(Producto producto) {
-
         try {
-            producto.setNombre(capitalizar(nombreField.getText()));
-            producto.setDescripcion(capitalizar(descripcionField.getText()));
-            producto.setCategoria(capitalizar(categoriaField.getText()));
-            producto.setPrecioUnitario(Double.parseDouble(precioField.getText().replace(",", ".")));
-            producto.setStock(Integer.parseInt(stockField.getText()));
+            producto.setNombre(capitalizar(nombreProductoField.getText()));
+            producto.setDescripcion(capitalizar(descripcionProductoField.getText()));
+            producto.setCategoria(capitalizar(categoriaProductoField.getText()));
+            producto.setPrecioUnitario(Double.parseDouble(precioProductoField.getText().replace(",", ".")));
+            producto.setStock(Integer.parseInt(stockProductoField.getText()));
 
             if (productoDAO.actualizarProductoEnDb(producto)) {
-                tablaProductos.refresh();
+                tablaProducto.refresh();
                 limpiarFormulario();
                 mostrarAlertaTemporal("Éxito", "Producto actualizado");
             } else {
@@ -214,27 +233,29 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Prepara el formulario para modificar el producto seleccionado.
+     */
     @FXML
     public void modificarProductoSeleccionado() {
-
         activarENterEnCampos();
 
-        Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
+        Producto seleccionado = tablaProducto.getSelectionModel().getSelectedItem();
 
         if (seleccionado != null) {
-            tituloFormulario.setText("Modificar Producto");
-            botonGuardarProducto.setText("Guardar cambios");
+            tituloFormularioProducto.setText("Modificar Producto");
+            guardarProductoButton.setText("Guardar cambios");
             productoAEditar = seleccionado;
             modoEdicion = true;
 
-            nombreField.setText(seleccionado.getNombre());
-            descripcionField.setText(seleccionado.getDescripcion());
-            categoriaField.setText(seleccionado.getCategoria());
-            precioField.setText(String.valueOf(seleccionado.getPrecioUnitario()));
-            stockField.setText(String.valueOf(seleccionado.getStock()));
+            nombreProductoField.setText(seleccionado.getNombre());
+            descripcionProductoField.setText(seleccionado.getDescripcion());
+            categoriaProductoField.setText(seleccionado.getCategoria());
+            precioProductoField.setText(String.valueOf(seleccionado.getPrecioUnitario()));
+            stockProductoField.setText(String.valueOf(seleccionado.getStock()));
 
-            zonaContenido.setVisible(true);
-            zonaContenido.setManaged(true);
+            zonaContenidoProducto.setVisible(true);
+            zonaContenidoProducto.setManaged(true);
             mostrarVista(formularioAñadirProducto);
 
         } else {
@@ -242,9 +263,12 @@ public class ProductoController {
         }
     }
 
+    /**
+     * Elimina el producto seleccionado tras confirmación.
+     */
     @FXML
     public void eliminarProductoSeleccionado() {
-        Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
+        Producto seleccionado = tablaProducto.getSelectionModel().getSelectedItem();
 
         if (seleccionado != null) {
             Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
@@ -256,7 +280,7 @@ public class ProductoController {
             alerta.showAndWait().ifPresent(respuesta -> {
                 if (respuesta == ButtonType.OK) {
                     if (productoDAO.eliminarProductoPorId(seleccionado.getId())) {
-                        tablaProductos.getItems().setAll(productoDAO.listarProductos());
+                        tablaProducto.getItems().setAll(productoDAO.listarProductos());
                         mostrarAlertaTemporal("Éxito", "Producto eliminado correctamente.");
                     } else {
                         mostrarAlerta("Error", "No se pudo eliminar el producto.");
@@ -268,11 +292,13 @@ public class ProductoController {
         }
     }
 
-    // 🧠 Filtro de búsqueda
+    /**
+     * Filtra los productos mostrados en la tabla según los criterios de búsqueda.
+     */
     private void filtrarProductos() {
-        String filtroId = buscarIdField.getText().trim().toLowerCase();
-        String filtroNombre = buscarNombreField.getText().trim().toLowerCase();
-        String filtroCategoria = buscarCategoriaField.getText().trim().toLowerCase();
+        String filtroId = buscarIdProductoField.getText().trim().toLowerCase();
+        String filtroNombre = buscarNombreProductoField.getText().trim().toLowerCase();
+        String filtroCategoria = buscarCategoriaProductoField.getText().trim().toLowerCase();
 
         List<Producto> filtrados = new ArrayList<>();
 
@@ -287,18 +313,23 @@ public class ProductoController {
             }
         }
 
-        tablaProductos.getItems().setAll(filtrados);
+        tablaProducto.getItems().setAll(filtrados);
     }
 
-    // 🧼 Utilidades
+    /**
+     * Limpia los campos del formulario.
+     */
     public void limpiarFormulario() {
-        nombreField.clear();
-        descripcionField.clear();
-        categoriaField.clear();
-        precioField.clear();
-        stockField.clear();
+        nombreProductoField.clear();
+        descripcionProductoField.clear();
+        categoriaProductoField.clear();
+        precioProductoField.clear();
+        stockProductoField.clear();
     }
 
+    /**
+     * Muestra una alerta con el mensaje indicado.
+     */
     public void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(titulo);
@@ -306,6 +337,9 @@ public class ProductoController {
         alert.showAndWait();
     }
 
+    /**
+     * Muestra una alerta temporal que se cierra automáticamente después de un tiempo.
+     */
     private void mostrarAlertaTemporal(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
@@ -315,9 +349,12 @@ public class ProductoController {
 
         javafx.animation.PauseTransition delay = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(1));
         delay.setOnFinished(event -> alert.close());
-        delay.play(); // 🔥 Aquí está la clave
+        delay.play();
     }
 
+    /**
+     * Capitaliza la primera letra de una cadena y pone el resto en minúsculas.
+     */
     private String capitalizar(String texto) {
         if (texto == null || texto.isEmpty())
             return texto;
