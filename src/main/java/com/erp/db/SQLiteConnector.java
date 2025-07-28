@@ -23,6 +23,7 @@ public class SQLiteConnector {
     /**
      * Devuelve una conexión activa a la base de datos SQLite.
      * Si no existe o está cerrada, se crea una nueva.
+     * 
      * @return instancia de Connection
      * @throws SQLException si falla la conexión
      */
@@ -40,22 +41,37 @@ public class SQLiteConnector {
      */
     public static void initDatabase() {
         // Consulta SQL para crear tabla con columnas necesarias
-        String createTableSQL = "CREATE TABLE IF NOT EXISTS productos (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," +        // ID autoincremental
-                "nombre TEXT NOT NULL," +                        // Nombre obligatorio
-                "descripcion TEXT," +                            // Descripción opcional
-                "categoria TEXT," +                              // Categoría opcional
-                "precioUnitario REAL," +                         // Precio en formato decimal
-                "stock INTEGER" +                                // Stock como número entero
+        String createTableProd = "CREATE TABLE IF NOT EXISTS productos (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," + // ID autoincremental
+                "nombre TEXT NOT NULL," + // Nombre obligatorio
+                "descripcion TEXT," + // Descripción opcional
+                "categoria TEXT," + // Categoría opcional
+                "precioUnitario REAL," + // Precio en formato decimal
+                "stock INTEGER" + // Stock como número entero
+                ");";
+
+        String createTableCli = "CREATE TABLE IF NOT EXISTS clientes (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "nombre TEXT," +
+                "apellidos TEXT," +
+                "razonSocial TEXT," +
+                "personaContacto TEXT," +
+                "tipoCliente TEXT," +
+                "telefono TEXT," +
+                "email TEXT," +
+                "direccion TEXT," +
+                "cifnif TEXT," +
+                "fechaAlta DATE" +
                 ");";
 
         // Ejecuta la consulta usando un Statement
         try (Statement stmt = connect().createStatement()) {
-            stmt.execute(createTableSQL); // Crea tabla si no existe
-            System.out.println("Tabla 'productos' creada.");
+            stmt.execute(createTableProd); 
+            stmt.execute(createTableCli); 
+            System.out.println("Tablas base de datos creadas.");
         } catch (SQLException e) {
             // Muestra error si falla la creación
-            System.out.println("Error al crear tabla 'productos'.. " + e.getMessage());
+            System.out.println("Error al crear tablas de la base de datos.. " + e.getMessage());
         }
     }
 
