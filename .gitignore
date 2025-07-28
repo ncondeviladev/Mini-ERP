@@ -1,0 +1,15 @@
+# Ignorar base de datos
+src/main/resources/database/erp.db
+
+# Ignorar archivos generados por IDEs
+*.iml
+.idea/
+.vscode/
+
+# Ignorar archivos temporales
+*.log
+*.tmp
+
+# Ignorar compilados de Java
+/bin/
+*.class
