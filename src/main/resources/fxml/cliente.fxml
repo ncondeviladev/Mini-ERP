@@ -33,18 +33,46 @@
                     </padding>
                     <Button fx:id="botonAñadirCliente" id="botonAñadirCliente"
                         text="Añadir" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaAñadir" styleClass="boton-principal boton-principal-cliente" />
+                        onAction="#mostrarVistaAñadir"
+                        styleClass="boton-principal boton-principal-cliente" />
                     <Button fx:id="botonMostrarBuscarCliente" id="botonMostrarBuscarCliente"
                         text="Buscar" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaBuscar" styleClass="boton-principal boton-principal-cliente" />
+                        onAction="#mostrarVistaBuscar"
+                        styleClass="boton-principal boton-principal-cliente" />
                 </HBox>
 
+                <StackPane fx:id="zonaContenidoCliente" VBox.vgrow="ALWAYS">
+                    <Label fx:id="inicioCliente" managed="true" />
+
+                    <VBox fx:id="formularioAñadirCliente"
+                        id="formularioCliente"
+                        spacing="10" prefWidth="600" styleClass="formulario-panel">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10" />
+                        </padding>
+
+                        <Label fx:id="tituloFormularioCliente" id="tituloFormularioCliente"
+                            text="Formulario añadir Cliente" styleClass="subtitulo-panel" />
+
+                        <GridPane hgap="10" vgap="10">
+
+                            <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <TextField fx:id="nombreClienteField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
+
+                            <Label test="Apellido:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <TextField fx:id="nombreClienteField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
+
+                            <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
 
+                        </GridPane>
+                    </VBox>
+
+
+                </StackPane>
 
 
             </VBox>
-
 
 
         </ScrollPane>
