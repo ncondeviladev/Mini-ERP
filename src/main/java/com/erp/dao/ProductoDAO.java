@@ -125,8 +125,13 @@ public class ProductoDAO {
     public List<Producto> listarProductos() {
         List<Producto> productos = new ArrayList<>();
         String sql = "SELECT * FROM productos";
+<<<<<<< HEAD
         try (Statement stmt = conexion.createStatement();
                 ResultSet rs = stmt.executeQuery(sql)) {
+=======
+        try (PreparedStatement stmt = conexion.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+>>>>>>> dc96c5a9dfd9f95d43286ce69829c0742088f44c
             while (rs.next()) {
                 productos.add(construirProducto(rs));
             }
