@@ -32,10 +32,10 @@
                     </padding>
                     <Button fx:id="botonAñadirProducto" id="botonAñadirProducto"
                         text="Añadir" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaAñadir" styleClass="boton-principal boton-principal-producto" />
+                        onAction="#mostrarVistaAñadir" styleClass="boton-principal-producto" />
                     <Button fx:id="botonMostrarBuscarProducto" id="botonMostrarBuscarProducto"
                         text="Buscar" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaBuscar" styleClass="boton-principal-producto boton-principal " />
+                        onAction="#mostrarVistaBuscar" styleClass="boton-principal-producto" />
                 </HBox>
 
                 <StackPane fx:id="zonaContenidoProducto" VBox.vgrow="ALWAYS">

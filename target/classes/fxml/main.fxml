@@ -15,7 +15,7 @@
             </padding>
             <Label text="Mini ERP" id="tituloMiniErp" />
             <Button text="Productos" onAction="#mostrarProductos" styleClass="boton-principal-producto"/>
-            <Button text="Clientes" onAction="#mostrarClientes" />
+            <Button text="Clientes" onAction="#mostrarClientes" styleClass="boton-principal-cliente"/>
             <Button text="Ventas" onAction="#mostrarVentas" />
             <Button text="Salir" onAction="#salirAplicacion" styleClass="botonSalir" />
         </VBox>

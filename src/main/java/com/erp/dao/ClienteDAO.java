@@ -5,10 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-<<<<<<< HEAD
-=======
 import java.time.LocalDate;
->>>>>>> dc96c5a9dfd9f95d43286ce69829c0742088f44c
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +142,7 @@ public class ClienteDAO {
         }
     }
 
-    public Cliente buscarClientePorId(Integer id) throws Exception {
+    public Cliente buscarClientePorId(Integer id) {
 
         String sql = "SELECT * FROM clientes WHERE id = ?";
 
@@ -157,7 +154,8 @@ public class ClienteDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-<<<<<<< HEAD
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
@@ -165,66 +163,20 @@ public class ClienteDAO {
     public List<Cliente> listarClientes() {
         List<Cliente> clientes = new ArrayList<>();
         String sql = "SELECT * FROM clientes";
-        try (Statement stmt = conexion.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
+        try (Statement stmt = conexion.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 clientes.add(construirCliente(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        return clientes;
-
-    }
-
-    private Cliente construirCliente(ResultSet rs) throws SQLException {
-        String tipoCliente = rs.getString("tipoCliente");
-        if ("Particular".equals(tipoCliente)) {
-            return Cliente.crearParticular(
-                rs.getInt("id"),
-                rs.getString("email"),
-                rs.getString("telefono"),
-                rs.getString("direccion"),
-                rs.getString("cifnif"),
-                rs.getDate("fechaAlta").toLocalDate(),
-                rs.getString("nombre"),
-                rs.getString("apellidos")
-            );
-        } else if ("Empresa".equals(tipoCliente)) {
-            return Cliente.crearEmpresa(
-                rs.getInt("id"),
-                rs.getString("email"),
-                rs.getString("telefono"),
-                rs.getString("direccion"),
-                rs.getString("cifnif"),
-                rs.getDate("fechaAlta").toLocalDate(),
-                rs.getString("razonSocial"),
-                rs.getString("personaContacto")
-            );
-        } else {
-            return null; // Tipo desconocido
-=======
->>>>>>> dc96c5a9dfd9f95d43286ce69829c0742088f44c
-        }
-        return null;
-    }
-
-    public List<Cliente> listarClientes() {
-        List<Cliente> clientes = new ArrayList<>();
-        String sql = "SELECT * FROM clientes";
-        try (PreparedStatement stmt = conexion.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                clientes.add(construirCliente(rs));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return clientes;
     }
 
-    private Cliente construirCliente(ResultSet rs) throws Exception {
+    private Cliente construirCliente(ResultSet rs) throws SQLException {
         if ("Particular".equals(rs.getString("tipoCliente"))) {
             return Cliente.crearParticular(
                     rs.getInt("id"),

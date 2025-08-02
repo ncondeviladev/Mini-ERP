@@ -12,7 +12,7 @@ public class ValidationUtils {
      * @param email La dirección de email a validar.
      * @return {@code true} si el formato del email es válido, {@code false} en caso contrario.
      */
-    public static boolean isValidEMail(String email) {
+    public static boolean isValidEmail(String email) {
         // Expresión regular para un formato de email estándar.
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         
@@ -47,7 +47,7 @@ public class ValidationUtils {
      * @param cif El CIF a validar.
      * @return {@code true} si el formato del CIF es válido, {@code false} en caso contrario.
      */
-    public static boolean isValidCIF(String cif) {
+    public static boolean isValidNifCif(String cif) {
         // Expresión regular para el formato: 1 letra mayúscula, 7 números, 1 carácter alfanumérico mayúsculo.
         String cifRegex = "^[A-Z]{1}[0-9]{7}[A-Z0-9]{1}$";
 
@@ -58,21 +58,8 @@ public class ValidationUtils {
             return false;
         }
     }
-    
-    /**
-     * Valida si una cadena de texto tiene el formato estructural de un NIF español.
-     * El formato esperado es: 8 números seguidos de una letra mayúscula.
-     * @param nif El NIF a validar.
-     * @return {@code true} si el formato del NIF es válido, {@code false} en caso contrario.
-     */
-    public static boolean isValidNIF(String nif) {
+   
         
-        String nifRegex = "^[0-9]{8}[A-Z]{1}$";
-
-        if(nif.matches(nifRegex)) {
-            return true;
-        } else {
-            return false;
-        }
+        
     }
-}
+

@@ -6,15 +6,27 @@
 */
 .root {
     /* --- Paleta de Colores --- */
-    -fx-color-primario: #3A8DAD; /* Azul base */
+    -fx-color-primario: #3A8DAD;
+    /* Azul base */
     -fx-color-primario-claro: #57B6D4;
     -fx-color-primario-oscuro: #227C97;
-    
+
     /* Color específico para la sección de Productos (Verde) */
     -fx-color-producto-inicio: #a6eeaa;
     -fx-color-producto-fin: #3b8d3f;
     -fx-color-producto-inicio-hover: #8ac58d;
     -fx-color-producto-fin-hover: #2e6c31;
+
+    /* Color específico para la sección Clientes (Naranja) */
+    -fx-color-cliente-inicio: #f6b27a;
+    /* Naranja suave medio */
+    -fx-color-cliente-fin: #c25c1c;
+    /* Naranja tierra profundo */
+    -fx-color-cliente-inicio-hover: #e89558;
+    /* Naranja más vibrante al pasar el cursor */
+    -fx-color-cliente-fin-hover: #9c4514;
+    /* Naranja tostado oscuro */
+
 
     /* Color para acciones de peligro como Salir o Borrar (Rojo) */
     -fx-color-rojo-inicio: #f96f65;
@@ -22,21 +34,28 @@
     -fx-color-rojo-inicio-hover: #e69090;
     -fx-color-rojo-fin-hover: #c83e3e;
 
-    -fx-color-fondo: #F5F5F5; /* Fondo general de la aplicación */
-    -fx-color-fondo-contenido: #FFFFFF; /* Fondo de los paneles principales */
+    -fx-color-fondo: #F5F5F5;
+    /* Fondo general de la aplicación */
+    -fx-color-fondo-contenido: #FFFFFF;
+    /* Fondo de los paneles principales */
     -fx-color-barra-lateral-inicio: #2e4854;
     -fx-color-barra-lateral-fin: #0ecfd2;
 
     /* --- Colores de Texto --- */
-    -fx-texto-color-base: #424242; /* Texto normal */
-    -fx-texto-color-claro: white; /* Texto sobre fondos oscuros */
-    -fx-texto-color-titulo: #2C3E50; /* Títulos principales */
-    -fx-texto-color-secundario: #616161; /* Texto secundario o en tablas */
+    -fx-texto-color-base: #424242;
+    /* Texto normal */
+    -fx-texto-color-claro: white;
+    /* Texto sobre fondos oscuros */
+    -fx-texto-color-titulo: #2C3E50;
+    /* Títulos principales */
+    -fx-texto-color-secundario: #616161;
+    /* Texto secundario o en tablas */
 
     /* --- Tipografía --- */
     -fx-font-family-base: "Segoe UI";
     -fx-font-family-header: "Oswald";
-    -fx-font-size-base: 13; /* Cambiado de 13px a 13 */
+    -fx-font-size-base: 13;
+    /* Cambiado de 13px a 13 */
 
     /* --- Aplicación de Estilos Base --- */
     -fx-font-family: -fx-font-family-base;
@@ -52,19 +71,24 @@
 }
 
 .titulo-panel {
-    -fx-font-size: 24; /* Cambiado de 24px a 24 */
+    -fx-font-size: 24;
+    /* Cambiado de 24px a 24 */
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
-    -fx-font-family: -fx-font-family-header; 
+    -fx-font-family: -fx-font-family-header;
 }
+
 .subtitulo-panel {
-    -fx-font-size: 16; /* Cambiado de 16px a 16 */
+    -fx-font-size: 16;
+    /* Cambiado de 16px a 16 */
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
-    -fx-font-family: -fx-font-family-header; 
+    -fx-font-family: -fx-font-family-header;
 }
+
 .title {
-    -fx-font-size: 18; /* Cambiado de 18px a 18 */
+    -fx-font-size: 18;
+    /* Cambiado de 18px a 18 */
     -fx-font-weight: bold;
     -fx-text-fill: -fx-color-primario;
 }
@@ -87,13 +111,16 @@
 /* Panel principal donde se muestra el contenido de cada módulo */
 .panel-contenido {
     -fx-background-color: -fx-color-fondo-contenido;
-    -fx-background-radius: 5; /* Bordes ligeramente redondeados */
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); /* Sombra sutil */
+    -fx-background-radius: 5;
+    /* Bordes ligeramente redondeados */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0, 0, 2);
+    /* Sombra sutil */
 }
 
 /* Panel para los formularios de Añadir, Buscar, etc. */
 .formulario-panel {
-    -fx-background-color: derive(-fx-color-fondo-contenido, -2%); /* Un blanco ligeramente distinto para destacar */
+    -fx-background-color: derive(-fx-color-fondo-contenido, -2%);
+    /* Un blanco ligeramente distinto para destacar */
     -fx-border-color: derive(-fx-color-primario, 70%);
     -fx-border-radius: 8;
     -fx-border-width: 1;
@@ -113,25 +140,19 @@
     -fx-border-color: transparent;
     -fx-padding: 8 16;
 }
+
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, -fx-color-primario-claro, -fx-color-primario);
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, #0000004D, 6, 0, 0, 2); /* reemplaza rgba */
-}
-
-/* Botón de éxito (verde), usado en el módulo de productos */
-.boton-principal-producto {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio, -fx-color-producto-fin);
-    -fx-font-size: 16; /* Asegura tamaño igual que el base */
-}
-.boton-principal-producto:hover {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio-hover, -fx-color-producto-fin-hover);
+    -fx-effect: dropshadow(gaussian, #0000004D, 6, 0, 0, 2);
+    /* reemplaza rgba */
 }
 
 /* Botón de peligro (rojo), para Salir o Eliminar */
 .botonSalir {
     -fx-background-color: linear-gradient(to bottom, -fx-color-rojo-inicio, -fx-color-rojo-fin);
 }
+
 .botonSalir:hover {
     -fx-background-color: linear-gradient(to bottom, -fx-color-rojo-inicio-hover, -fx-color-rojo-fin-hover);
 }
@@ -146,13 +167,16 @@
     -fx-padding: 6 8;
     -fx-text-fill: -fx-texto-color-base;
     -fx-prompt-text-fill: #9E9E9E;
-    -fx-font-size: -fx-font-size-base; /* Ya corregido arriba */
+    -fx-font-size: -fx-font-size-base;
+    /* Ya corregido arriba */
 }
+
 .text-field:focused,
 .text-area:focused {
     -fx-border-color: -fx-color-primario;
     -fx-background-color: #FAFAFA;
 }
+
 .text-field:focused:invalid {
     -fx-border-color: #E57373;
 }
@@ -164,19 +188,25 @@
     -fx-border-color: transparent;
     -fx-table-cell-border-color: #e3e3e3;
     -fx-font-family: -fx-font-family-base;
-    -fx-font-size: -fx-font-size-base; /* Ya corregido arriba */
+    -fx-font-size: -fx-font-size-base;
+    /* Ya corregido arriba */
 }
+
 .table-column-header {
     -fx-background-color: #e0f7fa;
     -fx-font-weight: bold;
     -fx-text-fill: #37474F;
 }
+
 .table-column {
-    -fx-alignment: CENTER_LEFT; /* Mejora la legibilidad para texto de varias líneas */
+    -fx-alignment: CENTER_LEFT;
+    /* Mejora la legibilidad para texto de varias líneas */
     -fx-text-fill: -fx-texto-color-secundario;
 }
+
 .table-cell .text {
-    -fx-fill: -fx-texto-color-secundario; /* Asegura que el texto en celdas con ajuste tenga el color correcto */
+    -fx-fill: -fx-texto-color-secundario;
+    /* Asegura que el texto en celdas con ajuste tenga el color correcto */
     -fx-text-alignment: justify;
 }
 
@@ -191,7 +221,19 @@
 #tablaProductos .table-cell:selected,
 #tablaProductos .table-cell:filled:selected,
 #tablaProductos .table-cell:filled:selected:focused {
-    -fx-background-color: derive(-fx-color-producto-fin, 80%); /* Un verde muy claro derivado del color de producto */
+    -fx-background-color: derive(-fx-color-producto-fin, 80%);
+    /* Un verde muy claro derivado del color de producto */
+}
+
+/* Personalización de selección de fila SOLO para la tabla de Clientes */
+#tablaCliente .table-row-cell:selected,
+#tablaCliente .table-row-cell:filled:selected,
+#tablaCliente .table-row-cell:filled:selected:focused,
+#tablaCliente .table-cell:selected,
+#tablaCliente .table-cell:filled:selected,
+#tablaCliente .table-cell:filled:selected:focused {
+    -fx-background-color: derive(-fx-color-cliente-fin, 80%);
+    /* Un naranja muy claro derivado del color de cliente */
 }
 
 /* ==========================================================================
@@ -202,34 +244,38 @@
    padre (StackPane) sea visible. Esto es clave para layouts donde
    el contenido tiene un ancho fijo pero el fondo debe expandirse.
 */
-.panel-scroll-pane, .panel-scroll-pane > .viewport {
+.panel-scroll-pane,
+.panel-scroll-pane>.viewport {
     -fx-background-color: transparent;
 }
 
 /* ==========================================================================
-   7. CLASES DE BOTONES PRINCIPALES
-   ========================================================================== */
-.boton-principal {
-    -fx-background-color: linear-gradient(to top, -fx-color-primario-oscuro, -fx-color-primario);
-    -fx-text-fill: -fx-texto-color-claro;
-    -fx-font-weight: bold;
-    -fx-background-radius: 8;
-    -fx-border-color: transparent;
-    -fx-padding: 8 16;
-    -fx-font-size: 16; /* Añadido para asegurar tamaño base, sin px */
+   7. BOTONES PRINCIPALES DE MÓDULO
+   ========================================================================== 
+   Estos botones heredan el estilo base de .button y lo extienden con un
+   tamaño de fuente mayor y colores específicos para cada módulo.
+*/
+
+/* Estilo base para botones principales de módulo */
+.boton-principal-producto,
+.boton-principal-cliente {
+    -fx-font-size: 16;
 }
-.boton-principal:hover {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-primario-claro, -fx-color-primario);
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, #0000004D, 6, 0, 0, 2);
-}
+
+/* Color para la sección de Productos (Verde) */
 .boton-principal-producto {
     -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio, -fx-color-producto-fin);
-    -fx-font-size: 16; /* Asegura tamaño igual que el base */
 }
+
 .boton-principal-producto:hover {
     -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio-hover, -fx-color-producto-fin-hover);
 }
+
+/* Color para la sección de Clientes (Naranja) */
 .boton-principal-cliente {
-    -fx-font-size: 16; /* Puedes añadir estilos específicos aquí si lo deseas */
+    -fx-background-color: linear-gradient(to bottom, -fx-color-cliente-inicio, -fx-color-cliente-fin);
+}
+
+.boton-principal-cliente:hover {
+    -fx-background-color: linear-gradient(to bottom, -fx-color-cliente-inicio-hover, -fx-color-cliente-fin-hover);
 }

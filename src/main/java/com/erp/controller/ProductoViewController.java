@@ -45,8 +45,8 @@ public class ProductoViewController {
     private final ObservableList<Producto> listaProductos = FXCollections.observableArrayList();
 
     /**
-     * Método que se ejecuta automáticamente cuando se carga la vista FXML.
-     * Configura las columnas de la tabla y carga productos desde la base de datos.
+     * Se ejecuta al cargar el FXML. Configura las columnas de la tabla para que muestren
+     * las propiedades del objeto Producto y carga los productos existentes desde la base de datos.
      */
     @FXML
     public void initialize() {
@@ -78,8 +78,9 @@ public class ProductoViewController {
     }
 
     /**
-     * Acción ejecutada al presionar el botón 'Añadir producto'.
-     * Extrae datos del formulario, crea un Producto y lo inserta si es válido.
+     * Maneja la acción de insertar un nuevo producto.
+     * Recoge los datos de los campos del formulario, crea un nuevo objeto `Producto`
+     * y lo guarda en la base de datos. Actualiza la tabla si la operación tiene éxito.
      */
     @FXML
     public void insertarProducto() {
@@ -107,7 +108,7 @@ public class ProductoViewController {
     }
 
     /**
-     * Limpia los campos del formulario para permitir una nueva entrada.
+     * Limpia todos los campos de texto del formulario de producto.
      */
     private void limpiarCampos() {
         nombreProductoField.clear();
@@ -119,8 +120,8 @@ public class ProductoViewController {
 
     /**
      * Muestra una alerta modal de tipo ERROR con mensaje personalizado.
-     * @param titulo Título de la ventana emergente
-     * @param mensaje Texto descriptivo del problema
+     * @param titulo Título de la ventana de alerta.
+     * @param mensaje Texto descriptivo del error a mostrar.
      */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.ERROR); // Tipo de alerta: error
@@ -130,6 +131,9 @@ public class ProductoViewController {
         alerta.showAndWait(); // Bloquea hasta que se cierre
     }
 
+    /**
+     * Maneja el cambio de acción en el ComboBox (Añadir, Modificar, etc.).
+     */
     @FXML public void cambiarAccion() {
         String seleccion = selectorAccion.getValue();
 

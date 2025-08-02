@@ -1,15 +1,22 @@
-# Ignorar base de datos
-src/main/resources/database/erp.db
-
-# Ignorar archivos generados por IDEs
-*.iml
-.idea/
-.vscode/
-
-# Ignorar archivos temporales
-*.log
-*.tmp
-
-# Ignorar compilados de Java
-/bin/
+# Compiled class file
 *.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Maven
+/target/
+
+# Database file
+*.db

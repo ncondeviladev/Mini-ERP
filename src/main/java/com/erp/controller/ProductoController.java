@@ -55,9 +55,9 @@ public class ProductoController {
     private VBox formularioAñadirProducto, formularioBuscarProducto;
 
     @FXML
-    private Button modificarProductoButton;
+    private Button botonModificarProducto;
     @FXML
-    private Button eliminarProductoButton;
+    private Button botonEliminar;
     @FXML
     private Button guardarProductoButton;
     @FXML
@@ -68,7 +68,8 @@ public class ProductoController {
     private Producto productoAEditar = null; // Producto que se está editando
 
     /**
-     * Inicializa la vista y configura la tabla y los eventos.
+     * Inicializa el controlador. Configura las columnas de la tabla de productos,
+     * carga los datos iniciales, y establece listeners para la selección de la tabla y eventos de teclado.
      */
     @FXML
     public void initialize() {
@@ -105,13 +106,14 @@ public class ProductoController {
         // Habilita/deshabilita botones según la selección en la tabla
         tablaProducto.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, nuevoSel) -> {
             boolean haySeleccion = nuevoSel != null;
-            modificarProductoButton.setDisable(!haySeleccion);
-            eliminarProductoButton.setDisable(!haySeleccion);
+            botonModificarProducto.setDisable(!haySeleccion);
+            botonEliminar.setDisable(!haySeleccion);
         });
     }
 
     /**
-     * Asigna el evento Enter a los campos del formulario para crear o actualizar productos.
+     * Asigna un manejador de eventos de teclado a los campos del formulario de producto.
+     * Al presionar la tecla ENTER, se intenta guardar (crear o actualizar) el producto.
      */
     public void activarENterEnCampos() {
         TextField[] campos = {nombreProductoField, descripcionProductoField, categoriaProductoField, precioProductoField, stockProductoField};
@@ -129,14 +131,16 @@ public class ProductoController {
     }
 
     /**
-     * Muestra la vista indicada en el área dinámica.
+     * Muestra una vista (Node) específica en el `StackPane` principal del contenido.
+     * @param vista El nodo de la interfaz a mostrar.
      */
     private void mostrarVista(Node vista) {
         zonaContenidoProducto.getChildren().setAll(vista);
     }
 
     /**
-     * Prepara y muestra el formulario para añadir un producto.
+     * Muestra el formulario para añadir un nuevo producto.
+     * Configura la interfaz para el modo de creación, limpiando campos y ajustando textos.
      */
     @FXML
     public void mostrarVistaAñadir() {
@@ -154,7 +158,8 @@ public class ProductoController {
     }
 
     /**
-     * Prepara y muestra el formulario para buscar productos.
+     * Muestra el formulario de búsqueda de productos.
+     * Carga la lista completa de productos y añade listeners a los campos de búsqueda para filtrar en tiempo real.
      */
     @FXML
     public void mostrarVistaBuscar() {
@@ -172,7 +177,8 @@ public class ProductoController {
     }
 
     /**
-     * Inserta o actualiza un producto según el modo actual.
+     * Maneja el evento del botón de guardar.
+     * Llama al método de actualización si está en modo edición, o al de creación si no lo está.
      */
     @FXML
     private void insertarProducto(ActionEvent event) {
@@ -186,7 +192,8 @@ public class ProductoController {
     }
 
     /**
-     * Crea un producto a partir de los datos del formulario y lo guarda.
+     * Recoge los datos del formulario, crea un nuevo objeto `Producto` y lo persiste en la base de datos.
+     * Si tiene éxito, actualiza la tabla y limpia el formulario.
      */
     private void crearProductoDesdeFormulario() {
         try {
@@ -209,7 +216,8 @@ public class ProductoController {
     }
 
     /**
-     * Actualiza los datos de un producto existente con los valores del formulario.
+     * Actualiza los datos de un producto existente (`productoAEditar`) con los valores actuales del formulario.
+     * @param producto El producto a actualizar.
      */
     private void actualizarProductoDesdeFormulario(Producto producto) {
         try {
@@ -234,12 +242,11 @@ public class ProductoController {
     }
 
     /**
-     * Prepara el formulario para modificar el producto seleccionado.
+     * Prepara el formulario para modificar el producto seleccionado en la tabla.
+     * Rellena los campos con los datos del producto y activa el modo de edición.
      */
     @FXML
     public void modificarProductoSeleccionado() {
-        activarENterEnCampos();
-
         Producto seleccionado = tablaProducto.getSelectionModel().getSelectedItem();
 
         if (seleccionado != null) {
@@ -264,7 +271,8 @@ public class ProductoController {
     }
 
     /**
-     * Elimina el producto seleccionado tras confirmación.
+     * Elimina el producto seleccionado de la tabla.
+     * Pide confirmación al usuario antes de proceder con la eliminación en la base de datos y la actualización de la tabla.
      */
     @FXML
     public void eliminarProductoSeleccionado() {
@@ -293,7 +301,8 @@ public class ProductoController {
     }
 
     /**
-     * Filtra los productos mostrados en la tabla según los criterios de búsqueda.
+     * Filtra la lista de productos en la tabla basándose en los criterios de los campos de búsqueda.
+     * Compara por ID, nombre y categoría.
      */
     private void filtrarProductos() {
         String filtroId = buscarIdProductoField.getText().trim().toLowerCase();
@@ -317,7 +326,7 @@ public class ProductoController {
     }
 
     /**
-     * Limpia los campos del formulario.
+     * Limpia todos los campos de texto del formulario de producto.
      */
     public void limpiarFormulario() {
         nombreProductoField.clear();
@@ -328,7 +337,9 @@ public class ProductoController {
     }
 
     /**
-     * Muestra una alerta con el mensaje indicado.
+     * Muestra una alerta de error estándar.
+     * @param titulo El título de la ventana de alerta.
+     * @param mensaje El mensaje de contenido de la alerta.
      */
     public void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -338,7 +349,9 @@ public class ProductoController {
     }
 
     /**
-     * Muestra una alerta temporal que se cierra automáticamente después de un tiempo.
+     * Muestra una alerta de información que se cierra automáticamente tras un breve período.
+     * @param titulo El título de la ventana de alerta.
+     * @param mensaje El mensaje de contenido de la alerta.
      */
     private void mostrarAlertaTemporal(String titulo, String mensaje) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -353,7 +366,9 @@ public class ProductoController {
     }
 
     /**
-     * Capitaliza la primera letra de una cadena y pone el resto en minúsculas.
+     * Convierte la primera letra de una cadena a mayúsculas y el resto a minúsculas.
+     * @param texto La cadena de texto a capitalizar.
+     * @return El texto capitalizado, o el texto original si es nulo o vacío.
      */
     private String capitalizar(String texto) {
         if (texto == null || texto.isEmpty())
