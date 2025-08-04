@@ -43,7 +43,7 @@
                 </HBox>
 
                 <!-- Este StackPane contiene los diferentes formularios (Añadir, Buscar) -->
-                <StackPane fx:id="zonaContenidoFormulariosCliente" VBox.vgrow="ALWAYS">
+                <StackPane fx:id="zonaFormulariosCliente" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
                     <Label fx:id="inicioCliente" managed="true" />
 
                     <!-- Formulario para Añadir/Modificar Cliente -->
@@ -67,32 +67,36 @@
                             <!-- Campos Cliente Particular -->
                             <GridPane fx:id="camposParticular" hgap="10" vgap="10" visible="false">
                                 <columnConstraints>
-                                    <ColumnConstraints prefWidth="120"/>
-                                    <ColumnConstraints hgrow="ALWAYS"/>
+                                    <ColumnConstraints prefWidth="130"/>
+                                    <ColumnConstraints hgrow="NEVER" />
                                 </columnConstraints>
                                 <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                 <TextField fx:id="nombreClienteField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
                                 <Label text="Apellidos:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                                 <TextField fx:id="apellidosClienteField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="campo-formulario" />
+                                <Label text="NIF:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <TextField fx:id="nifClienteField" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="campo-formulario" />
                             </GridPane>
                             <!-- Campos Cliente Empresa -->
                             <GridPane fx:id="camposEmpresa" hgap="10" vgap="10" visible="false">
                                 <columnConstraints>
-                                    <ColumnConstraints prefWidth="120"/>
-                                    <ColumnConstraints hgrow="ALWAYS"/>
+                                    <ColumnConstraints prefWidth="130"/>
+                                    <ColumnConstraints hgrow="NEVER" />
                                 </columnConstraints>
                                 <Label text="Razón Social:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                 <TextField fx:id="razonSocialClienteField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
-                                <Label text="CIF:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                <TextField fx:id="cifClienteField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="campo-formulario" />
+                                <Label text="Persona Contacto:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <TextField fx:id="personaContactoClienteField" GridPane.columnIndex="1" GridPane.rowIndex="1" styleClass="campo-formulario" />
+                                <Label text="CIF:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <TextField fx:id="cifClienteField" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="campo-formulario" />
                             </GridPane>
                         </StackPane>
 
                         <!-- Campos Comunes -->
                         <GridPane hgap="10" vgap="10">
                             <columnConstraints>
-                                <ColumnConstraints prefWidth="120"/>
-                                <ColumnConstraints hgrow="ALWAYS"/>
+                                <ColumnConstraints prefWidth="130"/>
+                                <ColumnConstraints hgrow="NEVER" />
                             </columnConstraints>
                             <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <TextField fx:id="direccionClienteField" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="campo-formulario" />
@@ -118,10 +122,10 @@
                             <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <TextField fx:id="buscarIdClienteField" GridPane.columnIndex="1"
                                 GridPane.rowIndex="0" styleClass="campo-formulario" />
-                            <Label text="Nombre/Razón Social:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <Label text="Nombre/Razón/Contacto:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                             <TextField fx:id="buscarNombreClienteField" GridPane.columnIndex="1"
                                 GridPane.rowIndex="1" styleClass="campo-formulario" />
-                            <Label text="CIF/Apellidos:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <Label text="NIF/CIF:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                             <TextField fx:id="buscarCifApellidosClienteField" GridPane.columnIndex="1"
                                 GridPane.rowIndex="2" styleClass="campo-formulario" />
                         </GridPane>

@@ -13,7 +13,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -30,46 +29,74 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+/**
+ * Controlador para la vista de gestión de clientes.
+ * <p>
+ * Maneja la lógica de la interfaz de usuario para añadir, modificar, eliminar y
+ * buscar clientes, así como la presentación de datos en la tabla.
+ */
 public class ClienteController {
 
     // --- Paneles y Contenedores ---
-    @FXML private StackPane zonaContenidoFormulariosCliente;
-    @FXML private VBox formularioAñadirCliente;
-    @FXML private VBox formularioBuscarCliente;
-    @FXML private GridPane camposParticular;
-    @FXML private GridPane camposEmpresa;
+    @FXML
+    private StackPane zonaFormulariosCliente;
+    @FXML
+    private VBox formularioAñadirCliente;
+    @FXML
+    private VBox formularioBuscarCliente;
+    @FXML
+    private GridPane camposParticular;
+    @FXML
+    private GridPane camposEmpresa;
 
     // --- Botones ---
-    @FXML private Button guardarClienteButton;
-    @FXML private Button botonModificarCliente;
-    @FXML private Button botonEliminarCliente;
+    @FXML
+    private Button guardarClienteButton;
+    @FXML
+    private Button botonModificarCliente;
+    @FXML
+    private Button botonEliminarCliente;
 
     // --- Campos del Formulario (Añadir/Modificar) ---
-    @FXML private Label tituloFormularioCliente;
-    @FXML private ComboBox<String> tipoClienteComboBox;
-    // Particular
-    @FXML private TextField nombreClienteField;
-    @FXML private TextField apellidosClienteField;
-    @FXML private TextField nifClienteField; // NUEVO CAMPO
-    // Empresa
-    @FXML private TextField razonSocialClienteField;
-    @FXML private TextField cifClienteField;
-    @FXML private TextField personaContactoClienteField; // NUEVO CAMPO
+    @FXML
+    private Label tituloFormularioCliente;
+    @FXML
+    private ComboBox<String> tipoClienteComboBox;
+    // Campos de Particular
+    @FXML
+    private TextField nombreClienteField;
+    @FXML
+    private TextField apellidosClienteField;
+    @FXML
+    private TextField nifClienteField;
+    // Campos de Empresa
+    @FXML
+    private TextField razonSocialClienteField;
+    @FXML
+    private TextField cifClienteField;
+    @FXML
+    private TextField personaContactoClienteField; // NUEVO CAMPO
     // Comunes
-    @FXML private TextField direccionClienteField;
-    @FXML private TextField telefonoClienteField;
-    @FXML private TextField emailClienteField;
+    @FXML
+    private TextField direccionClienteField;
+    @FXML
+    private TextField telefonoClienteField;
+    @FXML
+    private TextField emailClienteField;
 
     // --- Campos del Formulario (Buscar) ---
-    @FXML private TextField buscarIdClienteField;
-    @FXML private TextField buscarNombreClienteField;
-    @FXML private TextField buscarCifApellidosClienteField;
+    @FXML
+    private TextField buscarIdClienteField;
+    @FXML
+    private TextField buscarNombreClienteField;
+    @FXML
+    private TextField buscarCifApellidosClienteField;
 
     // --- Tabla y Columnas ---
     @FXML
     private TableView<Cliente> tablaCliente;
     @FXML
-    private TableColumn<Cliente, Integer> colIdCliente;    
+    private TableColumn<Cliente, Integer> colIdCliente;
     @FXML
     private TableColumn<Cliente, String> colNombreApellidos;
     @FXML
@@ -84,13 +111,16 @@ public class ClienteController {
     // --- Lógica de Negocio ---
     private final ClienteDAO clienteDAO = new ClienteDAO();
     private final ObservableList<Cliente> listaClientes = FXCollections.observableArrayList();
-    private boolean modoEdicion = false;
     private final List<Cliente> listaClientesOriginal = new ArrayList<>();
+    private boolean modoEdicion = false;
     private Cliente clienteAEditar = null;
 
     /**
-     * Inicializa el controlador después de que su elemento raíz haya sido completamente procesado.
-     * Configura la tabla, el ComboBox para tipo de cliente, los listeners de selección y el estado inicial de la vista.
+     * Inicializa el controlador después de que su elemento raíz haya sido
+     * completamente procesado.
+     * <p>
+     * Configura la tabla, el ComboBox para el tipo de cliente, los listeners de
+     * selección y el estado inicial de la vista.
      */
     @FXML
     public void initialize() {
@@ -100,8 +130,7 @@ public class ClienteController {
         // Asocia la lista observable a la tabla
         tablaCliente.setItems(listaClientes);
         // Carga los datos iniciales
-        // Hacemos la llamada explícita para ayudar al compilador a resolver la ambigüedad
-        List<Cliente> clientesDesdeDB = clienteDAO.listarClientes();        
+        List<Cliente> clientesDesdeDB = clienteDAO.listarClientes();
         listaClientesOriginal.addAll(clientesDesdeDB);
         listaClientes.setAll(clientesDesdeDB);
 
@@ -113,14 +142,16 @@ public class ClienteController {
         });
 
         // Ocultar los formularios al inicio para que no haya un hueco en blanco
-        zonaContenidoFormulariosCliente.setVisible(false);
-        zonaContenidoFormulariosCliente.setManaged(false);
-
+        zonaFormulariosCliente.setVisible(false);
+        zonaFormulariosCliente.setManaged(false);
     }
 
     /**
-     * Configura el ComboBox para seleccionar el tipo de cliente ("Particular" o "Empresa").
-     * Añade un listener para mostrar u ocultar los campos del formulario correspondientes a la selección.
+     * Configura el ComboBox para seleccionar el tipo de cliente ("Particular" o
+     * "Empresa").
+     * <p>
+     * Añade un listener para mostrar u ocultar los campos del formulario
+     * correspondientes a la selección.
      */
     private void configurarComboBox() {
         tipoClienteComboBox.getItems().addAll("Particular", "Empresa");
@@ -138,15 +169,18 @@ public class ClienteController {
     }
 
     /**
-     * Configura las columnas de la `TableView` para mostrar los datos de los clientes.
-     * Utiliza `setCellValueFactory` para vincular cada columna con la propiedad correspondiente del modelo `Cliente`.
+     * Configura las columnas de la `TableView` para mostrar los datos de los
+     * clientes.
+     * <p>
+     * Utiliza `setCellValueFactory` para vincular cada columna con la propiedad
+     * correspondiente del modelo `Cliente`.
      */
     private void configurarColumnasTabla() {
         // ID
         colIdCliente.setCellValueFactory(new PropertyValueFactory<>("id"));
         colIdCliente.setPrefWidth(40);
 
-        // Nombre y Apellidos (solo para Particulares) con salto de línea
+        // Nombre y Apellidos (solo para Particulares)
         colNombreApellidos.setCellValueFactory(cell -> { // Esta columna ahora es "Nombre y Apellidos"
             Cliente c = cell.getValue();
             if ("Particular".equals(c.getTipoCliente())) {
@@ -157,13 +191,10 @@ public class ClienteController {
         setWrappingCellFactory(colNombreApellidos);
         colNombreApellidos.setPrefWidth(100);
 
-        // Razón Social y Contacto (solo para Empresas) con salto de línea
+        // Razón Social y Contacto (solo para Empresas)
         colRazonContacto.setCellValueFactory(cell -> { // Esta columna ahora es "Razón Social y Contacto"
             Cliente c = cell.getValue();
             if ("Empresa".equals(c.getTipoCliente())) {
-                String RazonContacto = (c.getRazonSocial() != null && !c.getPersonaContacto().isEmpty())
-                        ? c.getPersonaContacto()
-                        : "N/A";
                 return new SimpleStringProperty(c.getRazonSocial() + "\n" + c.getPersonaContacto());
             }
             return new SimpleStringProperty(""); // Vacío para particulares
@@ -171,7 +202,7 @@ public class ClienteController {
         setWrappingCellFactory(colRazonContacto);
         colRazonContacto.setPrefWidth(120);
 
-        // Teléfono y Email (común) con salto de línea
+        // Teléfono y Email (común)
         colTelefonoEmail.setCellValueFactory(cell -> {
             Cliente c = cell.getValue();
             return new SimpleStringProperty(c.getTelefono() + "\n" + c.getEmail());
@@ -179,18 +210,20 @@ public class ClienteController {
         setWrappingCellFactory(colTelefonoEmail);
         colTelefonoEmail.setPrefWidth(120);
 
-        // Dirección con salto de línea
+        // Dirección
         colDireccion.setCellValueFactory(new PropertyValueFactory<>("direccion"));
         setWrappingCellFactory(colDireccion);
         colDireccion.setPrefWidth(120);
 
-        // CIF/NIF (solo para Empresas)
+        // CIF/NIF
         colCifNif.setCellValueFactory(new PropertyValueFactory<>("cifnif"));
         colCifNif.setPrefWidth(90);
     }
 
     /**
      * Crea una celda personalizada que permite el ajuste de texto (word wrap).
+     * <p>
+     * Esto es útil para columnas que pueden contener texto largo.
      * @param column La columna de la tabla a la que se aplicará el ajuste de texto.
      */
     private void setWrappingCellFactory(TableColumn<Cliente, String> column) {
@@ -206,49 +239,54 @@ public class ClienteController {
     }
 
     /**
-     * Muestra el panel especificado y oculta los demás.
-     * @param vista El nodo (VBox, etc.) que se desea hacer visible en la zona de formularios.
-     */
-    private void mostrarVista(Node vista) {
-        // Oculta todos los formularios primero
-        formularioAñadirCliente.setVisible(false);
-        formularioBuscarCliente.setVisible(false);
-
-        // Muestra el formulario deseado
-        if (vista != null) {
-            vista.setVisible(true);
-        }
-    }
-
-    /**
      * Prepara y muestra la vista del formulario para añadir un nuevo cliente.
-     * Restablece el modo de edición, limpia el formulario y establece los textos adecuados.
+     * <p>
+     * Restablece el modo de edición, limpia el formulario y establece los textos
+     * adecuados.
      */
     @FXML
     public void mostrarVistaAñadir() {
         // Hacemos visible el contenedor de formularios
-        zonaContenidoFormulariosCliente.setVisible(true);
-        zonaContenidoFormulariosCliente.setManaged(true);
+        zonaFormulariosCliente.setVisible(true);
+        zonaFormulariosCliente.setManaged(true);
 
+        // Ocultamos el otro formulario y lo sacamos del layout
+        formularioBuscarCliente.setVisible(false);
+        formularioBuscarCliente.setManaged(false);
+
+        // Mostramos el formulario deseado y lo metemos en el layout
+        formularioAñadirCliente.setVisible(true);
+        formularioAñadirCliente.setManaged(true);
+
+        // Configuramos el estado de la UI
         modoEdicion = false;
         clienteAEditar = null;
         tituloFormularioCliente.setText("Formulario Añadir Cliente");
         guardarClienteButton.setText("Añadir Cliente");
         limpiarFormulario();
         activarEnterEnFormularioAñadir(); // Activar Enter para guardar
-        mostrarVista(formularioAñadirCliente);
     }
 
     /**
      * Prepara y muestra la vista con los campos de búsqueda de clientes.
-     * Restaura la lista completa de clientes y añade listeners a los campos de búsqueda para filtrar en tiempo real.
+     * <p>
+     * Restaura la lista completa de clientes en la tabla y añade listeners a los campos de
+     * búsqueda para filtrar en tiempo real.
      */
     @FXML
     public void mostrarVistaBuscar() {
         // Hacemos visible el contenedor de formularios
-        zonaContenidoFormulariosCliente.setVisible(true);
-        zonaContenidoFormulariosCliente.setManaged(true);        
-        
+        zonaFormulariosCliente.setVisible(true);
+        zonaFormulariosCliente.setManaged(true);
+
+        // Ocultamos el otro formulario y lo sacamos del layout
+        formularioAñadirCliente.setVisible(false);
+        formularioAñadirCliente.setManaged(false);
+
+        // Mostramos el formulario deseado y lo metemos en el layout
+        formularioBuscarCliente.setVisible(true);
+        formularioBuscarCliente.setManaged(true);
+
         // Restaura la tabla a su estado original antes de aplicar nuevos filtros
         tablaCliente.getItems().setAll(listaClientesOriginal);
 
@@ -257,38 +295,45 @@ public class ClienteController {
         buscarNombreClienteField.textProperty().addListener((obs, old, val) -> filtrarClientes());
         buscarCifApellidosClienteField.textProperty().addListener((obs, old, val) -> filtrarClientes());
         activarEnterEnFormularioBuscar(); // Activar Enter para filtrar
-        mostrarVista(formularioBuscarCliente);
     }
 
     /**
-     * Filtra la lista de clientes en la tabla basándose en los criterios introducidos
-     * en los campos de búsqueda (ID, Nombre/Razón Social, CIF/Apellidos).
+     * Filtra la lista de clientes en la tabla basándose en los criterios
+     * introducidos en los campos de búsqueda.
+     * <p>
+     * La búsqueda es flexible y busca coincidencias en múltiples campos según el tipo de cliente.
      */
     private void filtrarClientes() {
-        String filtroId = buscarIdClienteField.getText().trim().toLowerCase();
-        String filtroNombreRazon = buscarNombreClienteField.getText().trim().toLowerCase();
-        String filtroCifApellidos = buscarCifApellidosClienteField.getText().trim().toLowerCase();
+        String filtroId = buscarIdClienteField.getText().trim();
+        String filtroNombre = buscarNombreClienteField.getText().trim().toLowerCase(); // Busca en Nombre, Apellidos, Razón Social y Contacto
+        String filtroNifCif = buscarCifApellidosClienteField.getText().trim().toLowerCase(); // Busca solo en NIF/CIF
 
-        // Si todos los campos de búsqueda están vacíos, muestra la lista original completa
-        if (filtroId.isEmpty() && filtroNombreRazon.isEmpty() && filtroCifApellidos.isEmpty()) {
+        // Si todos los campos de búsqueda están vacíos, muestra la lista original
+        // completa
+        if (filtroId.isEmpty() && filtroNombre.isEmpty() && filtroNifCif.isEmpty()) {
             listaClientes.setAll(listaClientesOriginal);
             return;
         }
 
         List<Cliente> filtrados = new ArrayList<>();
         for (Cliente c : listaClientesOriginal) {
-            boolean matchId = filtroId.isEmpty() || String.valueOf(c.getId()).equals(filtroId);
+            boolean matchId = filtroId.isEmpty() || String.valueOf(c.getId()).equals(filtroId.toLowerCase());
 
-            boolean matchNombreRazon = filtroNombreRazon.isEmpty() ||
-                    ("Particular".equals(c.getTipoCliente()) && c.getNombre().toLowerCase().contains(filtroNombreRazon)) ||
-                    ("Empresa".equals(c.getTipoCliente()) && c.getRazonSocial().toLowerCase().contains(filtroNombreRazon));
+            boolean matchNombre = filtroNombre.isEmpty();
+            if (!matchNombre) {
+                if ("Particular".equals(c.getTipoCliente())) {
+                    matchNombre = (c.getNombre() != null && c.getNombre().toLowerCase().contains(filtroNombre)) ||
+                                  (c.getApellidos() != null && c.getApellidos().toLowerCase().contains(filtroNombre));
+                } else { // Empresa
+                    matchNombre = (c.getRazonSocial() != null && c.getRazonSocial().toLowerCase().contains(filtroNombre)) ||
+                                  (c.getPersonaContacto() != null && c.getPersonaContacto().toLowerCase().contains(filtroNombre));
+                }
+            }
 
-            boolean matchCifApellidos = filtroCifApellidos.isEmpty() ||
-                    ("Particular".equals(c.getTipoCliente()) && (c.getApellidos().toLowerCase().contains(filtroCifApellidos) || 
-                                                                 (c.getCifnif() != null && c.getCifnif().toLowerCase().contains(filtroCifApellidos)))) ||
-                    ("Empresa".equals(c.getTipoCliente()) && c.getCifnif().toLowerCase().contains(filtroCifApellidos));
+            boolean matchNifCif = filtroNifCif.isEmpty() ||
+                    (c.getCifnif() != null && c.getCifnif().toLowerCase().contains(filtroNifCif));
 
-            if (matchId && matchNombreRazon && matchCifApellidos) {
+            if (matchId && matchNombre && matchNifCif) {
                 filtrados.add(c);
             }
         }
@@ -297,13 +342,15 @@ public class ClienteController {
 
     /**
      * Gestiona el evento de clic del botón "Guardar".
-     * Valida los datos del formulario y, según si está en modo edición o no,
+     * <p>
+     * Valida los datos del formulario y, según si está en modo de edición o no,
      * crea un nuevo cliente o actualiza uno existente en la base de datos.
      */
     @FXML
     public void guardarCliente() {
         String tipo = tipoClienteComboBox.getValue();
-        if (!esFormularioValido(tipo)) return;
+        if (!esFormularioValido(tipo))
+            return;
 
         try {
             Cliente cliente;
@@ -335,8 +382,9 @@ public class ClienteController {
             } else {
                 // --- Creación de nuevo cliente ---
                 if ("Particular".equals(tipo)) {
-                    cliente = Cliente.crearParticular(0, emailClienteField.getText(), telefonoClienteField.getText(), 
-                            direccionClienteField.getText(), nifClienteField.getText(), LocalDate.now(), nombreClienteField.getText(),
+                    cliente = Cliente.crearParticular(0, emailClienteField.getText(), telefonoClienteField.getText(),
+                            direccionClienteField.getText(), nifClienteField.getText(), LocalDate.now(),
+                            nombreClienteField.getText(),
                             apellidosClienteField.getText());
                 } else { // Empresa
                     cliente = Cliente.crearEmpresa(0, emailClienteField.getText(), telefonoClienteField.getText(),
@@ -354,8 +402,8 @@ public class ClienteController {
             }
             limpiarFormulario();
             // Ocultar formulario después de guardar
-            zonaContenidoFormulariosCliente.setVisible(false);
-            zonaContenidoFormulariosCliente.setManaged(false);
+            zonaFormulariosCliente.setVisible(false);
+            zonaFormulariosCliente.setManaged(false);
 
         } catch (Exception e) {
             mostrarAlerta(Alert.AlertType.ERROR, "Error Inesperado", "Ocurrió un error: " + e.getMessage());
@@ -365,22 +413,29 @@ public class ClienteController {
 
     /**
      * Valida los campos del formulario antes de guardar un cliente.
+     * <p>
+     * Comprueba campos obligatorios y el formato de datos como NIF, CIF, email y
+     * teléfono.
      * @param tipo El tipo de cliente ("Particular" o "Empresa").
-     * @return {@code true} si todos los campos son válidos, {@code false} en caso contrario.
+     * @return {@code true} si todos los campos son válidos, {@code false} en caso
+     *         contrario.
      */
     private boolean esFormularioValido(String tipo) {
         if ("Particular".equals(tipo)) {
             if (nombreClienteField.getText().isEmpty() || apellidosClienteField.getText().isEmpty()) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación", "Nombre y Apellidos son obligatorios para un particular.");
+                mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación",
+                        "Nombre y Apellidos son obligatorios para un particular.");
                 return false;
             }
-            if (nifClienteField.getText() != null && !nifClienteField.getText().isEmpty() && !ValidationUtils.isValidNifCif(nifClienteField.getText())) {
+            if (nifClienteField.getText() != null && !nifClienteField.getText().isEmpty()
+                    && !ValidationUtils.isValidNifCif(nifClienteField.getText())) {
                 mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación", "El formato del NIF no es válido.");
                 return false;
             }
         } else if ("Empresa".equals(tipo)) {
             if (razonSocialClienteField.getText().isEmpty() || cifClienteField.getText().isEmpty()) {
-                mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación", "Razón Social y CIF son obligatorios para una empresa.");
+                mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación",
+                        "Razón Social y CIF son obligatorios para una empresa.");
                 return false;
             }
             if (!ValidationUtils.isValidNifCif(cifClienteField.getText())) {
@@ -395,7 +450,8 @@ public class ClienteController {
             return false;
         }
         if (!ValidationUtils.isValidTlf(telefonoClienteField.getText())) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación", "El formato del teléfono no es válido. Debe ser un número español válido (9 dígitos, empezando por 6, 7, 8 o 9).");
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación",
+                    "El formato del teléfono no es válido. Debe ser un número español válido (9 dígitos, empezando por 6, 7, 8 o 9).");
             return false;
         }
 
@@ -404,7 +460,9 @@ public class ClienteController {
 
     /**
      * Prepara el formulario para la modificación de un cliente.
-     * Rellena los campos del formulario con los datos del cliente seleccionado en la tabla y activa el modo de edición.
+     * <p>
+     * Rellena los campos del formulario con los datos del cliente seleccionado en
+     * la tabla y activa el modo de edición.
      */
     @FXML
     public void modificarClienteSeleccionado() {
@@ -415,9 +473,15 @@ public class ClienteController {
             guardarClienteButton.setText("Guardar Cambios");
 
             // Hacemos visible el formulario
-            zonaContenidoFormulariosCliente.setVisible(true);
-            zonaContenidoFormulariosCliente.setManaged(true);
-            mostrarVista(formularioAñadirCliente);
+            zonaFormulariosCliente.setVisible(true);
+            zonaFormulariosCliente.setManaged(true);
+
+            // Ocultamos el otro formulario
+            formularioBuscarCliente.setVisible(false);
+            formularioBuscarCliente.setManaged(false);
+            // Mostramos el de añadir
+            formularioAñadirCliente.setVisible(true);
+            formularioAñadirCliente.setManaged(true);
 
             // Rellenar el formulario
             tipoClienteComboBox.setValue(clienteAEditar.getTipoCliente());
@@ -434,7 +498,7 @@ public class ClienteController {
                 cifClienteField.setText(clienteAEditar.getCifnif());
                 personaContactoClienteField.setText(clienteAEditar.getPersonaContacto()); // Rellenar Contacto
             }
-            
+
             activarEnterEnFormularioAñadir(); // Activar Enter para guardar en modo edición
 
         } else {
@@ -444,8 +508,11 @@ public class ClienteController {
     }
 
     /**
-     * Elimina el cliente seleccionado de la tabla tras una confirmación del usuario.
-     * Si la confirmación es positiva, elimina el cliente de la base de datos y de las listas locales.
+     * Elimina el cliente seleccionado de la tabla tras una confirmación del
+     * usuario.
+     * <p>
+     * Si la confirmación es positiva, elimina el cliente de la base de datos y de
+     * las listas locales.
      */
     @FXML
     public void eliminarClienteSeleccionado() {
@@ -476,7 +543,9 @@ public class ClienteController {
     }
 
     /**
-     * Limpia todos los campos de entrada del formulario de cliente, devolviéndolos a su estado inicial.
+     * Limpia todos los campos de entrada del formulario de cliente, devolviéndolos
+     * a su estado inicial y seleccionando "Particular" por defecto en el
+     * ComboBox.
      */
     private void limpiarFormulario() {
         nombreClienteField.clear();
@@ -487,14 +556,15 @@ public class ClienteController {
         personaContactoClienteField.clear();
         direccionClienteField.clear();
         telefonoClienteField.clear();
-        emailClienteField.clear();        
+        emailClienteField.clear();
         tipoClienteComboBox.getSelectionModel().selectFirst();
     }
 
     /**
      * Muestra una ventana de alerta.
-     * @param tipo El tipo de alerta (p. ej., `Alert.AlertType.ERROR`).
-     * @param titulo El título de la alerta.
+     *
+     * @param tipo    El tipo de alerta (p. ej., `Alert.AlertType.ERROR`).
+     * @param titulo  El título de la alerta.
      * @param mensaje El mensaje a mostrar.
      */
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
@@ -506,8 +576,10 @@ public class ClienteController {
     }
 
     /**
-     * Muestra una alerta temporal que se cierra automáticamente después de un tiempo.
-     * @param titulo El título de la ventana de alerta.
+     * Muestra una alerta temporal que se cierra automáticamente después de un segundo.
+     * 
+     * 
+     * @param titulo  El título de la ventana de alerta.
      * @param mensaje El mensaje a mostrar.
      */
     private void mostrarAlertaTemporal(String titulo, String mensaje) {
@@ -523,14 +595,16 @@ public class ClienteController {
     }
 
     /**
-     * Asigna un manejador de eventos de teclado a los campos del formulario de añadir/modificar.
+     * Asigna un manejador de eventos de teclado a los campos del formulario de
+     * añadir/modificar.
+     * <p>
      * Al presionar la tecla ENTER, se intenta guardar el cliente.
      */
     private void activarEnterEnFormularioAñadir() {
         TextField[] campos = {
-            nombreClienteField, apellidosClienteField, nifClienteField,
-            razonSocialClienteField, cifClienteField, personaContactoClienteField,
-            direccionClienteField, telefonoClienteField, emailClienteField
+                nombreClienteField, apellidosClienteField, nifClienteField,
+                razonSocialClienteField, cifClienteField, personaContactoClienteField,
+                direccionClienteField, telefonoClienteField, emailClienteField
         };
         for (TextField campo : campos) {
             campo.setOnKeyPressed(event -> {
@@ -543,10 +617,10 @@ public class ClienteController {
 
     /**
      * Asigna un manejador de eventos de teclado a los campos de búsqueda.
-     * Al presionar la tecla ENTER, se activa el filtro de clientes.
+     * <p>Al presionar la tecla ENTER, se activa el filtro de clientes.
      */
     private void activarEnterEnFormularioBuscar() {
-        TextField[] camposBusqueda = {buscarIdClienteField, buscarNombreClienteField, buscarCifApellidosClienteField};
+        TextField[] camposBusqueda = { buscarIdClienteField, buscarNombreClienteField, buscarCifApellidosClienteField };
         for (TextField campo : camposBusqueda) {
             campo.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {

@@ -8,7 +8,6 @@ import com.erp.model.Producto;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -25,8 +24,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 /**
- * Controlador para la gestión de productos en la interfaz.
- * Maneja la lógica de añadir, modificar, eliminar y buscar productos.
+ * Controlador para la vista de gestión de productos.
+ * <p>
+ * Maneja la lógica de la interfaz de usuario para añadir, modificar, eliminar y
+ * buscar productos, así como la presentación de datos en la tabla.
  */
 public class ProductoController {
 
@@ -48,7 +49,7 @@ public class ProductoController {
     private TableColumn<Producto, Double> colPrecioProducto;
 
     @FXML
-    private StackPane zonaContenidoProducto;
+    private StackPane zonaFormulariosProducto;
     @FXML
     private Label inicioProducto;
     @FXML
@@ -69,7 +70,8 @@ public class ProductoController {
 
     /**
      * Inicializa el controlador. Configura las columnas de la tabla de productos,
-     * carga los datos iniciales, y establece listeners para la selección de la tabla y eventos de teclado.
+     * carga los datos iniciales, y establece listeners para la selección de la
+     * tabla y eventos de teclado.
      */
     @FXML
     public void initialize() {
@@ -95,10 +97,9 @@ public class ProductoController {
         // Carga los productos en la tabla
         tablaProducto.getItems().addAll(productoDAO.listarProductos());
 
-        // Muestra la vista de inicio y oculta el contenido dinámico
-        mostrarVista(inicioProducto);
-        zonaContenidoProducto.setVisible(false);
-        zonaContenidoProducto.setManaged(false);
+        // Oculta el contenedor de formularios al inicio para que no ocupe espacio
+        zonaFormulariosProducto.setVisible(false);
+        zonaFormulariosProducto.setManaged(false);
 
         // Activa el evento Enter en los campos del formulario
         activarENterEnCampos();
@@ -113,7 +114,9 @@ public class ProductoController {
 
     /**
      * Asigna un manejador de eventos de teclado a los campos del formulario de producto.
-     * Al presionar la tecla ENTER, se intenta guardar (crear o actualizar) el producto.
+     * <p>
+     * Al presionar la tecla ENTER, se intenta guardar (crear o actualizar) el
+     * producto.
      */
     public void activarENterEnCampos() {
         TextField[] campos = {nombreProductoField, descripcionProductoField, categoriaProductoField, precioProductoField, stockProductoField};
@@ -131,23 +134,24 @@ public class ProductoController {
     }
 
     /**
-     * Muestra una vista (Node) específica en el `StackPane` principal del contenido.
-     * @param vista El nodo de la interfaz a mostrar.
-     */
-    private void mostrarVista(Node vista) {
-        zonaContenidoProducto.getChildren().setAll(vista);
-    }
-
-    /**
      * Muestra el formulario para añadir un nuevo producto.
-     * Configura la interfaz para el modo de creación, limpiando campos y ajustando textos.
+     * <p>
+     * Configura la interfaz para el modo de creación, limpiando campos y ajustando
+     * textos de botones y títulos.
      */
     @FXML
     public void mostrarVistaAñadir() {
-        zonaContenidoProducto.setVisible(true);
-        zonaContenidoProducto.setManaged(true);
-        mostrarVista(formularioAñadirProducto);
+        zonaFormulariosProducto.setVisible(true);
+        zonaFormulariosProducto.setManaged(true);
 
+        // Ocultar el otro formulario
+        formularioBuscarProducto.setVisible(false);
+        formularioBuscarProducto.setManaged(false);
+
+        // Mostrar el formulario deseado
+        formularioAñadirProducto.setVisible(true);
+        formularioAñadirProducto.setManaged(true);
+        
         tituloFormularioProducto.setText("Formulario añadir Producto");
         guardarProductoButton.setText("Añadir producto");
 
@@ -159,26 +163,36 @@ public class ProductoController {
 
     /**
      * Muestra el formulario de búsqueda de productos.
-     * Carga la lista completa de productos y añade listeners a los campos de búsqueda para filtrar en tiempo real.
+     * <p>
+     * Carga la lista completa de productos y añade listeners a los campos de
+     * búsqueda para filtrar en tiempo real.
      */
     @FXML
     public void mostrarVistaBuscar() {
-        zonaContenidoProducto.setVisible(true);
-        zonaContenidoProducto.setManaged(true);
+        zonaFormulariosProducto.setVisible(true);
+        zonaFormulariosProducto.setManaged(true);
 
+        // Ocultar el otro formulario
+        formularioAñadirProducto.setVisible(false);
+        formularioAñadirProducto.setManaged(false);
+
+        // Mostrar el formulario deseado
+        formularioBuscarProducto.setVisible(true);
+        formularioBuscarProducto.setManaged(true);
+        
         productosOriginales = productoDAO.listarProductos();
         tablaProducto.getItems().setAll(productosOriginales);
 
         buscarIdProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
         buscarNombreProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
         buscarCategoriaProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
-
-        mostrarVista(formularioBuscarProducto);
     }
 
     /**
      * Maneja el evento del botón de guardar.
-     * Llama al método de actualización si está en modo edición, o al de creación si no lo está.
+     * <p>
+     * Llama al método de actualización si está en modo edición, o al de creación si
+     * no lo está.
      */
     @FXML
     private void insertarProducto(ActionEvent event) {
@@ -193,7 +207,9 @@ public class ProductoController {
 
     /**
      * Recoge los datos del formulario, crea un nuevo objeto `Producto` y lo persiste en la base de datos.
-     * Si tiene éxito, actualiza la tabla y limpia el formulario.
+     * <p>
+     * Si tiene éxito, actualiza la tabla, limpia el formulario y capitaliza los
+     * campos de texto.
      */
     private void crearProductoDesdeFormulario() {
         try {
@@ -217,6 +233,7 @@ public class ProductoController {
 
     /**
      * Actualiza los datos de un producto existente (`productoAEditar`) con los valores actuales del formulario.
+     * 
      * @param producto El producto a actualizar.
      */
     private void actualizarProductoDesdeFormulario(Producto producto) {
@@ -243,7 +260,9 @@ public class ProductoController {
 
     /**
      * Prepara el formulario para modificar el producto seleccionado en la tabla.
-     * Rellena los campos con los datos del producto y activa el modo de edición.
+     * <p>
+     * Rellena los campos con los datos del producto y activa el modo de edición,
+     * mostrando el formulario correspondiente.
      */
     @FXML
     public void modificarProductoSeleccionado() {
@@ -261,10 +280,17 @@ public class ProductoController {
             precioProductoField.setText(String.valueOf(seleccionado.getPrecioUnitario()));
             stockProductoField.setText(String.valueOf(seleccionado.getStock()));
 
-            zonaContenidoProducto.setVisible(true);
-            zonaContenidoProducto.setManaged(true);
-            mostrarVista(formularioAñadirProducto);
+            zonaFormulariosProducto.setVisible(true);
+            zonaFormulariosProducto.setManaged(true);
 
+            // Ocultar el otro formulario
+            formularioBuscarProducto.setVisible(false);
+            formularioBuscarProducto.setManaged(false);
+
+            // Mostrar el formulario deseado
+            formularioAñadirProducto.setVisible(true);
+            formularioAñadirProducto.setManaged(true);
+            
         } else {
             mostrarAlerta("Selección inválida", "Por favor, selecciona un producto para modificar.");
         }
@@ -272,7 +298,9 @@ public class ProductoController {
 
     /**
      * Elimina el producto seleccionado de la tabla.
-     * Pide confirmación al usuario antes de proceder con la eliminación en la base de datos y la actualización de la tabla.
+     * <p>
+     * Pide confirmación al usuario antes de proceder con la eliminación en la base
+     * de datos y la actualización de la tabla.
      */
     @FXML
     public void eliminarProductoSeleccionado() {
@@ -302,7 +330,8 @@ public class ProductoController {
 
     /**
      * Filtra la lista de productos en la tabla basándose en los criterios de los campos de búsqueda.
-     * Compara por ID, nombre y categoría.
+     * <p>
+     * La búsqueda es insensible a mayúsculas y minúsculas y busca por ID, nombre y categoría.
      */
     private void filtrarProductos() {
         String filtroId = buscarIdProductoField.getText().trim().toLowerCase();
@@ -338,6 +367,7 @@ public class ProductoController {
 
     /**
      * Muestra una alerta de error estándar.
+     * 
      * @param titulo El título de la ventana de alerta.
      * @param mensaje El mensaje de contenido de la alerta.
      */

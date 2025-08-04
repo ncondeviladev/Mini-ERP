@@ -104,7 +104,7 @@
 
 #tituloMiniErp {
     -fx-text-fill: -fx-texto-color-claro;
-    -fx-font-size: 20px;
+    -fx-font-size: 20;
     -fx-font-weight: bold;
 }
 
@@ -201,7 +201,6 @@
 .table-column {
     -fx-alignment: CENTER_LEFT;
     /* Mejora la legibilidad para texto de varias líneas */
-    -fx-text-fill: -fx-texto-color-secundario;
 }
 
 .table-cell .text {
@@ -214,24 +213,19 @@
    5. ESTILOS ESPECÍFICOS POR MÓDULO
    ========================================================================== */
 
-/* Personalización de selección de fila SOLO para la tabla de Productos */
-#tablaProductos .table-row-cell:selected,
-#tablaProductos .table-row-cell:filled:selected,
-#tablaProductos .table-row-cell:filled:selected:focused,
-#tablaProductos .table-cell:selected,
-#tablaProductos .table-cell:filled:selected,
-#tablaProductos .table-cell:filled:selected:focused {
+/* Estilo para el texto de CUALQUIER celda en una fila seleccionada */
+.table-row-cell:selected .table-cell .text {
+    -fx-fill: -fx-texto-color-base;
+}
+
+/* Color de fondo para selección en tabla de Productos */
+#tablaProducto .table-row-cell:selected {
     -fx-background-color: derive(-fx-color-producto-fin, 80%);
     /* Un verde muy claro derivado del color de producto */
 }
 
-/* Personalización de selección de fila SOLO para la tabla de Clientes */
-#tablaCliente .table-row-cell:selected,
-#tablaCliente .table-row-cell:filled:selected,
-#tablaCliente .table-row-cell:filled:selected:focused,
-#tablaCliente .table-cell:selected,
-#tablaCliente .table-cell:filled:selected,
-#tablaCliente .table-cell:filled:selected:focused {
+/* Color de fondo para selección en tabla de Clientes */
+#tablaCliente .table-row-cell:selected {
     -fx-background-color: derive(-fx-color-cliente-fin, 80%);
     /* Un naranja muy claro derivado del color de cliente */
 }

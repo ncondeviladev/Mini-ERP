@@ -38,11 +38,11 @@
                         onAction="#mostrarVistaBuscar" styleClass="boton-principal-producto" />
                 </HBox>
 
-                <StackPane fx:id="zonaContenidoProducto" VBox.vgrow="ALWAYS">
+                <StackPane fx:id="zonaFormulariosProducto" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
                     <Label fx:id="inicioProducto" managed="true" />
 
                     <VBox fx:id="formularioAñadirProducto" id="formularioProducto"
-                        spacing="10" prefWidth="600" styleClass="formulario-panel">
+                        spacing="10" prefWidth="600" styleClass="formulario-panel" visible="false">
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10" />
                         </padding>
@@ -75,7 +75,7 @@
                     </VBox>
 
                     <VBox fx:id="formularioBuscarProducto" id="formularioBusquedaProducto"
-                        spacing="10" prefWidth="600" styleClass="formulario-panel">
+                        spacing="10" prefWidth="600" styleClass="formulario-panel" visible="false">
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10" />
                         </padding>
