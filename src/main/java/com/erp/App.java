@@ -1,6 +1,6 @@
 package com.erp;
 
-// Importa clase que se encarga de inicializar la base de datos SQLite
+// Importo la clase que se encarga de inicializar y gestionar la conexión con la base de datos.
 import com.erp.db.SQLiteConnector;
 
 import javafx.application.Application;
@@ -10,52 +10,66 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Clase principal de la aplicación ERP.
- * Extiende Application para iniciar una app JavaFX.
- * Se encarga de cargar la vista FXML y aplicar estilos al iniciar.
- * Autor: Noé
+ * Clase principal que arranca toda la aplicación del Mini ERP.
+ * Como extiende de 'Application', es el punto de entrada para JavaFX.
+ * Su responsabilidad es cargar la ventana principal (main.fxml),
+ * inicializar la base de datos y aplicar los estilos CSS.
+ *
+ * @author Noé
  */
 public class App extends Application {
 
-    // Método principal: punto de entrada de la aplicación
+    /**
+     * El método main es el primer código que se ejecuta.
+     * Su única función es llamar a 'launch(args)', que a su vez
+     * inicia el ciclo de vida de la aplicación JavaFX y llama al método start().
+     *
+     * @param args Argumentos de la línea de comandos (no los usamos aquí).
+     */
     public static void main(String[] args) {
-        // Inicia la aplicación JavaFX llamando al método start()
+        // Lanza la aplicación JavaFX.
         launch(args);
     }
 
     /**
-     * Método que se ejecuta al iniciar la aplicación.
-     * @param stage Ventana principal del programa
-     * @throws Exception En caso de que falle la carga del FXML o CSS
+     * Este método se ejecuta justo después de 'launch()'. Aquí es donde se
+     * configura y se muestra la interfaz gráfica principal.
+     *
+     * @param stage El 'escenario' o ventana principal que nos proporciona JavaFX.
+     * @throws Exception Si hay algún error al cargar el archivo FXML o CSS.
      */
     @Override
     public void start(Stage stage) throws Exception {
-        // Inicializa la base de datos SQLite (crea tablas si no existen, etc.)
+        // Antes de mostrar nada, me aseguro de que la base de datos esté lista.
+        // Esto crea las tablas si es la primera vez que se ejecuta.
         SQLiteConnector.initDatabase();
 
-        // Carga la interfaz definida en producto.fxml desde el directorio /fxml
+        // Cargo el diseño de la interfaz principal desde el archivo FXML.
+        // Parent es un nodo genérico que puede contener a todos los demás.
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
 
-        // Crea la escena principal con el contenido del FXML y establece tamaño inicial
+        // Creo la 'escena' que contendrá el diseño que acabo de cargar.
+        // Le doy un tamaño inicial a la ventana.
         Scene scene = new Scene(root, 802, 600);
 
-        // Aplica la hoja de estilos CSS desde el directorio /css
+        // Localizo y aplico mi hoja de estilos 'estilo.css' a toda la escena.
+        // Así todos los componentes tendrán el mismo aspecto.
         scene.getStylesheets().add(
             getClass().getClassLoader().getResource("css/estilo.css").toExternalForm()
         );
 
-        // Asigna la escena a la ventana y muestra el título de la aplicación
-        stage.setMinWidth(700);
-        stage.setMinHeight(550);
-        stage.setScene(scene);
-        stage.setTitle("Mini ERP: Productos");
-        stage.show(); // Muestra la ventana al usuario
+        // Configuro la ventana principal:
+        stage.setMinWidth(700); // Establezco un ancho mínimo para que no se vea mal.
+        stage.setMinHeight(550); // Y también un alto mínimo.
+        stage.setScene(scene); // Le digo a la ventana qué escena debe mostrar.
+        stage.setTitle("Mini ERP"); // Pongo el título a la ventana.
+        stage.show(); // ¡Y finalmente, la muestro!
     }
 
     /*
-     * Este bloque comentado es una versión alternativa de start()
-     * que muestra solo una etiqueta en pantalla.
-     * Se usa comúnmente para pruebas rápidas de JavaFX sin cargar FXML.
+     * Dejo este bloque comentado por si necesito hacer una prueba rápida
+     * de JavaFX sin tener que cargar toda la aplicación.
+     * Es útil para verificar que el entorno funciona correctamente.
      *
      * @Override
      * public void start(Stage stage) {

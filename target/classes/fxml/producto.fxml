@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- Importaciones de los componentes de JavaFX que se utilizarán en esta vista. -->
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
+<!-- 
+    Vista para la Gestión de Productos.
+    Define la estructura y los componentes de la interfaz de usuario para añadir, buscar,
+    modificar y eliminar productos.
+    El controlador asociado es 'com.erp.controller.ProductoController'.
+-->
 <AnchorPane xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml"
     fx:controller="com.erp.controller.ProductoController"
     prefWidth="800" prefHeight="600" stylesheets="@../css/estilo.css">
 
+    <!-- 
+        StackPane principal que actúa como contenedor de todo el contenido de la pestaña de productos.
+        Se ancla a los cuatro lados del AnchorPane para ocupar todo el espacio.
+    -->
     <StackPane fx:id="zonaContenidoProducto"
         AnchorPane.topAnchor="10"
         AnchorPane.leftAnchor="10"
@@ -17,15 +28,19 @@
         AnchorPane.bottomAnchor="10"
         styleClass="panel-contenido">
 
+        <!-- ScrollPane para asegurar que todo el contenido sea accesible si la ventana es muy pequeña. -->
         <ScrollPane styleClass="panel-scroll-pane" fitToWidth="true">
 
+            <!-- VBox es el contenedor principal que apila los elementos verticalmente. -->
             <VBox spacing="10" prefWidth="600">
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10" />
                 </padding>
 
+                <!-- Título principal de la vista. -->
                 <Label text="Gestión de Productos" styleClass="titulo-panel" />
 
+                <!-- HBox para los botones de acción principales: Añadir y Buscar. -->
                 <HBox fx:id="subMenuAcciones" spacing="10" alignment="CENTER_LEFT">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
@@ -38,17 +53,25 @@
                         onAction="#mostrarVistaBuscar" styleClass="boton-principal-producto" />
                 </HBox>
 
+                <!-- 
+                    Este StackPane es una zona dinámica que mostrará diferentes formularios 
+                    (Añadir, Buscar) según la acción del usuario. Solo uno será visible a la vez.
+                -->
                 <StackPane fx:id="zonaFormulariosProducto" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
+                    <!-- Etiqueta inicial que se muestra por defecto. -->
                     <Label fx:id="inicioProducto" managed="true" />
 
+                    <!-- Formulario para Añadir o Modificar un Producto. Inicialmente está oculto. -->
                     <VBox fx:id="formularioAñadirProducto" id="formularioProducto"
                         spacing="10" prefWidth="600" styleClass="formulario-panel" visible="false">
                         <padding>
                             <Insets top="10" right="10" bottom="10" left="10" />
                         </padding>
+                        <!-- Título del formulario, que cambiará si es para añadir o modificar. -->
                         <Label fx:id="tituloFormularioProducto" id="tituloFormularioProducto"
                             text="Formulario añadir Producto" styleClass="subtitulo-panel" />
 
+                        <!-- Campos para introducir los datos del producto. -->
                         <GridPane hgap="10" vgap="10">
                             <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                             <TextField fx:id="nombreProductoField" GridPane.columnIndex="1"
@@ -69,11 +92,13 @@
                                 styleClass="campo-formulario" />
                         </GridPane>
 
+                        <!-- Botón para guardar el nuevo producto o las modificaciones. -->
                         <Button fx:id="guardarProductoButton" id="botonGuardarProducto"
                             text="Añadir producto" onAction="#insertarProducto"
                             styleClass="boton-principal-producto" />
                     </VBox>
 
+                    <!-- Formulario para Buscar un Producto. Inicialmente está oculto. -->
                     <VBox fx:id="formularioBuscarProducto" id="formularioBusquedaProducto"
                         spacing="10" prefWidth="600" styleClass="formulario-panel" visible="false">
                         <padding>
@@ -94,8 +119,10 @@
                     </VBox>
                 </StackPane>
 
+                <!-- Título para la sección de la tabla de productos. -->
                 <Label text="Listado de Productos" styleClass="subtitulo-panel " />
 
+                <!-- Tabla que muestra la lista de productos. -->
                 <TableView fx:id="tablaProducto" prefHeight="160" VBox.vgrow="NEVER"
                     prefWidth="550" styleClass="table-view table-producto">
 
@@ -113,12 +140,15 @@
                         <TableColumn fx:id="colDescripcionProducto" text="Descripción" minWidth="100"
                             prefWidth="100" />
                     </columns>
+                    <!-- Política de redimensionamiento para que las columnas ocupen todo el ancho disponible. -->
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
 
+                <!-- HBox para los botones de acción sobre un producto seleccionado en la tabla. -->
                 <HBox fx:id="accionesProducto" spacing="10" alignment="CENTER_RIGHT">
+                    <!-- Estos botones están deshabilitados por defecto y se activan al seleccionar una fila. -->
                     <Button fx:id="botonModificarProducto" id="botonModificarProducto"
                         text="Modificar producto" onAction="#modificarProductoSeleccionado"
                         disable="true" styleClass="boton-principal-producto" />

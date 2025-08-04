@@ -1,27 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Importaciones de los componentes de JavaFX que usaré en esta vista principal. -->
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
+<!--
+    Vista principal de la aplicación (main.fxml).
+    Uso un BorderPane como contenedor raíz para organizar la interfaz en secciones.
+    El controlador asociado es 'com.erp.controller.MainController'.
+-->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
     fx:controller="com.erp.controller.MainController" stylesheets="@../css/estilo.css">
 
+    <!-- 
+        Panel lateral izquierdo (menú de navegación).
+        Uso un VBox para apilar los botones verticalmente.
+    -->
     <left>
         <VBox fx:id="panelLateral" id="panelLateral" spacing="12" alignment="CENTER" prefWidth="180">
             <padding>
                 <Insets top="20" right="10" bottom="20" left="10" />
             </padding>
+            <!-- Título de la aplicación en el panel lateral. -->
             <Label text="Mini ERP" id="tituloMiniErp" />
+            
+            <!-- Botones de navegación principal. Cada uno llama a un método en el MainController. -->
             <Button text="Productos" onAction="#mostrarProductos" styleClass="boton-principal-producto"/>
             <Button text="Clientes" onAction="#mostrarClientes" styleClass="boton-principal-cliente"/>
             <Button text="Ventas" onAction="#mostrarVentas" />
+            
+            <!-- Botón para cerrar la aplicación. -->
             <Button text="Salir" onAction="#salirAplicacion" styleClass="botonSalir" />
         </VBox>
-
     </left>
 
+    <!-- 
+        Contenedor central.
+        Uso un StackPane para que las diferentes vistas (productos, clientes, etc.)
+        se puedan apilar y mostrar una a la vez, ocupando todo el espacio disponible.
+    -->
     <center>
         <StackPane fx:id="contenedorCentral" />
     </center>
