@@ -64,10 +64,22 @@ public class SQLiteConnector {
                 "fechaAlta DATE" +
                 ");";
 
+                String createTableDesc = "CREATE TABLE IF NOT EXISTS descuentos (" +
+                "idDescuento INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "clienteId INTEGER FOREIGN KEY REFERENCES clientes (id), " +
+                "descripcion TEXT," +
+                "porcentaje REAL," +
+                "fechaInicio DATE," +
+                "fechaCaducidad DATE," +
+                "estado BOOLEAN" +
+                ");";
+
+
         // Ejecuta la consulta usando un Statement
         try (Statement stmt = connect().createStatement()) {
             stmt.execute(createTableProd); 
             stmt.execute(createTableCli); 
+            stmt.execute(createTableDesc);
             System.out.println("Tablas base de datos creadas.");
         } catch (SQLException e) {
             // Muestra error si falla la creación
