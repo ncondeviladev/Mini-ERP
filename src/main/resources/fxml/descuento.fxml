@@ -1,0 +1,25 @@
+<AnchorPane xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="com.erp.controller.ClienteController"
+    prefWidth="800" prefHeight="600" stylesheets="@../css/estilo.css">
+
+
+    <StackPane fx:id="panelDescuentos">
+        <VBox spacing="10" prefWidth="600">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <Label text="Descuentos" styleClass="titulo" />
+            <TableView fx:id="tablaDescuentos" prefHeight="400">
+                <TableColumn fx:id="columnaDescripcion" text="Descripcion" prefWidth="200" />
+                <TableColumn fx:id="columnaPorcentaje" text="Porcentaje" prefWidth="100" />
+                <TableColumn fx:id="columnaFechaInicio" text="Fecha Inicio" prefWidth="150" />
+                <TableColumn fx:id="columnaFechaFin" text="Fecha Fin" prefWidth="150" />
+            </TableView>
+
+        </VBox>
+    </StackPane>
+
+
+
+</AnchorPane>
