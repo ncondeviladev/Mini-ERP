@@ -13,8 +13,10 @@ public class MainController {
     private StackPane contenedorCentral;
 
     /**
-     * Se ejecuta al iniciar la aplicación. Carga la vista de bienvenida por defecto.
-     * También verifica la existencia de una imagen de fondo (actualmente solo imprime en consola).
+     * Se ejecuta al iniciar la aplicación. Carga la vista de bienvenida por
+     * defecto.
+     * También verifica la existencia de una imagen de fondo (actualmente solo
+     * imprime en consola).
      */
     @FXML
     public void initialize() {
@@ -46,6 +48,11 @@ public class MainController {
         cargarVista("cliente.fxml"); // cuando lo tengas
     }
 
+    @FXML
+    public void mostrarDescuentos() {
+        cargarVista("descuento.fxml");
+    }
+
     /**
      * Muestra la vista de gestión de ventas en el contenedor central.
      */
@@ -64,7 +71,9 @@ public class MainController {
 
     /**
      * Carga una vista FXML en el panel central de la aplicación.
-     * @param nombreFXML El nombre del archivo FXML a cargar (p. ej., "producto.fxml").
+     * 
+     * @param nombreFXML El nombre del archivo FXML a cargar (p. ej.,
+     *                   "producto.fxml").
      */
     private void cargarVista(String nombreFXML) {
         try {

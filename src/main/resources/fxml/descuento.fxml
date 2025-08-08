@@ -10,6 +10,42 @@
                 <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
             <Label text="Descuentos" styleClass="titulo" />
+
+            <!-- 
+                Formulario para añadir/modificar descuentos.
+                Se usa la clase 'formulario-panel' del CSS para un estilo consistente.
+                Está oculto por defecto con visible="false" y managed="false".
+            -->
+            <VBox fx:id="formularioContenedor" spacing="10" visible="false" managed="false" styleClass="formulario-panel">
+                <children>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <children>
+                            <Label text="Descripción:" minWidth="100"/>
+                            <TextField fx:id="descripcionField" HBox.hgrow="ALWAYS" promptText="Ej: Descuento de temporada"/>
+                        </children>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <children>
+                            <Label text="Porcentaje (%):" minWidth="100"/>
+                            <TextField fx:id="porcentajeField" promptText="Ej: 10.5"/>
+                        </children>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <children>
+                            <Label text="Duración (meses):" minWidth="100"/>
+                            <TextField fx:id="duracionField" promptText="Ej: 3"/>
+                        </children>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER_RIGHT">
+                        <children>
+                            <!-- Estos botones usarán el estilo .button por defecto del CSS -->
+
+                            <Button fx:id="botonCancelar" text="Cancelar" styleClass="botonsalir"/>/
+                        </children>
+                    </HBox>
+                </children>
+            </VBox>
+
             <TableView fx:id="tablaDescuentos" prefHeight="400">
                 <TableColumn fx:id="columnaDescripcion" text="Descripcion" prefWidth="200" />
                 <TableColumn fx:id="columnaPorcentaje" text="Porcentaje" prefWidth="100" />
@@ -17,6 +53,12 @@
                 <TableColumn fx:id="columnaFechaFin" text="Fecha Fin" prefWidth="150" />
             </TableView>
 
+            <HBox fx:id="accionesDescuentos" spacing="10" alignment="CENTER_RIGHT">
+                <Button fx:id="botonAgregarDescuento" text="Agregar Descuento" onAction="#agregarDescuento" disable="true" styleClass="boton-principal-descuento"/>
+                <Button fx:id="botonEditarDescuento" text="Editar Descuento" onAction="#editarDescuento" disable="true" styleClass="boton-principal-descuento"/>
+                <Button fx:id="botonEliminarDescuento" text="Eliminar Descuento" onAction="#eliminarDescuento" disable="true" styleClass="botonsalir"/>
+
+            </HBox>
         </VBox>
     </StackPane>
 

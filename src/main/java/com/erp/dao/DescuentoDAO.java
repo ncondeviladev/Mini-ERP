@@ -46,15 +46,15 @@ public class DescuentoDAO {
             stmt.setString(2, descuento.getDescripcion());
             stmt.setDouble(3, descuento.getPorcentaje());
             stmt.setDate(4, java.sql.Date.valueOf(descuento.getFechaInicio()));
-            stmt.setDate(5, java.sql.Date.valueOf(descuento.getFechaCaducidad()));
-            stmt.setBoolean(6, descuento.getEstado());
+            stmt.setDate(5, java.sql.Date.valueOf(descuento.getFechaFin()));
+            stmt.setBoolean(6, descuento.isActivo());
 
             int filas = stmt.executeUpdate();
 
             if (filas > 0) {
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        descuento.setIdDescuento(generatedKeys.getInt(1));
+                        descuento.setId(generatedKeys.getInt(1));
                     }
                 }
                 return true;
@@ -80,9 +80,9 @@ public class DescuentoDAO {
             stmt.setString(2, descuento.getDescripcion());
             stmt.setDouble(3, descuento.getPorcentaje());
             stmt.setDate(4, java.sql.Date.valueOf(descuento.getFechaInicio()));
-            stmt.setDate(5, java.sql.Date.valueOf(descuento.getFechaCaducidad()));
-            stmt.setBoolean(6, descuento.getEstado());
-            stmt.setInt(7, descuento.getIdDescuento());
+            stmt.setDate(5, java.sql.Date.valueOf(descuento.getFechaFin()));
+            stmt.setBoolean(6, descuento.isActivo());
+            stmt.setInt(7, descuento.getId());
 
             int filas = stmt.executeUpdate();
             return filas > 0;

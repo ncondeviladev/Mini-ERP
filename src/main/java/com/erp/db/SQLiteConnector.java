@@ -66,7 +66,7 @@ public class SQLiteConnector {
 
                 String createTableDesc = "CREATE TABLE IF NOT EXISTS descuentos (" +
                 "idDescuento INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "clienteId INTEGER FOREIGN KEY REFERENCES clientes (id), " +
+                "clienteId INTEGER REFERENCES clientes(id), " +
                 "descripcion TEXT," +
                 "porcentaje REAL," +
                 "fechaInicio DATE," +
@@ -104,3 +104,4 @@ public class SQLiteConnector {
         }
     }
 }
+

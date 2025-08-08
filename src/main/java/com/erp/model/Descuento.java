@@ -33,6 +33,7 @@ public class Descuento {
         this.fechaInicio = new SimpleObjectProperty<>(fechaInicio);
         this.fechaFin = new SimpleObjectProperty<>(fechaFin);
         this.activo = new SimpleObjectProperty<>(calcularActivo(fechaFin));
+        
     }
 
     /**
@@ -46,6 +47,19 @@ public class Descuento {
         this.fechaInicio = new SimpleObjectProperty<>(fechaInicio);
         this.fechaFin = new SimpleObjectProperty<>(fechaFin);
         this.activo = new SimpleObjectProperty<>(calcularActivo(fechaFin));
+    }
+    /**
+     * Constructor para reconstruir un Descuento existente desde la base de datos con atributo activo.
+     */
+    public Descuento(Integer id, Integer clienteId, String descripcion, Double porcentaje, LocalDate fechaInicio, LocalDate fechaFin, boolean activo) {
+        this.id = new SimpleObjectProperty<>(id);
+        this.clienteId = new SimpleObjectProperty<>(clienteId);
+        this.descripcion = new SimpleStringProperty(descripcion);
+        this.porcentaje = new SimpleObjectProperty<>(porcentaje);
+        this.fechaInicio = new SimpleObjectProperty<>(fechaInicio);
+        this.fechaFin = new SimpleObjectProperty<>(fechaFin);
+        this.activo = new SimpleObjectProperty<>(activo);
+        
     }
 
     // --- Métodos de Propiedad (Property Methods) ---
