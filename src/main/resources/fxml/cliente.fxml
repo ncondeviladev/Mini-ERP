@@ -178,7 +178,7 @@
                 <Label text="Listado de Clientes" styleClass="subtitulo-panel " />
 
                 <!-- Tabla que muestra la lista de clientes. -->
-                <TableView fx:id="tablaCliente" prefHeight="200" VBox.vgrow="NEVER"
+                <TableView fx:id="tablaCliente" prefHeight="300" VBox.vgrow="NEVER"
                     prefWidth="550" styleClass="table-view table-cliente">
                     <columns>
                         <TableColumn fx:id="colIdCliente" text="ID" />
