@@ -1,6 +1,7 @@
 package com.erp.model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -21,6 +22,8 @@ public class Descuento {
     private final ObjectProperty<LocalDate> fechaInicio;
     private final ObjectProperty<LocalDate> fechaFin;
     private final ObjectProperty<Boolean> activo; // true para "Activo", false para "Caducado"
+
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
     /**
      * Constructor para crear un nuevo Descuento (sin ID, se asignará en la BD).
@@ -91,6 +94,22 @@ public class Descuento {
     public Boolean isActivo() { return activo.get(); }
     public void setActivo(Boolean activo) { this.activo.set(activo); }
     public ObjectProperty<Boolean> activoProperty() { return activo; }
+
+    // --- Métodos de Formato ---
+
+    public String getFechaInicioFormatted() {
+        if (getFechaInicio() != null) {
+            return DATE_FORMATTER.format(getFechaInicio());
+        }
+        return "";
+    }
+
+    public String getFechaFinFormatted() {
+        if (getFechaFin() != null) {
+            return DATE_FORMATTER.format(getFechaFin());
+        }
+        return "";
+    }
 
     /**
      * Calcula si el descuento está activo basado en la fecha de fin.

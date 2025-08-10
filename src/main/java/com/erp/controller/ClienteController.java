@@ -53,7 +53,7 @@ public class ClienteController {
     @FXML
     private Button botonEliminarCliente;
     @FXML
-    private Button botonDescuentoCliente; // Botón añadido
+    private Button botonDescuentoCliente;
 
     // --- Campos del Formulario (Añadir/Modificar) ---
     @FXML
@@ -131,7 +131,7 @@ public class ClienteController {
             boolean haySeleccion = newSelection != null;
             botonModificarCliente.setDisable(!haySeleccion);
             botonEliminarCliente.setDisable(!haySeleccion);
-            botonDescuentoCliente.setDisable(!haySeleccion); // Lógica añadida
+            botonDescuentoCliente.setDisable(!haySeleccion);
         });
 
         zonaFormulariosCliente.setVisible(false);
@@ -501,9 +501,19 @@ public class ClienteController {
     }
 
     @FXML
-    private void verDescuentosCliente(){
-        if (mainController != null) {
-            mainController.mostrarDescuentos();
+    private void verDescuentosCliente() {
+        Cliente clienteSeleccionado = tablaCliente.getSelectionModel().getSelectedItem();
+        if (clienteSeleccionado != null) {
+            if (mainController != null) {
+                mainController.mostrarDescuentos(clienteSeleccionado);
+            } else {
+                System.err.println("Error: MainController no está disponible en ClienteController.");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error de Carga");
+                alert.setHeaderText(null);
+                alert.setContentText("No se pudo comunicar con el controlador principal.");
+                alert.showAndWait();
+            }
         }
     }
 }

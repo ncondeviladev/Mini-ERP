@@ -27,6 +27,16 @@
     -fx-color-cliente-fin-hover: #9c4514;
     /* Naranja tostado oscuro */
 
+    /* Color específico para la sección Descuento (Naranja amarillento) */
+    -fx-color-descuento-inicio: #f9c86b;
+    /* Naranja dorado suave */
+    -fx-color-descuento-fin: #d89a2c;
+    /* Naranja mostaza medio */
+    -fx-color-descuento-inicio-hover: #f7b84a;
+    /* Naranja vibrante con toque amarillo */
+    -fx-color-descuento-fin-hover: #b77a1a;
+    /* Naranja tostado con matiz dorado */
+
 
     /* Color para acciones de peligro como Salir o Borrar (Rojo) */
     -fx-color-rojo-inicio: #f96f65;
@@ -272,4 +282,13 @@
 
 .boton-principal-cliente:hover {
     -fx-background-color: linear-gradient(to bottom, -fx-color-cliente-inicio-hover, -fx-color-cliente-fin-hover);
+}
+
+/* Color para la sección de Descuentos (Naranja-amarillo) */
+.boton-principal-descuento {
+    -fx-background-color: linear-gradient(to bottom, -fx-color-descuento-inicio, -fx-color-descuento-fin);
+}
+
+.boton-principal-descuento:hover {
+    -fx-background-color: linear-gradient(to bottom, -fx-color-descuento-inicio-hover, -fx-color-descuento-fin-hover);
 }

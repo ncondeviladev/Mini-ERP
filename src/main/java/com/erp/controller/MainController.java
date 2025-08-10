@@ -2,6 +2,8 @@ package com.erp.controller;
 
 import java.net.URL;
 
+import com.erp.model.Cliente;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,75 +14,69 @@ public class MainController {
     @FXML
     private StackPane contenedorCentral;
 
-    /**
-     * Se ejecuta al iniciar la aplicación. Carga la vista de bienvenida por
-     * defecto.
-     * También verifica la existencia de una imagen de fondo (actualmente solo
-     * imprime en consola).
-     */
     @FXML
     public void initialize() {
-        cargarVista("inicio.fxml"); // Esto carga el mensaje de bienvenida
+        cargarVista("inicio.fxml");
 
         URL url = getClass().getResource("/images/colorPattern.jpg");
-
         if (url != null) {
             System.out.println("✅ Imagen encontrada: " + url);
         } else {
             System.out.println("❌ Imagen NO encontrada. Revisa la ruta.");
         }
-
     }
 
-    /**
-     * Muestra la vista de gestión de productos en el contenedor central.
-     */
     @FXML
     public void mostrarProductos() {
         cargarVista("producto.fxml");
     }
 
-    /**
-     * Muestra la vista de gestión de clientes en el contenedor central.
-     */
     @FXML
     public void mostrarClientes() {
-        cargarVista("cliente.fxml"); // cuando lo tengas
+        cargarVista("cliente.fxml");
     }
 
     @FXML
-    public void mostrarDescuentos() {
-        cargarVista("descuento.fxml");
+    public void mostrarDescuentos(Cliente cliente) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/descuento.fxml"));
+            Node vista = loader.load();
+
+            DescuentoController controller = loader.getController();
+            controller.setMainController(this);
+            controller.setClienteSeleccionado(cliente);
+
+            contenedorCentral.getChildren().setAll(vista);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    /**
-     * Muestra la vista de gestión de ventas en el contenedor central.
-     */
     @FXML
     public void mostrarVentas() {
-        cargarVista("venta.fxml"); // cuando lo tengas
+        cargarVista("venta.fxml");
     }
 
-    /**
-     * Cierra la aplicación.
-     */
     @FXML
     public void salirAplicacion() {
         System.exit(0);
     }
 
-    /**
-     * Carga una vista FXML en el panel central de la aplicación.
-     * 
-     * @param nombreFXML El nombre del archivo FXML a cargar (p. ej.,
-     *                   "producto.fxml").
-     */
     private void cargarVista(String nombreFXML) {
         try {
-            Node vista = FXMLLoader.load(getClass().getResource("/fxml/" + nombreFXML));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/" + nombreFXML));
+            Node vista = loader.load();
+
+            Object controller = loader.getController();
+            if (controller instanceof ClienteController) {
+                ((ClienteController) controller).setMainController(this);
+            } else if (controller instanceof DescuentoController) {
+                ((DescuentoController) controller).setMainController(this);
+            }
+
             contenedorCentral.getChildren().setAll(vista);
         } catch (Exception e) {
-            e.printStackTrace(); // Puedes usar alertas si quieres notificar errores
+            e.printStackTrace();
         }
     }
 }

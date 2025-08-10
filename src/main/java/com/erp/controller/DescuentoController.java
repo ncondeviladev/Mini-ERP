@@ -1,25 +1,22 @@
 package com.erp.controller;
 
 import com.erp.dao.DescuentoDAO;
+import com.erp.model.Cliente;
 import com.erp.model.Descuento;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Controlador para la vista de gestión de descuentos.
- * Maneja la lógica para añadir, modificar y eliminar descuentos.
- */
 public class DescuentoController {
 
-    // --- Componentes FXML ---
     @FXML
     private VBox formularioContenedor;
     @FXML
@@ -39,9 +36,9 @@ public class DescuentoController {
     @FXML
     private TableColumn<Descuento, Double> columnaPorcentaje;
     @FXML
-    private TableColumn<Descuento, LocalDate> columnaFechaInicio;
+    private TableColumn<Descuento, String> columnaFechaInicio;
     @FXML
-    private TableColumn<Descuento, LocalDate> columnaFechaFin;
+    private TableColumn<Descuento, String> columnaFechaFin;
     @FXML
     private Button botonAgregarDescuento;
     @FXML
@@ -49,57 +46,72 @@ public class DescuentoController {
     @FXML
     private Button btnEliminarDescuento;
 
-    // --- Lógica de Negocio ---
+    private MainController mainController;
+    private Cliente clienteSeleccionado;
     private final DescuentoDAO descuentoDAO = new DescuentoDAO();
     private final ObservableList<Descuento> listaDescuentos = FXCollections.observableArrayList();
     private boolean modoEdicion = false;
     private Descuento descuentoAEditar = null;
 
-    /**
-     * Inicializa el controlador.
-     * Configura la tabla, carga los datos iniciales y define los listeners.
-     */
     @FXML
     public void initialize() {
         configurarColumnasTabla();
         tablaDescuentos.setItems(listaDescuentos);
-        cargarDatosDescuentos();
 
-        // Listener para habilitar/deshabilitar botones según la selección en la tabla
         tablaDescuentos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             boolean haySeleccion = newSelection != null;
             btnEditarDescuento.setDisable(!haySeleccion);
             btnEliminarDescuento.setDisable(!haySeleccion);
         });
 
-        // Ocultar el formulario al inicio
         formularioContenedor.setVisible(false);
         formularioContenedor.setManaged(false);
+
+        // Activar guardado con Enter en los campos del formulario
+        configurarGuardadoConEnter(descripcionField);
+        configurarGuardadoConEnter(porcentajeField);
+        configurarGuardadoConEnter(duracionField);
     }
 
-    /**
-     * Configura las columnas de la TableView para que muestren las propiedades del modelo Descuento.
-     */
+    private void configurarGuardadoConEnter(TextField textField) {
+        textField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                guardarDescuento();
+            }
+        });
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
+    }
+
+    public void setClienteSeleccionado(Cliente cliente) {
+        this.clienteSeleccionado = cliente;
+        cargarDatosDescuentos();
+    }
+
     private void configurarColumnasTabla() {
         columnaDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         columnaPorcentaje.setCellValueFactory(new PropertyValueFactory<>("porcentaje"));
-        columnaFechaInicio.setCellValueFactory(new PropertyValueFactory<>("fechaInicio"));
-        columnaFechaFin.setCellValueFactory(new PropertyValueFactory<>("fechaFin"));
+        columnaFechaInicio.setCellValueFactory(new PropertyValueFactory<>("fechaInicioFormatted"));
+        columnaFechaFin.setCellValueFactory(new PropertyValueFactory<>("fechaFinFormatted"));
     }
 
-    /**
-     * Carga todos los descuentos desde la base de datos y los añade a la lista observable de la tabla.
-     */
     private void cargarDatosDescuentos() {
-        List<Descuento> descuentosDesdeDB = descuentoDAO.listarDescuentos();
-        listaDescuentos.setAll(descuentosDesdeDB);
+        if (clienteSeleccionado != null) {
+            List<Descuento> descuentosDesdeDB = descuentoDAO.listarDescuentosPorCliente(clienteSeleccionado.getId());
+            listaDescuentos.setAll(descuentosDesdeDB);
+        } else {
+            listaDescuentos.clear();
+        }
     }
 
-    /**
-     * Prepara y muestra el formulario para añadir un nuevo descuento.
-     */
     @FXML
     private void agregarDescuento() {
+        if (clienteSeleccionado == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Sin Cliente", "No se ha seleccionado un cliente para añadirle un descuento.");
+            return;
+        }
         modoEdicion = false;
         descuentoAEditar = null;
         limpiarFormulario();
@@ -107,10 +119,6 @@ public class DescuentoController {
         mostrarFormulario();
     }
 
-    /**
-     * Prepara el formulario para modificar un descuento existente.
-     * Rellena los campos con los datos del descuento seleccionado.
-     */
     @FXML
     private void editarDescuento() {
         descuentoAEditar = tablaDescuentos.getSelectionModel().getSelectedItem();
@@ -124,9 +132,6 @@ public class DescuentoController {
         mostrarFormulario();
     }
 
-    /**
-     * Elimina el descuento seleccionado tras pedir confirmación.
-     */
     @FXML
     private void eliminarDescuento() {
         Descuento descuentoAEliminar = tablaDescuentos.getSelectionModel().getSelectedItem();
@@ -143,20 +148,21 @@ public class DescuentoController {
         Optional<ButtonType> resultado = confirmacion.showAndWait();
         if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
             if (descuentoDAO.eliminarDescuentoDb(descuentoAEliminar.getId())) {
-                cargarDatosDescuentos(); // Recargar la tabla
+                cargarDatosDescuentos();
             } else {
                 mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el descuento de la base de datos.");
             }
         }
     }
 
-    /**
-     * Maneja la acción del botón Guardar/Guardar Cambios.
-     * Valida los datos y llama al DAO para crear o actualizar el descuento.
-     */
     @FXML
     private void guardarDescuento() {
         if (!esFormularioValido()) {
+            return;
+        }
+
+        if (clienteSeleccionado == null) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Error Crítico", "No hay un cliente seleccionado para asociar el descuento.");
             return;
         }
 
@@ -166,11 +172,10 @@ public class DescuentoController {
             int duracionMeses = Integer.parseInt(duracionField.getText());
 
             if (modoEdicion) {
-                // Actualizar descuento existente
                 descuentoAEditar.setDescripcion(descripcion);
                 descuentoAEditar.setPorcentaje(porcentaje);
                 descuentoAEditar.setFechaFin(descuentoAEditar.getFechaInicio().plusMonths(duracionMeses));
-                descuentoAEditar.actualizarActivo(); // Re-evalúa si está activo
+                descuentoAEditar.actualizarActivo();
 
                 if (descuentoDAO.actualizarDescuentoDb(descuentoAEditar)) {
                     tablaDescuentos.refresh();
@@ -178,11 +183,9 @@ public class DescuentoController {
                     mostrarAlerta(Alert.AlertType.ERROR, "Error de Base de Datos", "No se pudo actualizar el descuento.");
                 }
             } else {
-                // Crear nuevo descuento
                 LocalDate fechaInicio = LocalDate.now();
                 LocalDate fechaFin = fechaInicio.plusMonths(duracionMeses);
-                // NOTA: Se pasa 'null' para clienteId, ya que este formulario no lo gestiona.
-                Descuento nuevoDescuento = new Descuento(null, descripcion, porcentaje, fechaInicio, fechaFin);
+                Descuento nuevoDescuento = new Descuento(clienteSeleccionado.getId(), descripcion, porcentaje, fechaInicio, fechaFin);
 
                 if (descuentoDAO.guardarDescuentoDb(nuevoDescuento)) {
                     listaDescuentos.add(nuevoDescuento);
@@ -200,10 +203,6 @@ public class DescuentoController {
         }
     }
 
-    /**
-     * Valida que los campos del formulario no estén vacíos y tengan el formato correcto.
-     * @return true si es válido, false en caso contrario.
-     */
     private boolean esFormularioValido() {
         if (descripcionField.getText().isEmpty() || porcentajeField.getText().isEmpty() || duracionField.getText().isEmpty()) {
             mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación", "Todos los campos son obligatorios.");
@@ -218,8 +217,6 @@ public class DescuentoController {
         }
         return true;
     }
-
-    // --- Métodos de ayuda para la UI ---
 
     private void mostrarFormulario() {
         formularioContenedor.setVisible(true);

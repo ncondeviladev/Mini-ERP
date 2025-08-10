@@ -11,18 +11,10 @@ import java.util.List;
 import com.erp.db.SQLiteConnector;
 import com.erp.model.Descuento;
 
-/**
- * DAO (Data Access Object) para la entidad Descuento.
- * Esta clase se encarga de todas las operaciones de base de datos (CRUD) relacionadas con los descuentos.
- */
 public class DescuentoDAO {
 
     private final Connection conexion;
 
-    /**
-     * Constructor que inicializa el DAO y establece la conexión con la base de datos.
-     * Lanza una RuntimeException si la conexión no puede ser establecida.
-     */
     public DescuentoDAO() {
         try {
             this.conexion = SQLiteConnector.connect();
@@ -31,13 +23,6 @@ public class DescuentoDAO {
         }
     }
 
-    /**
-     * Guarda un nuevo descuento en la base de datos.
-     * Después de guardar, recupera el ID autogenerado y lo asigna al objeto Descuento.
-     *
-     * @param descuento El objeto Descuento a guardar. Su ID será establecido por este método.
-     * @return true si el descuento se guardó correctamente, false en caso contrario.
-     */
     public boolean guardarDescuentoDb(Descuento descuento) {
         String sql = "INSERT INTO descuentos(clienteId, descripcion, porcentaje, fechaInicio, fechaCaducidad, estado) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -66,12 +51,6 @@ public class DescuentoDAO {
         }
     }
 
-    /**
-     * Actualiza un descuento existente en la base de datos.
-     *
-     * @param descuento El objeto Descuento con los datos a actualizar. Se utiliza el ID para encontrar el registro.
-     * @return true si la actualización fue exitosa, false en caso contrario.
-     */
     public boolean actualizarDescuentoDb(Descuento descuento) {
         String sql = "UPDATE descuentos SET clienteId = ?, descripcion = ?, porcentaje = ?, fechaInicio = ?, fechaCaducidad = ?, estado = ? WHERE idDescuento = ?";
 
@@ -92,12 +71,6 @@ public class DescuentoDAO {
         }
     }
 
-    /**
-     * Elimina un descuento de la base de datos utilizando su ID.
-     *
-     * @param idDescuento El ID del descuento a eliminar.
-     * @return true si la eliminación fue exitosa, false en caso contrario.
-     */
     public boolean eliminarDescuentoDb(int idDescuento) {
         String sql = "DELETE FROM descuentos WHERE idDescuento = ?";
 
@@ -110,12 +83,6 @@ public class DescuentoDAO {
         }
     }
 
-    /**
-     * Busca y devuelve un descuento específico por su ID.
-     *
-     * @param idDescuento El ID del descuento a buscar.
-     * @return Un objeto Descuento si se encuentra, o null si no existe.
-     */
     public Descuento buscarDescuentoPorId(int idDescuento) {
         String sql = "SELECT * FROM descuentos WHERE idDescuento = ?";
         try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
@@ -130,11 +97,6 @@ public class DescuentoDAO {
         return null;
     }
 
-    /**
-     * Devuelve una lista con todos los descuentos registrados en la base de datos.
-     *
-     * @return Una lista de objetos Descuento. La lista estará vacía si no hay descuentos.
-     */
     public List<Descuento> listarDescuentos() {
         List<Descuento> descuentos = new ArrayList<>();
         String sql = "SELECT * FROM descuentos";
@@ -149,13 +111,21 @@ public class DescuentoDAO {
         return descuentos;
     }
 
-    /**
-     * Método de utilidad interna para construir un objeto Descuento a partir de un ResultSet.
-     *
-     * @param rs El ResultSet de la consulta a la base de datos.
-     * @return Un objeto Descuento completamente populado.
-     * @throws SQLException si ocurre un error al acceder a los datos del ResultSet.
-     */
+    public List<Descuento> listarDescuentosPorCliente(int clienteId) {
+        List<Descuento> descuentos = new ArrayList<>();
+        String sql = "SELECT * FROM descuentos WHERE clienteId = ?";
+        try (PreparedStatement stmt = conexion.prepareStatement(sql)) {
+            stmt.setInt(1, clienteId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                descuentos.add(construirDescuento(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return descuentos;
+    }
+
     private Descuento construirDescuento(ResultSet rs) throws SQLException {
         return new Descuento(
                 rs.getInt("idDescuento"),
