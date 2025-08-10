@@ -123,7 +123,7 @@
                 <Label text="Listado de Productos" styleClass="subtitulo-panel " />
 
                 <!-- Tabla que muestra la lista de productos. -->
-                <TableView fx:id="tablaProducto" prefHeight="160" VBox.vgrow="NEVER"
+                <TableView fx:id="tablaProducto" prefHeight="300" VBox.vgrow="NEVER"
                     prefWidth="550" styleClass="table-view table-producto">
 
                     <columns>
