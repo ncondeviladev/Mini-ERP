@@ -31,6 +31,9 @@ import javafx.scene.text.Text;
  */
 public class ProductoController {
 
+    // --- Inyección de componentes FXML ---
+
+    // DAO para interactuar con la base de datos de productos.
     private ProductoDAO productoDAO = new ProductoDAO(); // Acceso a datos de producto
 
     @FXML
@@ -64,6 +67,7 @@ public class ProductoController {
     @FXML
     private Label tituloFormularioProducto;
 
+    // --- Lógica de negocio y estado ---
     private List<Producto> productosOriginales = new ArrayList<>(); // Lista completa de productos para filtrar
     private boolean modoEdicion = false; // Indica si se está editando un producto
     private Producto productoAEditar = null; // Producto que se está editando
@@ -83,7 +87,8 @@ public class ProductoController {
         colStockProducto.setCellValueFactory(new PropertyValueFactory<>("stock"));
         colDescripcionProducto.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
 
-        // Personaliza la celda de descripción para mostrar texto ajustado
+        // Personaliza la celda de descripción para que el texto se ajuste automáticamente
+        // si es demasiado largo para el ancho de la columna.
         colDescripcionProducto.setCellFactory(tc -> {
             TableCell<Producto, String> cell = new TableCell<>();
             Text text = new Text();
@@ -94,17 +99,17 @@ public class ProductoController {
             return cell;
         });
 
-        // Carga los productos en la tabla
+        // Carga los productos iniciales desde la base de datos a la tabla.
         tablaProducto.getItems().addAll(productoDAO.listarProductos());
 
-        // Oculta el contenedor de formularios al inicio para que no ocupe espacio
+        // Oculta el contenedor de formularios al inicio para que no ocupe espacio.
         zonaFormulariosProducto.setVisible(false);
         zonaFormulariosProducto.setManaged(false);
 
-        // Activa el evento Enter en los campos del formulario
+        // Asigna el evento de la tecla Enter a los campos del formulario de añadir/editar.
         activarENterEnCampos();
 
-        // Habilita/deshabilita botones según la selección en la tabla
+        // Añade un listener a la selección de la tabla para habilitar/deshabilitar los botones de acción.
         tablaProducto.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, nuevoSel) -> {
             boolean haySeleccion = nuevoSel != null;
             botonModificarProducto.setDisable(!haySeleccion);
@@ -144,11 +149,11 @@ public class ProductoController {
         zonaFormulariosProducto.setVisible(true);
         zonaFormulariosProducto.setManaged(true);
 
-        // Ocultar el otro formulario
+        // Se asegura de que el formulario de búsqueda esté oculto.
         formularioBuscarProducto.setVisible(false);
         formularioBuscarProducto.setManaged(false);
 
-        // Mostrar el formulario deseado
+        // Muestra el formulario de añadir/editar.
         formularioAñadirProducto.setVisible(true);
         formularioAñadirProducto.setManaged(true);
         
@@ -172,17 +177,19 @@ public class ProductoController {
         zonaFormulariosProducto.setVisible(true);
         zonaFormulariosProducto.setManaged(true);
 
-        // Ocultar el otro formulario
+        // Se asegura de que el formulario de añadir esté oculto.
         formularioAñadirProducto.setVisible(false);
         formularioAñadirProducto.setManaged(false);
 
-        // Mostrar el formulario deseado
+        // Muestra el formulario de búsqueda.
         formularioBuscarProducto.setVisible(true);
         formularioBuscarProducto.setManaged(true);
         
+        // Carga la lista completa de productos para poder filtrar sobre ella.
         productosOriginales = productoDAO.listarProductos();
         tablaProducto.getItems().setAll(productosOriginales);
 
+        // Añade listeners a los campos de búsqueda para que el filtrado sea en tiempo real.
         buscarIdProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
         buscarNombreProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
         buscarCategoriaProductoField.textProperty().addListener((obs, oldVal, newVal) -> filtrarProductos());
@@ -196,6 +203,7 @@ public class ProductoController {
      */
     @FXML
     private void insertarProducto(ActionEvent event) {
+        // Decide si crear o actualizar basándose en el estado 'modoEdicion'.
         if (modoEdicion && productoAEditar != null) {
             actualizarProductoDesdeFormulario(productoAEditar);
             modoEdicion = false;
@@ -213,6 +221,7 @@ public class ProductoController {
      */
     private void crearProductoDesdeFormulario() {
         try {
+            // Crea un nuevo objeto Producto con los datos del formulario.
             Producto nuevo = new Producto(
                     capitalizar(nombreProductoField.getText()),
                     capitalizar(descripcionProductoField.getText()),
@@ -220,6 +229,7 @@ public class ProductoController {
                     Double.parseDouble(precioProductoField.getText().replace(",", ".")),
                     Integer.parseInt(stockProductoField.getText()));
 
+            // Intenta guardar en la base de datos.
             if (productoDAO.guardarProductoDb(nuevo)) {
                 tablaProducto.getItems().add(nuevo);
                 limpiarFormulario();
@@ -238,6 +248,7 @@ public class ProductoController {
      */
     private void actualizarProductoDesdeFormulario(Producto producto) {
         try {
+            // Actualiza las propiedades del objeto Producto existente.
             producto.setNombre(capitalizar(nombreProductoField.getText()));
             producto.setDescripcion(capitalizar(descripcionProductoField.getText()));
             producto.setCategoria(capitalizar(categoriaProductoField.getText()));
@@ -245,6 +256,7 @@ public class ProductoController {
             producto.setStock(Integer.parseInt(stockProductoField.getText()));
 
             if (productoDAO.actualizarProductoEnDb(producto)) {
+                // Refresca la tabla para mostrar los cambios y limpia el formulario.
                 tablaProducto.refresh();
                 limpiarFormulario();
                 mostrarAlertaTemporal("Éxito", "Producto actualizado");
@@ -269,6 +281,7 @@ public class ProductoController {
         Producto seleccionado = tablaProducto.getSelectionModel().getSelectedItem();
 
         if (seleccionado != null) {
+            // Configura la UI para el modo de edición.
             tituloFormularioProducto.setText("Modificar Producto");
             guardarProductoButton.setText("Guardar cambios");
             productoAEditar = seleccionado;
@@ -280,14 +293,15 @@ public class ProductoController {
             precioProductoField.setText(String.valueOf(seleccionado.getPrecioUnitario()));
             stockProductoField.setText(String.valueOf(seleccionado.getStock()));
 
+            // Muestra el formulario de edición.
             zonaFormulariosProducto.setVisible(true);
             zonaFormulariosProducto.setManaged(true);
 
-            // Ocultar el otro formulario
+            // Oculta el formulario de búsqueda.
             formularioBuscarProducto.setVisible(false);
             formularioBuscarProducto.setManaged(false);
 
-            // Mostrar el formulario deseado
+            // Muestra el formulario de añadir/editar.
             formularioAñadirProducto.setVisible(true);
             formularioAñadirProducto.setManaged(true);
             
@@ -307,6 +321,7 @@ public class ProductoController {
         Producto seleccionado = tablaProducto.getSelectionModel().getSelectedItem();
 
         if (seleccionado != null) {
+            // Muestra un diálogo de confirmación antes de eliminar.
             Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
             alerta.setTitle("Confirmar eliminación");
             alerta.setHeaderText("¿Eliminar producto?");
@@ -315,6 +330,7 @@ public class ProductoController {
 
             alerta.showAndWait().ifPresent(respuesta -> {
                 if (respuesta == ButtonType.OK) {
+                    // Si el usuario confirma, procede a eliminar de la BD y actualizar la tabla.
                     if (productoDAO.eliminarProductoPorId(seleccionado.getId())) {
                         tablaProducto.getItems().setAll(productoDAO.listarProductos());
                         mostrarAlertaTemporal("Éxito", "Producto eliminado correctamente.");
@@ -340,6 +356,7 @@ public class ProductoController {
 
         List<Producto> filtrados = new ArrayList<>();
 
+        // Recorre la lista original y añade a una lista temporal los que coinciden con los filtros.
         for (Producto p : productosOriginales) {
             boolean matchId = filtroId.isEmpty() || String.valueOf(p.getId()).toLowerCase().contains(filtroId);
             boolean matchNombre = filtroNombre.isEmpty() || p.getNombre().toLowerCase().contains(filtroNombre);
@@ -351,6 +368,7 @@ public class ProductoController {
             }
         }
 
+        // Actualiza la tabla con la lista filtrada.
         tablaProducto.getItems().setAll(filtrados);
     }
 

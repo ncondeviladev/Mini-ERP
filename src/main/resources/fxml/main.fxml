@@ -28,8 +28,8 @@
             <Label text="Mini ERP" id="tituloMiniErp" />
             
             <!-- Botones de navegación principal. Cada uno llama a un método en el MainController. -->
-            <Button text="Productos" onAction="#mostrarProductos" styleClass="boton-principal-producto"/>
-            <Button text="Clientes" onAction="#mostrarClientes" styleClass="boton-principal-cliente"/>
+            <Button text="Productos" onAction="#mostrarProductos" styleClass="button-producto"/>
+            <Button text="Clientes" onAction="#mostrarClientes" styleClass="button-cliente"/>
             <Button text="Ventas" onAction="#mostrarVentas" />
             
             <!-- Botón para cerrar la aplicación. -->

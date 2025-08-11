@@ -7,13 +7,15 @@
     -fx-color-primario-claro: #adb5bd;
     -fx-color-primario-oscuro: #495057;
 
-    /* --- Colores para Botones por Sección --- */
-    -fx-color-cliente: #0077b6;
-    -fx-color-cliente-hover: #0096c7;
-    -fx-color-producto: #009688;
-    -fx-color-producto-hover: #4db6ac;
-    -fx-color-descuento: #f57c00;
-    -fx-color-descuento-hover: #ff9800;
+    /* --- Colores para Botones por Sección (Unificados a un gris claro) --- */
+    -fx-color-cliente: #a2a4a5;          /* Gris claro base */
+    -fx-color-cliente-hover: #6c757d;    /* Gris oscuro para hover */
+    -fx-color-producto: #a2a4a5;         /* Gris claro base */
+    -fx-color-producto-hover: #6c757d;    /* Gris oscuro para hover */
+    -fx-color-descuento: #adb5bd;        /* Gris claro base */
+    -fx-color-descuento-hover: #6c757d;    /* Gris oscuro para hover */
+
+    /*Colores modulares para botones de diferentes secciones*/
 
     -fx-color-rojo-inicio: #d9534f; /* Rojo suave */
     -fx-color-rojo-fin: #c9302c;

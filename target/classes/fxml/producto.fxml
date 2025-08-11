@@ -47,10 +47,10 @@
                     </padding>
                     <Button fx:id="botonAñadirProducto" id="botonAñadirProducto"
                         text="Añadir" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaAñadir" styleClass="boton-principal-producto" />
+                        onAction="#mostrarVistaAñadir" styleClass="button-producto" />
                     <Button fx:id="botonMostrarBuscarProducto" id="botonMostrarBuscarProducto"
                         text="Buscar" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaBuscar" styleClass="boton-principal-producto" />
+                        onAction="#mostrarVistaBuscar" styleClass="button-producto" />
                 </HBox>
 
                 <!-- 
@@ -93,8 +93,7 @@
                         </GridPane>
 
                         <!-- Botón para guardar el nuevo producto o las modificaciones. -->
-                        <Button fx:id="guardarProductoButton" id="botonGuardarProducto"
-                            styleClass="boton-principal-producto" />
+                        <Button fx:id="guardarProductoButton" id="botonGuardarProducto" onAction="#insertarProducto" styleClass="button-producto" />
                     </VBox>
 
                     <!-- Formulario para Buscar un Producto. Inicialmente está oculto. -->
@@ -126,18 +125,12 @@
                     prefWidth="550" styleClass="table-view table-producto">
 
                     <columns>
-                        <TableColumn fx:id="colIdProducto" text="ID" minWidth="30" prefWidth="30"
-                            maxWidth="30" />
-                        <TableColumn fx:id="colNombreProducto" text="Nombre" minWidth="80" prefWidth="80"
-                            maxWidth="80" />
-                        <TableColumn fx:id="colCategoriaProducto" text="Categoría" minWidth="100"
-                            prefWidth="100" maxWidth="100" />
-                        <TableColumn fx:id="colPrecioProducto" text="Precio" minWidth="60" prefWidth="60"
-                            maxWidth="60" />
-                        <TableColumn fx:id="colStockProducto" text="Stock" minWidth="60" prefWidth="60"
-                            maxWidth="60" />
-                        <TableColumn fx:id="colDescripcionProducto" text="Descripción" minWidth="100"
-                            prefWidth="100" />
+                        <TableColumn fx:id="colIdProducto" text="ID" prefWidth="50" />
+                        <TableColumn fx:id="colNombreProducto" text="Nombre" prefWidth="150" />
+                        <TableColumn fx:id="colCategoriaProducto" text="Categoría" prefWidth="120" />
+                        <TableColumn fx:id="colPrecioProducto" text="Precio" prefWidth="80" />
+                        <TableColumn fx:id="colStockProducto" text="Stock" prefWidth="60" />
+                        <TableColumn fx:id="colDescripcionProducto" text="Descripción" prefWidth="250" />
                     </columns>
                     <!-- Política de redimensionamiento para que las columnas ocupen todo el ancho disponible. -->
                     <columnResizePolicy>
@@ -150,7 +143,7 @@
                     <!-- Estos botones están deshabilitados por defecto y se activan al seleccionar una fila. -->
                     <Button fx:id="botonModificarProducto" id="botonModificarProducto"
                         text="Modificar producto" onAction="#modificarProductoSeleccionado"
-                        disable="true" styleClass="boton-principal-producto" />
+                        disable="true" styleClass="button-producto" />
                     <Button fx:id="botonEliminar" id="botonEliminar"
                         text="Eliminar producto" onAction="#eliminarProductoSeleccionado"
                         disable="true" styleClass="botonSalir" />
