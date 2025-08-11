@@ -50,12 +50,11 @@
                     </padding>
                     <Button fx:id="botonAñadirCliente" id="botonAñadirCliente"
                         text="Añadir" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaAñadir"
-                        styleClass="boton-principal-cliente" />
+                        onAction="#mostrarVistaAñadir" styleClass="button-cliente" />
                     <Button fx:id="botonMostrarBuscarCliente" id="botonMostrarBuscarCliente"
                         text="Buscar" prefWidth="100" prefHeight="40"
                         onAction="#mostrarVistaBuscar"
-                        styleClass="boton-principal-cliente" />
+                        styleClass="button-cliente" />
                 </HBox>
 
                 <!-- 
@@ -147,8 +146,7 @@
 
                         <!-- Botón para guardar el nuevo cliente o las modificaciones. -->
                         <Button fx:id="guardarClienteButton" id="botonGuardarCliente"
-                            text="Añadir cliente" onAction="#guardarCliente"
-                            styleClass="boton-principal-cliente" />
+                            text="Añadir cliente" onAction="#guardarCliente" styleClass="button-cliente" />
                     </VBox>
 
                     <!-- Formulario para Buscar un Cliente. Inicialmente está oculto. -->
@@ -201,10 +199,10 @@
                     una fila. -->
                     <Button fx:id="botonDescuentoCliente" id="botonDescuentoCliente"
                         text="Ver descuentos" onAction="#verDescuentosCliente" disable="true"
-                        styleClass="boton-principal-cliente" />
+                        styleClass="button-cliente" />
                     <Button fx:id="botonModificarCliente" id="botonModificarCliente"
                         text="Modificar cliente" onAction="#modificarClienteSeleccionado"
-                        disable="true" styleClass="boton-principal-cliente" />
+                        disable="true" styleClass="button-cliente" />
                     <Button fx:id="botonEliminarCliente" id="botonEliminarCliente"
                         text="Eliminar cliente" onAction="#eliminarClienteSeleccionado"
                         disable="true" styleClass="botonSalir" />

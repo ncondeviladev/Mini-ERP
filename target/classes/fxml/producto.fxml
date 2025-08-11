@@ -94,7 +94,6 @@
 
                         <!-- Botón para guardar el nuevo producto o las modificaciones. -->
                         <Button fx:id="guardarProductoButton" id="botonGuardarProducto"
-                            text="Añadir producto" onAction="#insertarProducto"
                             styleClass="boton-principal-producto" />
                     </VBox>
 

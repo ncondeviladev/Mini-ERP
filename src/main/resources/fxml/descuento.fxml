@@ -13,7 +13,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.erp.controller.DescuentoController" prefWidth="800" prefHeight="600" stylesheets="@../css/estilo.css">
 
-    <StackPane fx:id="panelDescuentos" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+    <StackPane fx:id="panelDescuentos" styleClass="panel-contenido" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
         <VBox spacing="10" prefWidth="600">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10" />
@@ -45,7 +45,7 @@
                     </HBox>
                     <HBox spacing="10" alignment="CENTER_RIGHT">
                         <children>
-                            <Button fx:id="botonGuardar" text="Guardar" onAction="#guardarDescuento" styleClass="boton-principal-descuento"/>
+                            <Button fx:id="botonGuardar" text="Guardar" onAction="#guardarDescuento" styleClass="button-descuento"/>
                             <Button fx:id="botonCancelar" text="Cancelar" onAction="#ocultarFormulario" styleClass="botonSalir"/>
                         </children>
                     </HBox>
@@ -65,8 +65,8 @@
             </TableView>
 
             <HBox fx:id="accionesDescuentos" spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
-                <Button fx:id="botonAgregarDescuento" text="Agregar Descuento" onAction="#agregarDescuento" styleClass="boton-principal-descuento"/>
-                <Button fx:id="btnEditarDescuento" text="Editar Descuento" onAction="#editarDescuento" disable="true" styleClass="boton-principal-descuento"/>
+                <Button fx:id="botonAgregarDescuento" text="Agregar Descuento" onAction="#agregarDescuento" styleClass="button-descuento"/>
+                <Button fx:id="btnEditarDescuento" text="Editar Descuento" onAction="#editarDescuento" disable="true" styleClass="button-descuento"/>
                 <Button fx:id="btnEliminarDescuento" text="Eliminar Descuento" onAction="#eliminarDescuento" disable="true" styleClass="botonSalir"/>
             </HBox>
         </VBox>
