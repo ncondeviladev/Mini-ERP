@@ -8,20 +8,22 @@
     -fx-color-primario-oscuro: #495057;
 
     /* --- Colores para Botones por Sección (Unificados a un gris claro) --- */
-    -fx-color-cliente: #a2a4a5;          /* Gris claro base */
+    -fx-color-cliente: #5f5f5f;          /* Gris claro base */
     -fx-color-cliente-hover: #6c757d;    /* Gris oscuro para hover */
-    -fx-color-producto: #a2a4a5;         /* Gris claro base */
+    -fx-color-producto: #5f5f5f;         /* Gris claro base */
     -fx-color-producto-hover: #6c757d;    /* Gris oscuro para hover */
-    -fx-color-descuento: #adb5bd;        /* Gris claro base */
+    -fx-color-descuento: #5f5f5f;        /* Gris claro base */
     -fx-color-descuento-hover: #6c757d;    /* Gris oscuro para hover */
+    -fx-color-ventas: #5f5f5f;        /* Gris claro base */
+    -fx-color-ventas-hover: #6c757d;    /* Gris oscuro para hover */
 
     /*Colores modulares para botones de diferentes secciones*/
 
     -fx-color-rojo-inicio: #d9534f; /* Rojo suave */
     -fx-color-rojo-fin: #c9302c;
 
-    -fx-color-fondo: #f8f9fa; /* Blanco roto */
-    -fx-color-fondo-contenido: #ffffff;
+    -fx-color-fondo: #8b8b8b; 
+    -fx-color-fondo-contenido: #f7f7f7;
     -fx-color-barra-lateral: #343a40; /* Gris oscuro */
     
     -fx-color-borde: #dee2e6;
@@ -79,6 +81,15 @@
     -fx-font-family: -fx-font-family-header, sans-serif;
 }
 
+/* Estilo para el contenedor principal donde se cargan las vistas */
+#contenedorCentral {
+    -fx-background-color: -fx-color-fondo;
+}
+/* Estilo para el contenedor principal donde se cargan las vistas */
+#contenedorCentral {
+    -fx-background-color: -fx-color-fondo;
+}
+
 .panel-contenido {
     -fx-background-color: -fx-color-fondo-contenido;
     -fx-background-radius: 8;
@@ -86,12 +97,13 @@
 }
 
 .formulario-panel {
-    -fx-background-color: transparent;
+    -fx-background-color: #fdfdfd; /* Un blanco ligeramente distinto para dar contexto */
     -fx-border-color: -fx-color-borde;
     -fx-border-radius: 8;
     -fx-border-width: 1;
     -fx-padding: 15;
 }
+
 
 /* ==========================================================================
    4. COMPONENTES REUTILIZABLES
@@ -106,14 +118,15 @@
     -fx-border-color: transparent;
     -fx-padding: 10 20;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1);
-    -fx-transition: all 0.2s ease-in-out;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1); /* Sombra base sutil */
 }
 
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, -fx-color-primario-claro, -fx-color-primario);
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);
+    /* Sombra más pronunciada en la esquina inferior izquierda al hacer hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 12, 0, -4, 4);
 }
+
 
 /* --- BOTONES POR SECCIÓN (Sobrescriben el color de fondo) --- */
 .button-cliente {
@@ -151,6 +164,7 @@
 .date-picker {
     -fx-background-color: #FFFFFF;
     -fx-border-color: -fx-color-borde;
+    -fx-border-width: 1;
     -fx-border-radius: 6;
     -fx-padding: 8 10;
     -fx-text-fill: -fx-texto-color-base;
@@ -173,6 +187,7 @@
     -fx-background-color: -fx-color-fondo-contenido;
     -fx-control-inner-background: -fx-color-fondo-contenido;
     -fx-border-color: -fx-color-borde;
+    -fx-border-width: 1;
     -fx-border-radius: 8;
     -fx-table-cell-border-color: -fx-color-borde;
 }

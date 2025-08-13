@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.erp.dao.ProductoDAO;
 import com.erp.model.Producto;
+import com.erp.utils.AnimationUtils;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,9 +62,13 @@ public class ProductoController {
     @FXML
     private Button botonModificarProducto;
     @FXML
-    private Button botonEliminar;
+    private Button botonEliminarProducto;
     @FXML
-    private Button guardarProductoButton;
+    private Button botonGuardarProducto;
+    @FXML
+    private Button botonAñadirProducto;
+    @FXML
+    private Button botonBuscarProducto;
     @FXML
     private Label tituloFormularioProducto;
 
@@ -113,8 +118,17 @@ public class ProductoController {
         tablaProducto.getSelectionModel().selectedItemProperty().addListener((obs, oldSel, nuevoSel) -> {
             boolean haySeleccion = nuevoSel != null;
             botonModificarProducto.setDisable(!haySeleccion);
-            botonEliminar.setDisable(!haySeleccion);
+            botonEliminarProducto.setDisable(!haySeleccion);
         });
+
+        // --- Aplicar animaciones a los botones ---
+        // Nota: Los botones de la barra lateral (Añadir, Buscar) no tienen @FXML
+        // y se deberían animar desde el MainController si se desea.
+        AnimationUtils.addHoverAnimation(botonModificarProducto);
+        AnimationUtils.addHoverAnimation(botonEliminarProducto);
+        AnimationUtils.addHoverAnimation(botonGuardarProducto);
+        AnimationUtils.addHoverAnimation(botonAñadirProducto);
+        AnimationUtils.addHoverAnimation(botonBuscarProducto);
     }
 
     /**
@@ -158,7 +172,7 @@ public class ProductoController {
         formularioAñadirProducto.setManaged(true);
         
         tituloFormularioProducto.setText("Formulario añadir Producto");
-        guardarProductoButton.setText("Añadir producto");
+        botonGuardarProducto.setText("Añadir producto");
 
         modoEdicion = false;
         productoAEditar = null;
@@ -283,7 +297,7 @@ public class ProductoController {
         if (seleccionado != null) {
             // Configura la UI para el modo de edición.
             tituloFormularioProducto.setText("Modificar Producto");
-            guardarProductoButton.setText("Guardar cambios");
+            botonGuardarProducto.setText("Guardar cambios");
             productoAEditar = seleccionado;
             modoEdicion = true;
 

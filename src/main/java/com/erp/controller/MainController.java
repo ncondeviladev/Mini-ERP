@@ -3,10 +3,12 @@ package com.erp.controller;
 import java.net.URL;
 
 import com.erp.model.Cliente;
+import com.erp.utils.AnimationUtils;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -21,6 +23,18 @@ public class MainController {
     @FXML
     private StackPane contenedorCentral;
 
+    // --- Botones del menú lateral ---
+    // NOTA: Asegúrate de que en main.fxml cada botón tenga su fx:id correspondiente.
+    // (ej. <Button fx:id="botonProductos" ... />)
+    @FXML
+    private Button botonProductos;
+    @FXML
+    private Button botonClientes;
+    @FXML
+    private Button botonVentas;
+    @FXML
+    private Button botonSalir;
+
     /**
      * Método de inicialización que se llama automáticamente al cargar el FXML.
      * Carga la vista de bienvenida por defecto.
@@ -30,6 +44,11 @@ public class MainController {
         // Al iniciar la aplicación, se muestra la pantalla de bienvenida.
         cargarVista("inicio.fxml");
 
+        // --- Aplicar animaciones a los botones del menú ---
+        if (botonProductos != null) AnimationUtils.addHoverAnimation(botonProductos);
+        if (botonClientes != null) AnimationUtils.addHoverAnimation(botonClientes);
+        if (botonVentas != null) AnimationUtils.addHoverAnimation(botonVentas);
+        if (botonSalir != null) AnimationUtils.addHoverAnimation(botonSalir);
     }
 
     /**

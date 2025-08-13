@@ -45,8 +45,8 @@
                     </HBox>
                     <HBox spacing="10" alignment="CENTER_RIGHT">
                         <children>
-                            <Button fx:id="botonGuardar" text="Guardar" onAction="#guardarDescuento" styleClass="button-descuento"/>
-                            <Button fx:id="botonCancelar" text="Cancelar" onAction="#ocultarFormulario" styleClass="botonSalir"/>
+                            <Button fx:id="botonGuardarDescuento" text="Guardar" onAction="#guardarDescuento" styleClass="button-descuento"/>
+                            <Button fx:id="botonCancelarDescuento" text="Cancelar" onAction="#ocultarFormulario" styleClass="botonSalir"/>
                         </children>
                     </HBox>
                 </children>
@@ -67,8 +67,8 @@
 
             <HBox fx:id="accionesDescuentos" spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
                 <Button fx:id="botonAgregarDescuento" text="Agregar Descuento" onAction="#agregarDescuento" styleClass="button-descuento"/>
-                <Button fx:id="btnEditarDescuento" text="Editar Descuento" onAction="#editarDescuento" disable="true" styleClass="button-descuento"/>
-                <Button fx:id="btnEliminarDescuento" text="Eliminar Descuento" onAction="#eliminarDescuento" disable="true" styleClass="botonSalir"/>
+                <Button fx:id="botonEditarDescuento" text="Editar Descuento" onAction="#editarDescuento" disable="true" styleClass="button-descuento"/>
+                <Button fx:id="botonEliminarDescuento" text="Eliminar Descuento" onAction="#eliminarDescuento" disable="true" styleClass="botonSalir"/>
             </HBox>
         </VBox>
     </StackPane>

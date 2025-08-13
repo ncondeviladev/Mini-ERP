@@ -51,7 +51,7 @@
                     <Button fx:id="botonAñadirCliente" id="botonAñadirCliente"
                         text="Añadir" prefWidth="100" prefHeight="40"
                         onAction="#mostrarVistaAñadir" styleClass="button-cliente" />
-                    <Button fx:id="botonMostrarBuscarCliente" id="botonMostrarBuscarCliente"
+                    <Button fx:id="botonBuscarCliente" id="botonMostrarBuscarCliente"
                         text="Buscar" prefWidth="100" prefHeight="40"
                         onAction="#mostrarVistaBuscar"
                         styleClass="button-cliente" />
@@ -145,8 +145,8 @@
                         </GridPane>
 
                         <!-- Botón para guardar el nuevo cliente o las modificaciones. -->
-                        <Button fx:id="guardarClienteButton" id="botonGuardarCliente"
-                            text="Añadir cliente" onAction="#guardarCliente" styleClass="button-cliente" />
+                        <Button fx:id="botonGuardarCliente" id="botonGuardarCliente" text="Añadir cliente"
+                            onAction="#guardarCliente" styleClass="button-cliente" />
                     </VBox>
 
                     <!-- Formulario para Buscar un Cliente. Inicialmente está oculto. -->

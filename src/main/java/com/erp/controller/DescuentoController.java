@@ -3,6 +3,7 @@ package com.erp.controller;
 import com.erp.dao.DescuentoDAO;
 import com.erp.model.Cliente;
 import com.erp.model.Descuento;
+import com.erp.utils.AnimationUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,9 +33,9 @@ public class DescuentoController {
     @FXML
     private TextField duracionField;
     @FXML
-    private Button botonGuardar;
+    private Button botonGuardarDescuento;
     @FXML
-    private Button botonCancelar;
+    private Button botonCancelarDescuento;
     @FXML
     private TableView<Descuento> tablaDescuentos;
     @FXML
@@ -50,9 +51,9 @@ public class DescuentoController {
     @FXML
     private Button botonAgregarDescuento;
     @FXML
-    private Button btnEditarDescuento;
+    private Button botonEditarDescuento;
     @FXML
-    private Button btnEliminarDescuento;
+    private Button botonEliminarDescuento;
 
     private MainController mainController;
     private Cliente clienteSeleccionado;
@@ -74,8 +75,8 @@ public class DescuentoController {
 
         tablaDescuentos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             boolean haySeleccion = newSelection != null;
-            btnEditarDescuento.setDisable(!haySeleccion);
-            btnEliminarDescuento.setDisable(!haySeleccion);
+            botonEditarDescuento.setDisable(!haySeleccion);
+            botonEliminarDescuento.setDisable(!haySeleccion);
         });
 
         // Oculta el formulario al inicio.
@@ -86,6 +87,13 @@ public class DescuentoController {
         configurarGuardadoConEnter(descripcionField);
         configurarGuardadoConEnter(porcentajeField);
         configurarGuardadoConEnter(duracionField);
+
+        // --- Aplicar animaciones a los botones ---
+        AnimationUtils.addHoverAnimation(botonGuardarDescuento);
+        AnimationUtils.addHoverAnimation(botonCancelarDescuento);
+        AnimationUtils.addHoverAnimation(botonAgregarDescuento);
+        AnimationUtils.addHoverAnimation(botonEditarDescuento);
+        AnimationUtils.addHoverAnimation(botonEliminarDescuento);
     }
 
     /**
@@ -181,7 +189,7 @@ public class DescuentoController {
         modoEdicion = false;
         descuentoAEditar = null;
         limpiarFormulario();
-        botonGuardar.setText("Guardar");
+        botonGuardarDescuento.setText("Guardar");
         mostrarFormulario();
     }
 
@@ -197,7 +205,7 @@ public class DescuentoController {
         }
         modoEdicion = true;
         poblarFormulario(descuentoAEditar);
-        botonGuardar.setText("Guardar Cambios");
+        botonGuardarDescuento.setText("Guardar Cambios");
         mostrarFormulario();
     }
 

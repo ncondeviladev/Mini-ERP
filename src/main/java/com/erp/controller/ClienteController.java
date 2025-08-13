@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.erp.dao.ClienteDAO;
 import com.erp.model.Cliente;
+import com.erp.utils.AnimationUtils;
 import com.erp.utils.ValidationUtils;
 
 import javafx.beans.property.SimpleStringProperty;
@@ -54,13 +55,18 @@ public class ClienteController {
 
     // --- Botones ---
     @FXML
-    private Button guardarClienteButton;
+    private Button botonGuardarCliente;
     @FXML
     private Button botonModificarCliente;
     @FXML
     private Button botonEliminarCliente;
     @FXML
     private Button botonDescuentoCliente;
+    @FXML
+    private Button botonAñadirCliente;
+    @FXML
+    private Button botonBuscarCliente;
+
 
     // --- Campos del Formulario (Añadir/Modificar) ---
     @FXML
@@ -155,6 +161,14 @@ public class ClienteController {
         // Oculta los formularios al inicio para que no ocupen espacio.
         zonaFormulariosCliente.setVisible(false);
         zonaFormulariosCliente.setManaged(false);
+
+        // --- Aplicar animaciones a los botones ---
+        AnimationUtils.addHoverAnimation(botonGuardarCliente);
+        AnimationUtils.addHoverAnimation(botonModificarCliente);
+        AnimationUtils.addHoverAnimation(botonEliminarCliente);
+        AnimationUtils.addHoverAnimation(botonDescuentoCliente);
+        AnimationUtils.addHoverAnimation(botonAñadirCliente);
+        AnimationUtils.addHoverAnimation(botonBuscarCliente);
     }
 
     /**
@@ -262,7 +276,7 @@ public class ClienteController {
         modoEdicion = false;
         clienteAEditar = null;
         tituloFormularioCliente.setText("Formulario Añadir Cliente");
-        guardarClienteButton.setText("Añadir Cliente");
+        botonGuardarCliente.setText("Añadir Cliente");
         limpiarFormulario();
         activarEnterEnFormularioAñadir();
     }
@@ -456,7 +470,7 @@ public class ClienteController {
         if (clienteAEditar != null) {
             modoEdicion = true;
             tituloFormularioCliente.setText("Modificar Cliente");
-            guardarClienteButton.setText("Guardar Cambios");
+            botonGuardarCliente.setText("Guardar Cambios");
 
             zonaFormulariosCliente.setVisible(true);
             zonaFormulariosCliente.setManaged(true);
