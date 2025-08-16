@@ -50,6 +50,14 @@ SQLite.
       <version>3.42.0.0</version>
     </dependency>
 
+    <!-- Librería iText para generación de PDF -->
+    <dependency>
+        <groupId>com.itextpdf</groupId>
+        <artifactId>itext7-core</artifactId>
+        <version>7.2.0</version>
+        <type>pom</type>
+    </dependency>
+
     <!-- Framework de pruebas JUnit 5 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

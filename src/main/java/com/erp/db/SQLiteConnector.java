@@ -64,7 +64,7 @@ public class SQLiteConnector {
                 "fechaAlta DATE" +
                 ");";
 
-                String createTableDesc = "CREATE TABLE IF NOT EXISTS descuentos (" +
+        String createTableDesc = "CREATE TABLE IF NOT EXISTS descuentos (" +
                 "idDescuento INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "clienteId INTEGER REFERENCES clientes(id), " +
                 "descripcion TEXT," +
@@ -74,12 +74,33 @@ public class SQLiteConnector {
                 "estado BOOLEAN" +
                 ");";
 
+        String createTableVentas = "CREATE TABLE IF NOT EXISTS ventas (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "cliente_id INTEGER NOT NULL," +
+                "descuento_id INTEGER," +
+                "fecha TEXT NOT NULL," +
+                "total REAL NOT NULL," +
+                "FOREIGN KEY (cliente_id) REFERENCES clientes(id)," +
+                "FOREIGN KEY (descuento_id) REFERENCES descuentos(idDescuento)" +
+                ");";
+
+        String createTableDetallesVenta = "CREATE TABLE IF NOT EXISTS detalles_venta (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "venta_id INTEGER NOT NULL," +
+                "producto_id INTEGER NOT NULL," +
+                "cantidad INTEGER NOT NULL," +
+                "precio_unitario REAL NOT NULL," +
+                "FOREIGN KEY (venta_id) REFERENCES ventas(id)," +
+                "FOREIGN KEY (producto_id) REFERENCES productos(id)" +
+                ");";
 
         // Ejecuta la consulta usando un Statement
         try (Statement stmt = connect().createStatement()) {
-            stmt.execute(createTableProd); 
-            stmt.execute(createTableCli); 
+            stmt.execute(createTableProd);
+            stmt.execute(createTableCli);
             stmt.execute(createTableDesc);
+            stmt.execute(createTableVentas);
+            stmt.execute(createTableDetallesVenta);
             System.out.println("Tablas base de datos creadas.");
         } catch (SQLException e) {
             // Muestra error si falla la creación
@@ -104,4 +125,3 @@ public class SQLiteConnector {
         }
     }
 }
-
