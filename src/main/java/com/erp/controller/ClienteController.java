@@ -17,12 +17,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
@@ -72,7 +73,11 @@ public class ClienteController {
     @FXML
     private Label tituloFormularioCliente;
     @FXML
-    private ComboBox<String> tipoClienteComboBox;
+    private ToggleGroup tipoClienteToggleGroup;
+    @FXML
+    private ToggleButton particularToggle;
+    @FXML
+    private ToggleButton empresaToggle;
     // Campos de Particular
     @FXML
     private TextField nombreClienteField;
@@ -142,7 +147,7 @@ public class ClienteController {
      */
     @FXML
     public void initialize() {
-        configurarComboBox();
+        configurarTipoClienteToggle();
         configurarColumnasTabla();
 
         tablaCliente.setItems(listaClientes);
@@ -172,22 +177,39 @@ public class ClienteController {
     }
 
     /**
-     * Configura el ComboBox para seleccionar el tipo de cliente ("Particular" o "Empresa")
+     * Configura el grupo de ToggleButtons para seleccionar el tipo de cliente ("Particular" o "Empresa")
      * y añade un listener para mostrar los campos de formulario correspondientes.
      */
-    private void configurarComboBox() {
-        tipoClienteComboBox.getItems().addAll("Particular", "Empresa");
-        tipoClienteComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
-            if ("Particular".equals(newVal)) {
-                camposParticular.setVisible(true);
-                camposEmpresa.setVisible(false);
-            } else if ("Empresa".equals(newVal)) {
-                camposParticular.setVisible(false);
-                camposEmpresa.setVisible(true);
-            }
+    private void configurarTipoClienteToggle() {
+        // Listener para reaccionar a los cambios de selección del tipo de cliente.
+        tipoClienteToggleGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            actualizarVisibilidadCamposCliente((ToggleButton) newToggle);
         });
-        tipoClienteComboBox.getSelectionModel().selectFirst();
+
+        // Establecer "Particular" como selección por defecto y actualizar la visibilidad.
+        particularToggle.setSelected(true);
+        actualizarVisibilidadCamposCliente(particularToggle);
     }
+
+    /**
+     * Muestra u oculta los campos de formulario específicos para "Particular" o "Empresa" 
+     * basándose en el ToggleButton seleccionado.
+     * @param selectedToggle El ToggleButton que está actualmente seleccionado.
+     */
+    private void actualizarVisibilidadCamposCliente(ToggleButton selectedToggle) {
+        if (selectedToggle == particularToggle) {
+            camposParticular.setVisible(true);
+            camposEmpresa.setVisible(false);
+        } else if (selectedToggle == empresaToggle) {
+            camposParticular.setVisible(false);
+            camposEmpresa.setVisible(true);
+        } else {
+            // Si por alguna razón no hay nada seleccionado, se ocultan ambos.
+            camposParticular.setVisible(false);
+            camposEmpresa.setVisible(false);
+        }
+    }
+
 
     /**
      * Configura las columnas de la TableView para mostrar los datos de los clientes.
@@ -275,6 +297,11 @@ public class ClienteController {
 
         modoEdicion = false;
         clienteAEditar = null;
+        
+        // Habilitar los botones de tipo de cliente para la creación
+        particularToggle.setDisable(false);
+        empresaToggle.setDisable(false);
+
         tituloFormularioCliente.setText("Formulario Añadir Cliente");
         botonGuardarCliente.setText("Añadir Cliente");
         limpiarFormulario();
@@ -355,7 +382,13 @@ public class ClienteController {
      */
     @FXML
     public void guardarCliente() {
-        String tipo = tipoClienteComboBox.getValue();
+        ToggleButton selectedToggle = (ToggleButton) tipoClienteToggleGroup.getSelectedToggle();
+        if (selectedToggle == null) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación", "Debe seleccionar un tipo de cliente.");
+            return;
+        }
+        String tipo = selectedToggle.getText();
+
         if (!esFormularioValido(tipo))
             return;
 
@@ -364,6 +397,8 @@ public class ClienteController {
             if (modoEdicion) {
                 // --- Lógica de Actualización ---
                 cliente = clienteAEditar;
+                // La línea cliente.setTipoCliente(tipo) se ha eliminado porque el tipo de cliente
+                // no debe cambiar en modo edición y el método no existe en el modelo.
                 cliente.setEmail(emailClienteField.getText());
                 cliente.setTelefono(telefonoClienteField.getText());
                 cliente.setDireccion(direccionClienteField.getText());
@@ -371,10 +406,14 @@ public class ClienteController {
                     cliente.setNombre(nombreClienteField.getText());
                     cliente.setApellidos(apellidosClienteField.getText());
                     cliente.setCifnif(nifClienteField.getText());
-                } else {
+                    cliente.setRazonSocial(null);
+                    cliente.setPersonaContacto(null);
+                } else { // Empresa
                     cliente.setRazonSocial(razonSocialClienteField.getText());
                     cliente.setCifnif(cifClienteField.getText());
                     cliente.setPersonaContacto(personaContactoClienteField.getText());
+                    cliente.setNombre(null);
+                    cliente.setApellidos(null);
                 }
 
                 if (clienteDAO.actualizarClienteEnDb(cliente)) {
@@ -384,8 +423,7 @@ public class ClienteController {
                     mostrarAlerta(Alert.AlertType.ERROR, "Error de Base de Datos", "No se pudo actualizar el cliente.");
                 }
 
-            } else {
-                // --- Lógica de Creación ---
+            } else { // --- Lógica de Creación ---
                 if ("Particular".equals(tipo)) {
                     cliente = Cliente.crearParticular(0, emailClienteField.getText(), telefonoClienteField.getText(),
                             direccionClienteField.getText(), nifClienteField.getText(), LocalDate.now(),
@@ -472,6 +510,10 @@ public class ClienteController {
             tituloFormularioCliente.setText("Modificar Cliente");
             botonGuardarCliente.setText("Guardar Cambios");
 
+            // Deshabilitar los botones de tipo de cliente para no poder cambiarlo en modo edición
+            particularToggle.setDisable(true);
+            empresaToggle.setDisable(true);
+
             zonaFormulariosCliente.setVisible(true);
             zonaFormulariosCliente.setManaged(true);
 
@@ -481,20 +523,21 @@ public class ClienteController {
             formularioAñadirCliente.setVisible(true);
             formularioAñadirCliente.setManaged(true);
 
-            tipoClienteComboBox.setValue(clienteAEditar.getTipoCliente());
-            emailClienteField.setText(clienteAEditar.getEmail());
-            telefonoClienteField.setText(clienteAEditar.getTelefono());
-            direccionClienteField.setText(clienteAEditar.getDireccion());
-
             if ("Particular".equals(clienteAEditar.getTipoCliente())) {
+                particularToggle.setSelected(true);
                 nombreClienteField.setText(clienteAEditar.getNombre());
                 apellidosClienteField.setText(clienteAEditar.getApellidos());
                 nifClienteField.setText(clienteAEditar.getCifnif());
             } else { // Empresa
+                empresaToggle.setSelected(true);
                 razonSocialClienteField.setText(clienteAEditar.getRazonSocial());
                 cifClienteField.setText(clienteAEditar.getCifnif());
                 personaContactoClienteField.setText(clienteAEditar.getPersonaContacto());
             }
+
+            emailClienteField.setText(clienteAEditar.getEmail());
+            telefonoClienteField.setText(clienteAEditar.getTelefono());
+            direccionClienteField.setText(clienteAEditar.getDireccion());
 
             activarEnterEnFormularioAñadir();
 
@@ -551,7 +594,7 @@ public class ClienteController {
         direccionClienteField.clear();
         telefonoClienteField.clear();
         emailClienteField.clear();
-        tipoClienteComboBox.getSelectionModel().selectFirst();
+        particularToggle.setSelected(true);
     }
 
     /**

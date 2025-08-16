@@ -77,11 +77,19 @@
                             text="Formulario añadir Cliente" styleClass="subtitulo-panel" />
 
                         <!-- Selector para el tipo de cliente (Particular o Empresa). -->
-                        <GridPane hgap="10" vgap="5">
+                        <GridPane hgap="10" vgap="5" alignment="CENTER_LEFT">
                             <Label text="Tipo de Cliente:" GridPane.columnIndex="0"
                                 GridPane.rowIndex="0" />
-                            <ComboBox fx:id="tipoClienteComboBox" GridPane.columnIndex="1"
-                                GridPane.rowIndex="0" prefWidth="150" />
+                            <HBox styleClass="segmented-button-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <children>
+                                    <ToggleButton fx:id="particularToggle" text="Particular" selected="true">
+                                        <toggleGroup>
+                                            <ToggleGroup fx:id="tipoClienteToggleGroup" />
+                                        </toggleGroup>
+                                    </ToggleButton>
+                                    <ToggleButton fx:id="empresaToggle" text="Empresa" toggleGroup="$tipoClienteToggleGroup" />
+                                </children>
+                            </HBox>
                         </GridPane>
 
                         <!-- 
