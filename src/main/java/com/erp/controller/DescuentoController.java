@@ -3,6 +3,7 @@ package com.erp.controller;
 import com.erp.dao.DescuentoDAO;
 import com.erp.model.Cliente;
 import com.erp.model.Descuento;
+import com.erp.utils.AnimationUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +16,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Controlador para la vista de gestión de descuentos (descuento.fxml).
+ * <p>
+ * Se encarga de mostrar, añadir, editar y eliminar los descuentos asociados a un
+ * cliente específico.
+ */
 public class DescuentoController {
 
     @FXML
@@ -26,9 +33,9 @@ public class DescuentoController {
     @FXML
     private TextField duracionField;
     @FXML
-    private Button botonGuardar;
+    private Button botonGuardarDescuento;
     @FXML
-    private Button botonCancelar;
+    private Button botonCancelarDescuento;
     @FXML
     private TableView<Descuento> tablaDescuentos;
     @FXML
@@ -40,11 +47,13 @@ public class DescuentoController {
     @FXML
     private TableColumn<Descuento, String> columnaFechaFin;
     @FXML
+    private TableColumn<Descuento, Boolean> columnaEstado;
+    @FXML
     private Button botonAgregarDescuento;
     @FXML
-    private Button btnEditarDescuento;
+    private Button botonEditarDescuento;
     @FXML
-    private Button btnEliminarDescuento;
+    private Button botonEliminarDescuento;
 
     private MainController mainController;
     private Cliente clienteSeleccionado;
@@ -53,17 +62,24 @@ public class DescuentoController {
     private boolean modoEdicion = false;
     private Descuento descuentoAEditar = null;
 
+    /**
+     * Método de inicialización llamado por JavaFX después de cargar el FXML.
+     * Configura la tabla, los listeners y el estado inicial de la UI.
+     */
     @FXML
     public void initialize() {
+        // Enlaza las columnas de la tabla con las propiedades del modelo Descuento.
         configurarColumnasTabla();
+        // Asigna la lista observable a la tabla para que se actualice automáticamente.
         tablaDescuentos.setItems(listaDescuentos);
 
         tablaDescuentos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             boolean haySeleccion = newSelection != null;
-            btnEditarDescuento.setDisable(!haySeleccion);
-            btnEliminarDescuento.setDisable(!haySeleccion);
+            botonEditarDescuento.setDisable(!haySeleccion);
+            botonEliminarDescuento.setDisable(!haySeleccion);
         });
 
+        // Oculta el formulario al inicio.
         formularioContenedor.setVisible(false);
         formularioContenedor.setManaged(false);
 
@@ -71,8 +87,20 @@ public class DescuentoController {
         configurarGuardadoConEnter(descripcionField);
         configurarGuardadoConEnter(porcentajeField);
         configurarGuardadoConEnter(duracionField);
+
+        // --- Aplicar animaciones a los botones ---
+        AnimationUtils.addHoverAnimation(botonGuardarDescuento);
+        AnimationUtils.addHoverAnimation(botonCancelarDescuento);
+        AnimationUtils.addHoverAnimation(botonAgregarDescuento);
+        AnimationUtils.addHoverAnimation(botonEditarDescuento);
+        AnimationUtils.addHoverAnimation(botonEliminarDescuento);
     }
 
+    /**
+     * Configura un campo de texto para que, al presionar la tecla ENTER,
+     * se intente guardar el descuento.
+     * @param textField El campo de texto al que se le añadirá el listener.
+     */
     private void configurarGuardadoConEnter(TextField textField) {
         textField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -81,22 +109,65 @@ public class DescuentoController {
         });
     }
 
+    /**
+     * Inyecta el controlador principal para permitir la comunicación entre vistas.
+     * @param mainController La instancia del controlador principal.
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Establece el cliente para el cual se gestionarán los descuentos y carga sus datos.
+     * Este método es el punto de entrada a esta vista.
+     * @param cliente El cliente seleccionado en la vista anterior.
+     */
     public void setClienteSeleccionado(Cliente cliente) {
         this.clienteSeleccionado = cliente;
         cargarDatosDescuentos();
     }
 
+    /**
+     * Configura las columnas de la tabla de descuentos, enlazándolas a las propiedades
+     * del modelo {@link Descuento} y personalizando la apariencia de la columna de estado.
+     */
     private void configurarColumnasTabla() {
         columnaDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         columnaPorcentaje.setCellValueFactory(new PropertyValueFactory<>("porcentaje"));
         columnaFechaInicio.setCellValueFactory(new PropertyValueFactory<>("fechaInicioFormatted"));
         columnaFechaFin.setCellValueFactory(new PropertyValueFactory<>("fechaFinFormatted"));
+        columnaEstado.setCellValueFactory(new PropertyValueFactory<>("activo"));
+
+        // Personaliza la celda de la columna "Estado" para mostrar texto y color
+        // en lugar de un simple "true" o "false".
+        columnaEstado.setCellFactory(columna -> new TableCell<Descuento, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    // Si la fila está vacía, limpiamos la celda.
+                    setText(null);
+                    setStyle("");
+                } else {
+                    // Si el valor es 'true', mostramos "Activo" en verde.
+                    if (item) {
+                        setText("Activo");
+                        setStyle("-fx-text-fill: #28a745; -fx-font-weight: bold;");
+                    } else { // Si el valor es 'false'
+                        // Si no, mostramos "Caducado" en rojo.
+                        setText("Caducado");
+                        setStyle("-fx-text-fill: #dc3545; -fx-font-weight: bold;");
+                    }
+                }
+            }
+        });
     }
 
+    /**
+     * Carga los descuentos del cliente seleccionado desde la base de datos
+     * y los muestra en la tabla.
+     */
     private void cargarDatosDescuentos() {
         if (clienteSeleccionado != null) {
             List<Descuento> descuentosDesdeDB = descuentoDAO.listarDescuentosPorCliente(clienteSeleccionado.getId());
@@ -106,6 +177,9 @@ public class DescuentoController {
         }
     }
 
+    /**
+     * Prepara y muestra el formulario para añadir un nuevo descuento.
+     */
     @FXML
     private void agregarDescuento() {
         if (clienteSeleccionado == null) {
@@ -115,10 +189,13 @@ public class DescuentoController {
         modoEdicion = false;
         descuentoAEditar = null;
         limpiarFormulario();
-        botonGuardar.setText("Guardar");
+        botonGuardarDescuento.setText("Guardar");
         mostrarFormulario();
     }
 
+    /**
+     * Prepara y muestra el formulario para editar el descuento seleccionado en la tabla.
+     */
     @FXML
     private void editarDescuento() {
         descuentoAEditar = tablaDescuentos.getSelectionModel().getSelectedItem();
@@ -128,10 +205,14 @@ public class DescuentoController {
         }
         modoEdicion = true;
         poblarFormulario(descuentoAEditar);
-        botonGuardar.setText("Guardar Cambios");
+        botonGuardarDescuento.setText("Guardar Cambios");
         mostrarFormulario();
     }
 
+    /**
+     * Elimina el descuento seleccionado de la tabla y de la base de datos,
+     * pidiendo confirmación al usuario previamente.
+     */
     @FXML
     private void eliminarDescuento() {
         Descuento descuentoAEliminar = tablaDescuentos.getSelectionModel().getSelectedItem();
@@ -140,6 +221,7 @@ public class DescuentoController {
             return;
         }
 
+        // Muestra un diálogo de confirmación.
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar Eliminación");
         confirmacion.setHeaderText("¿Seguro que quieres eliminar el descuento?");

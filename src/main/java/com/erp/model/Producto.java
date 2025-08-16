@@ -36,7 +36,9 @@ public class Producto {
     }
 
     /**
-     * 
+     * Constructor para crear un nuevo producto desde la aplicación (ej. un formulario).
+     * El ID se establece en `null`, ya que será asignado por la base de datos al guardarse.
+     * Los demás parámetros son los mismos que el constructor principal.
      */
     public Producto(String nombre, String descripcion, String categoria, double precioUnitario, int stock) {
     this.id = null; 

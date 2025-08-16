@@ -28,12 +28,12 @@
             <Label text="Mini ERP" id="tituloMiniErp" />
             
             <!-- Botones de navegación principal. Cada uno llama a un método en el MainController. -->
-            <Button text="Productos" onAction="#mostrarProductos" styleClass="boton-principal-producto"/>
-            <Button text="Clientes" onAction="#mostrarClientes" styleClass="boton-principal-cliente"/>
-            <Button text="Ventas" onAction="#mostrarVentas" />
+            <Button fx:id="botonProductos" text="Productos" onAction="#mostrarProductos" styleClass="button-producto"/>
+            <Button fx:id="botonClientes" text="Clientes" onAction="#mostrarClientes" styleClass="button-cliente"/>
+            <Button fx:id="botonVentas" text="Ventas" onAction="#mostrarVentas" />
             
             <!-- Botón para cerrar la aplicación. -->
-            <Button text="Salir" onAction="#salirAplicacion" styleClass="botonSalir" />
+            <Button fx:id="botonSalir" text="Salir" onAction="#salirAplicacion" styleClass="botonSalir" />
         </VBox>
     </left>
 
@@ -43,7 +43,7 @@
         se puedan apilar y mostrar una a la vez, ocupando todo el espacio disponible.
     -->
     <center>
-        <StackPane fx:id="contenedorCentral" />
+        <StackPane fx:id="contenedorCentral" id="contenedorCentral" />
     </center>
 
 </BorderPane>

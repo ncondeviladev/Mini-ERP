@@ -1,52 +1,46 @@
 /* ==========================================================================
-   1. RAÍZ Y VARIABLES GLOBALES (TEMA GRIS CLARO)
-   ========================================================================== 
-   Aquí definimos los colores, fuentes y tamaños principales como variables.
-   Esto permite cambiar el aspecto de toda la aplicación modificando un solo lugar.
-*/
+   1. RAÍZ Y VARIABLES GLOBALES
+   ========================================================================== */
 .root {
-    /* --- Paleta de Colores (Gris Claro y Suave) --- */
-    -fx-color-primario: #6c757d; /* Gris medio para botones e interacciones */
-    -fx-color-primario-claro: #8d959c;
-    -fx-color-primario-oscuro: #5a6268;
+    /* --- Paleta de Colores Moderna (Grises y Acentos) --- */
+    -fx-color-primario: #6c757d; /* Gris neutral */
+    -fx-color-primario-claro: #adb5bd;
+    -fx-color-primario-oscuro: #495057;
 
-    /* Colores de sección unificados a la paleta principal para un estilo homogéneo */
-    -fx-color-producto-inicio: -fx-color-primario-claro;
-    -fx-color-producto-fin: -fx-color-primario-oscuro;
-    -fx-color-producto-inicio-hover: -fx-color-primario;
-    -fx-color-producto-fin-hover: -fx-color-primario-oscuro;
+    /* --- Colores para Botones por Sección (Unificados a un gris claro) --- */
+    -fx-color-cliente: #5f5f5f;          /* Gris claro base */
+    -fx-color-cliente-hover: #6c757d;    /* Gris oscuro para hover */
+    -fx-color-producto: #5f5f5f;         /* Gris claro base */
+    -fx-color-producto-hover: #6c757d;    /* Gris oscuro para hover */
+    -fx-color-descuento: #5f5f5f;        /* Gris claro base */
+    -fx-color-descuento-hover: #6c757d;    /* Gris oscuro para hover */
+    -fx-color-ventas: #5f5f5f;        /* Gris claro base */
+    -fx-color-ventas-hover: #6c757d;    /* Gris oscuro para hover */
 
-    -fx-color-cliente-inicio: -fx-color-primario-claro;
-    -fx-color-cliente-fin: -fx-color-primario-oscuro;
-    -fx-color-cliente-inicio-hover: -fx-color-primario;
-    -fx-color-cliente-fin-hover: -fx-color-primario-oscuro;
+    /*Colores modulares para botones de diferentes secciones*/
 
-    -fx-color-descuento-inicio: -fx-color-primario-claro;
-    -fx-color-descuento-fin: -fx-color-primario-oscuro;
-    -fx-color-descuento-inicio-hover: -fx-color-primario;
-    -fx-color-descuento-fin-hover: -fx-color-primario-oscuro;
+    -fx-color-rojo-inicio: #d9534f; /* Rojo suave */
+    -fx-color-rojo-fin: #c9302c;
 
-    /* Color para acciones de peligro (Rojo Desaturado) */
-    -fx-color-rojo-inicio: #e07a7a;
-    -fx-color-rojo-fin: #c95c5c;
-    -fx-color-rojo-inicio-hover: #d98c8c;
-    -fx-color-rojo-fin-hover: #c25050;
+    /* --- Fondos --- */
+    -fx-color-fondo: #8b8b8b;
+    -fx-color-fondo-panel-principal: #f5f5f5; /* Gris claro para el contenido principal */
+    -fx-color-fondo-panel-secundario: #e0e0e0; /* Gris más oscuro para formularios y tablas */
+    -fx-color-fondo-panel-secundario-alterno: #d5d5d5; /* Color alterno para filas de tabla */
+    -fx-color-barra-lateral: #343a40; /* Gris oscuro */
+    
+    -fx-color-borde: #bdbdbd;
 
-    -fx-color-fondo: #e9ecef; /* Fondo general (gris claro y suave) */
-    -fx-color-fondo-contenido: #ffffff; /* Fondo de paneles (blanco) */
-    -fx-color-barra-lateral-inicio: #343a40;
-    -fx-color-barra-lateral-fin: #212529;
-
-    /* --- Colores de Texto (para tema claro) --- */
-    -fx-texto-color-base: #212529; /* Texto normal (casi negro) */
-    -fx-texto-color-claro: #f8f9fa; /* Texto sobre fondos oscuros (botones) */
-    -fx-texto-color-titulo: #343a40; /* Títulos (gris oscuro) */
-    -fx-texto-color-secundario: #6c757d; /* Texto secundario (gris medio) */
+    /* --- Colores de Texto --- */
+    -fx-texto-color-base: #212529; /* Casi negro */
+    -fx-texto-color-claro: #f8f9fa;
+    -fx-texto-color-titulo: #343a40;
+    -fx-texto-color-secundario: #6c757d;
 
     /* --- Tipografía --- */
     -fx-font-family-base: "Segoe UI";
-    -fx-font-family-header: "Oswald";
-    -fx-font-size-base: 13;
+    -fx-font-family-header: "Roboto";
+    -fx-font-size-base: 13px;
 
     /* --- Aplicación de Estilos Base --- */
     -fx-font-family: -fx-font-family-base;
@@ -55,79 +49,105 @@
 }
 
 /* ==========================================================================
-   2. TIPOGRAFÍA (Títulos y Etiquetas)
+   2. TIPOGRAFÍA
    ========================================================================== */
 .label {
     -fx-text-fill: -fx-texto-color-base;
 }
 
 .titulo-panel {
-    -fx-font-size: 24;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
-    -fx-font-family: -fx-font-family-header;
+    -fx-font-family: -fx-font-family-header, sans-serif;
 }
 
 .subtitulo-panel {
-    -fx-font-size: 16;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
-    -fx-font-family: -fx-font-family-header;
-}
-
-.title {
-    -fx-font-size: 18;
-    -fx-font-weight: bold;
-    -fx-text-fill: -fx-color-primario;
+    -fx-font-family: -fx-font-family-header, sans-serif;
 }
 
 /* ==========================================================================
-   3. LAYOUT Y PANELES PRINCIPALES
+   3. LAYOUT Y PANELES
    ========================================================================== */
 #panelLateral {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-barra-lateral-inicio, -fx-color-barra-lateral-fin);
-    -fx-border-color: #495057;
-    -fx-border-width: 0 1px 0 0;
+    -fx-background-color: -fx-color-barra-lateral;
+    -fx-border-width: 0;
 }
 
 #tituloMiniErp {
     -fx-text-fill: -fx-texto-color-claro;
-    -fx-font-size: 20;
+    -fx-font-size: 22px;
     -fx-font-weight: bold;
+    -fx-font-family: -fx-font-family-header, sans-serif;
+}
+
+/* Estilo para el contenedor principal donde se cargan las vistas */
+#contenedorCentral {
+    -fx-background-color: -fx-color-fondo;
 }
 
 .panel-contenido {
-    -fx-background-color: -fx-color-fondo-contenido;
+    -fx-background-color: -fx-color-fondo-panel-principal;
     -fx-background-radius: 8;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 15, 0, 0, 3);
 }
 
 .formulario-panel {
-    -fx-background-color: transparent;
-    -fx-border-color: #dee2e6;
+    -fx-background-color: -fx-color-fondo-panel-secundario;
+    -fx-background-radius: 8;
+    -fx-border-color: -fx-color-borde;
     -fx-border-radius: 8;
     -fx-border-width: 1;
-    -fx-padding: 12;
+    -fx-padding: 15;
 }
+
 
 /* ==========================================================================
    4. COMPONENTES REUTILIZABLES
    ========================================================================== */
 
-/* 🔘 BOTONES */
+/* --- BOTONES (Estilo Base) --- */
 .button {
     -fx-background-color: linear-gradient(to top, -fx-color-primario-oscuro, -fx-color-primario);
     -fx-text-fill: -fx-texto-color-claro;
     -fx-font-weight: bold;
     -fx-background-radius: 6;
     -fx-border-color: transparent;
-    -fx-padding: 8 16;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1); /* Sombra base sutil */
 }
 
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, -fx-color-primario-claro, -fx-color-primario);
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 6, 0, 0, 2);
+    /* Sombra más pronunciada en la esquina inferior izquierda al hacer hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 12, 0, -4, 4);
+}
+
+
+/* --- BOTONES POR SECCIÓN (Sobrescriben el color de fondo) --- */
+.button-cliente {
+    -fx-background-color: -fx-color-cliente;
+}
+.button-cliente:hover {
+    -fx-background-color: -fx-color-cliente-hover;
+}
+
+.button-producto {
+    -fx-background-color: -fx-color-producto;
+}
+.button-producto:hover {
+    -fx-background-color: -fx-color-producto-hover;
+}
+
+.button-descuento {
+    -fx-background-color: -fx-color-descuento;
+}
+.button-descuento:hover {
+    -fx-background-color: -fx-color-descuento-hover;
 }
 
 .botonSalir {
@@ -135,120 +155,94 @@
 }
 
 .botonSalir:hover {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-rojo-inicio-hover, -fx-color-rojo-fin-hover);
+    -fx-background-color: -fx-color-rojo-inicio;
 }
 
-/* ✏️ CAMPOS DE TEXTO (Tema Claro) */
+/* --- CAMPOS DE TEXTO --- */
 .text-field,
 .text-area,
-.campo-formulario {
-    -fx-background-color: #ffffff;
-    -fx-border-color: #ced4da;
+.date-picker {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 6;
+    -fx-border-color: -fx-color-borde;
+    -fx-border-width: 1;
     -fx-border-radius: 6;
-    -fx-padding: 6 8;
+    -fx-padding: 8 10;
     -fx-text-fill: -fx-texto-color-base;
-    -fx-prompt-text-fill: #adb5bd;
+    -fx-prompt-text-fill: #A0AEC0;
     -fx-font-size: -fx-font-size-base;
+    -fx-highlight-fill: -fx-color-primario;
+    -fx-highlight-text-fill: -fx-texto-color-claro;
 }
 
 .text-field:focused,
-.text-area:focused {
+.text-area:focused,
+.date-picker:focused {
     -fx-border-color: -fx-color-primario;
-    -fx-background-color: #ffffff;
-    -fx-effect: dropshadow(gaussian, rgba(108, 117, 125, 0.25), 4, 0, 0, 1);
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(108, 117, 125, 0.5), 5, 0, 0, 0);
 }
 
-.text-field:focused:invalid {
-    -fx-border-color: -fx-color-rojo-fin;
-}
-
-/* 📋 TABLAS (Tema Claro) */
+/* --- TABLAS --- */
 .table-view {
-    -fx-background-color: -fx-color-fondo-contenido;
-    -fx-control-inner-background: -fx-color-fondo-contenido;
-    -fx-border-color: #dee2e6;
-    -fx-table-cell-border-color: #e9ecef;
-    -fx-font-family: -fx-font-family-base;
-    -fx-font-size: -fx-font-size-base;
+    -fx-background-color: -fx-color-fondo-panel-secundario;
+    -fx-control-inner-background: -fx-color-fondo-panel-secundario;
+    -fx-background-radius: 8;
+    -fx-border-color: -fx-color-borde;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-table-cell-border-color: -fx-color-borde;
 }
 
-.table-view .column-header-background .label {
+.table-view .column-header-background {
+    -fx-background-color: #f8f9fa; /* Fondo de cabecera sutil */
+}
+
+.table-view .column-header {
+    -fx-background-color: -fx-color-fondo-panel-secundario;
+    -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
-}
-
-.table-column {
-    -fx-alignment: CENTER_LEFT;
+    -fx-font-size: 12px;
+    -fx-padding: 8;
 }
 
 .table-row-cell {
-    -fx-background-color: -fx-color-fondo-contenido;
+    -fx-background-color: -fx-color-fondo-panel-secundario;
     -fx-border-color: transparent;
     -fx-padding: 6;
 }
 
 .table-row-cell:odd {
-    -fx-background-color: #f8f9fa;
-}
-
-.table-cell .text {
-    -fx-fill: -fx-texto-color-secundario;
-}
-
-/* ==========================================================================
-   5. ESTILOS ESPECÍFICOS POR MÓDULO
-   ========================================================================== */
-
-.table-row-cell:selected .table-cell .text {
-    -fx-fill: -fx-texto-color-base;
+    -fx-background-color: -fx-color-fondo-panel-secundario-alterno;
 }
 
 .table-row-cell:selected {
-    -fx-background-color: #dee2e6;
+    -fx-background-color: -fx-color-primario;
 }
 
-#tablaProducto .table-row-cell:selected,
-#tablaCliente .table-row-cell:selected {
-    -fx-background-color: #dee2e6;
+.table-row-cell:selected .text {
+    -fx-fill: -fx-texto-color-claro;
 }
 
-/* ==========================================================================
-   6. CLASES DE UTILIDAD
-   ========================================================================== */
-.panel-scroll-pane,
-.panel-scroll-pane>.viewport {
+/* --- SCROLLPANE --- */
+.scroll-pane {
     -fx-background-color: transparent;
 }
 
-/* ==========================================================================
-   7. BOTONES PRINCIPALES DE MÓDULO
-   ========================================================================== */
-
-.boton-principal-producto,
-.boton-principal-cliente,
-.boton-principal-descuento {
-    -fx-font-size: 16;
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
 }
 
-.boton-principal-producto {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio, -fx-color-producto-fin);
+.scroll-bar:vertical,
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
 }
 
-.boton-principal-producto:hover {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-producto-inicio-hover, -fx-color-producto-fin-hover);
+.scroll-bar .thumb {
+    -fx-background-color: #dee2e6;
+    -fx-background-radius: 6;
 }
 
-.boton-principal-cliente {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-cliente-inicio, -fx-color-cliente-fin);
-}
-
-.boton-principal-cliente:hover {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-cliente-inicio-hover, -fx-color-cliente-fin-hover);
-}
-
-.boton-principal-descuento {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-descuento-inicio, -fx-color-descuento-fin);
-}
-
-.boton-principal-descuento:hover {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-descuento-inicio-hover, -fx-color-descuento-fin-hover);
+.scroll-bar .thumb:hover {
+    -fx-background-color: #adb5bd;
 }

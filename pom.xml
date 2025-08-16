@@ -58,6 +58,22 @@ SQLite.
       <!-- Solo se incluye en fase de test -->
       <scope>test</scope>
     </dependency>
+
+    <!-- Framework de Mocking Mockito -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>5.3.1</version>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Framework para tests de UI JavaFX -->
+    <dependency>
+        <groupId>org.testfx</groupId>
+        <artifactId>testfx-junit5</artifactId>
+        <version>4.0.16-alpha</version>
+        <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <!-- ⚙️ Configuración del proceso de construcción -->

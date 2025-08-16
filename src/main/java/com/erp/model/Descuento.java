@@ -65,7 +65,7 @@ public class Descuento {
         
     }
 
-    // --- Métodos de Propiedad (Property Methods) ---
+    
 
     public Integer getId() { return id.get(); }
     public void setId(Integer id) { this.id.set(id); }

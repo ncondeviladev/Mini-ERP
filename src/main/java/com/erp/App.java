@@ -1,6 +1,5 @@
 package com.erp;
 
-// Importo la clase que se encarga de inicializar y gestionar la conexión con la base de datos.
 import com.erp.db.SQLiteConnector;
 
 import javafx.application.Application;
@@ -10,10 +9,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Clase principal que arranca toda la aplicación del Mini ERP.
- * Como extiende de 'Application', es el punto de entrada para JavaFX.
- * Su responsabilidad es cargar la ventana principal (main.fxml),
- * inicializar la base de datos y aplicar los estilos CSS.
+ * Clase principal que inicia y configura la aplicación JavaFX del Mini ERP.
+ * <p>
+ * Hereda de {@link Application}, sirviendo como el punto de entrada para el framework JavaFX.
+ * Se encarga de inicializar la base de datos, cargar la vista principal y aplicar los estilos.
  *
  * @author Noé
  */
@@ -21,13 +20,15 @@ public class App extends Application {
 
     /**
      * El método main es el primer código que se ejecuta.
-     * Su única función es llamar a 'launch(args)', que a su vez
-     * inicia el ciclo de vida de la aplicación JavaFX y llama al método start().
+     * <p>
+     * Su única responsabilidad es llamar a {@link #launch(String...)}, que inicia el
+     * ciclo de vida de la aplicación JavaFX, lo que eventualmente lleva a la
+     * ejecución del método {@link #start(Stage)}.
      *
      * @param args Argumentos de la línea de comandos (no los usamos aquí).
      */
     public static void main(String[] args) {
-        // Lanza la aplicación JavaFX.
+        // Lanza la aplicación JavaFX, que a su vez llamará al método start().
         launch(args);
     }
 
@@ -35,6 +36,7 @@ public class App extends Application {
      * Este método se ejecuta justo después de 'launch()'. Aquí es donde se
      * configura y se muestra la interfaz gráfica principal.
      *
+     * @see <a href="https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.html#start-javafx.stage.Stage-">Documentación de Application#start</a>
      * @param stage El 'escenario' o ventana principal que nos proporciona JavaFX.
      * @throws Exception Si hay algún error al cargar el archivo FXML o CSS.
      */
@@ -44,16 +46,16 @@ public class App extends Application {
         // Esto crea las tablas si es la primera vez que se ejecuta.
         SQLiteConnector.initDatabase();
 
-        // Cargo el diseño de la interfaz principal desde el archivo FXML.
-        // Parent es un nodo genérico que puede contener a todos los demás.
+        // Carga el diseño de la interfaz principal desde el archivo FXML.
+        // Parent es un nodo genérico que puede contener a todos los demás nodos de la UI.
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
 
-        // Creo la 'escena' que contendrá el diseño que acabo de cargar.
-        // Le doy un tamaño inicial a la ventana.
+        // Crea la 'escena' que contendrá el diseño que se acaba de cargar.
+        // Se define un tamaño inicial para la ventana.
         Scene scene = new Scene(root, 802, 600);
 
-        // Localizo y aplico mi hoja de estilos 'estilo.css' a toda la escena.
-        // Así todos los componentes tendrán el mismo aspecto.
+        // Localiza y aplica la hoja de estilos 'estilo.css' a toda la escena.
+        // Esto asegura que todos los componentes tengan una apariencia consistente.
         scene.getStylesheets().add(
             getClass().getClassLoader().getResource("css/estilo.css").toExternalForm()
         );

@@ -6,6 +6,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Controlador para la vista del menú principal (menu.fxml).
+ * <p>
+ * Este controlador maneja las acciones de los botones del menú, como abrir
+ * nuevas ventanas o salir de la aplicación.
+ */
 public class MenuController {
 
     /**
