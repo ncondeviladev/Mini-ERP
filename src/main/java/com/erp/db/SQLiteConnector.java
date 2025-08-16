@@ -77,11 +77,9 @@ public class SQLiteConnector {
         String createTableVentas = "CREATE TABLE IF NOT EXISTS ventas (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "cliente_id INTEGER NOT NULL," +
-                "descuento_id INTEGER," +
                 "fecha TEXT NOT NULL," +
                 "total REAL NOT NULL," +
-                "FOREIGN KEY (cliente_id) REFERENCES clientes(id)," +
-                "FOREIGN KEY (descuento_id) REFERENCES descuentos(idDescuento)" +
+                "FOREIGN KEY (cliente_id) REFERENCES clientes(id)" +
                 ");";
 
         String createTableDetallesVenta = "CREATE TABLE IF NOT EXISTS detalles_venta (" +
@@ -94,6 +92,14 @@ public class SQLiteConnector {
                 "FOREIGN KEY (producto_id) REFERENCES productos(id)" +
                 ");";
 
+        String createTableVentaDescuentos = "CREATE TABLE IF NOT EXISTS venta_descuentos (" +
+                "venta_id INTEGER NOT NULL," +
+                "descuento_id INTEGER NOT NULL," +
+                "PRIMARY KEY (venta_id, descuento_id)," +
+                "FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE," +
+                "FOREIGN KEY (descuento_id) REFERENCES descuentos(idDescuento) ON DELETE CASCADE" +
+                ");";
+
         // Ejecuta la consulta usando un Statement
         try (Statement stmt = connect().createStatement()) {
             stmt.execute(createTableProd);
@@ -101,6 +107,7 @@ public class SQLiteConnector {
             stmt.execute(createTableDesc);
             stmt.execute(createTableVentas);
             stmt.execute(createTableDetallesVenta);
+            stmt.execute(createTableVentaDescuentos);
             System.out.println("Tablas base de datos creadas.");
         } catch (SQLException e) {
             // Muestra error si falla la creación
@@ -125,3 +132,6 @@ public class SQLiteConnector {
         }
     }
 }
+
+
+
