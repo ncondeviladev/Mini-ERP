@@ -41,12 +41,36 @@ El proyecto sigue un patrón de diseño **Modelo-Vista-Controlador (MVC)** muy b
 - `org.openjfx:javafx-controls`: Controles de JavaFX.
 - `org.openjfx:javafx-fxml`: Soporte para FXML en JavaFX.
 - `org.xerial:sqlite-jdbc`: Driver para la base de datos SQLite.
+- `com.itextpdf:itext7-core`: Librería para la generación de documentos PDF.
 
-## 5. Plan de Desarrollo Actual: Módulo de Ventas
+## 5. Conceptos Clave de Diseño
+
+### Transacciones en Base de Datos (`VentaDAO`)
+Para asegurar la integridad de los datos al guardar una venta (que implica múltiples operaciones: `INSERT` en `ventas`, `INSERT` en `detalles_venta`, etc.), se utiliza una transacción manual.
+
+1.  **`conn.setAutoCommit(false)`**: Se desactiva el modo auto-commit al inicio. Esto le dice a la base de datos que no guarde permanentemente ninguna operación hasta que se le indique.
+2.  **`conn.commit()`**: Se ejecuta al final, solo si todas las operaciones han tenido éxito. Hace permanentes todos los cambios de la transacción.
+3.  **`conn.rollback()`**: Se ejecuta en el bloque `catch` si ocurre cualquier error. Deshace todos los cambios realizados durante la transacción, dejando la base de datos en su estado original y evitando datos corruptos (ej. una venta sin detalles).
+
+## 6. Plan de Desarrollo Actual: Módulo de Ventas
 
 **Objetivo**: Construir un módulo de ventas completo.
 
-- **Fase 1**: Preparar bases (Modelos `Venta`/`LineaVenta`, `VentaDAO`, tablas en BD, añadir librería iText para PDFs).
-- **Fase 2**: Implementar la lógica de selección de productos (Reutilizar tabla de productos, añadir una segunda tabla como "carrito").
-- **Fase 3**: Finalizar la venta (Diálogo para seleccionar cliente, aplicar descuentos, guardar en BD).
-- **Fase 4**: Generar factura en PDF.
+- **Fase 1: Preparar las bases [COMPLETADA]**
+    - Modelos `Venta`/`DetalleVenta` creados.
+    - `VentaDAO` con lógica transaccional implementado.
+    - Tablas `ventas` y `detalles_venta` añadidas a `SQLiteConnector`.
+    - Librería iText para PDFs añadida al `pom.xml`.
+
+- **Fase 2: Lógica de la Venta (Seleccionar Productos) [EN CURSO]**
+    - **Tarea Actual**: Crear la vista `venta.fxml` y su controlador `VentaController.java`.
+    - Reutilizar la tabla de productos y la funcionalidad de búsqueda.
+    - Implementar una segunda tabla como "carrito".
+
+- **Fase 3: Finalizar la Venta [PENDIENTE]**
+    - Diálogo para seleccionar cliente.
+    - Aplicar descuentos.
+    - Guardar en BD.
+
+- **Fase 4: Generar Factura [PENDIENTE]**
+    - Crear clase de utilidad para generar un PDF de la factura con iText.
