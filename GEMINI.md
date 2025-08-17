@@ -63,7 +63,7 @@ Para asegurar la integridad de los datos al guardar una venta (que implica múlt
     - Librería iText para PDFs añadida al `pom.xml`.
 
 - **Fase 2: Lógica de la Venta (Seleccionar Productos) [EN CURSO]**
-    - **Tarea Actual**: Crear la vista `venta.fxml` y su controlador `VentaController.java`.
+    - **Tarea Actual**: Crear la vista `venta.fxml` y su controlador `VentaController.java` (Controlador creado, pendiente de implementar la lógica y la vista FXML).
     - Reutilizar la tabla de productos y la funcionalidad de búsqueda.
     - Implementar una segunda tabla como "carrito".
 

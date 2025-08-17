@@ -9,49 +9,62 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.erp.controller.VentaController">
-    
-    <!-- Título de la Vista -->
-    <top>
-        <Label text="Módulo de Ventas" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 10;" BorderPane.alignment="CENTER"/>
-    </top>
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.erp.controller.VentaController">
 
-    <!-- Contenido Principal -->
-    <center>
+    <Scrollpane styleClass="panel-scroll-pane" fitToWidth="true" fitToHeight="true">
+
+
+        <!-- Contenido Principal -->
+
         <VBox spacing="10" style="-fx-padding: 10;">
-            
-            <!-- 1. Sección de Búsqueda de Productos -->
-            <Label text="Buscar Productos" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
+            <!-- Título de la Vista -->
+
+            <Label text="Módulo de Ventas"
+                styleClass="titulo-panel" />
+
+
             <HBox spacing="10" alignment="CENTER_LEFT">
-                <TextField fx:id="buscarIdProductoField" promptText="Buscar por ID"/>
-                <TextField fx:id="buscarNombreProductoField" promptText="Buscar por Nombre" HBox.hgrow="ALWAYS"/>
-                <TextField fx:id="buscarCategoriaProductoField" promptText="Buscar por Categoría"/>
+
+                <!-- 1. Sección de Búsqueda de Productos -->
+                <Label text="Buscar Productos" styleClass="subtitulo-panel" />
+                
+                <TextField fx:id="buscarIdProductoField" promptText="Buscar por ID" />
+                <TextField fx:id="buscarNombreProductoField" promptText="Buscar por Nombre"
+                    HBox.hgrow="ALWAYS" />
+                <TextField fx:id="buscarCategoriaProductoField"
+                    promptText="Buscar por Categoría" />
             </HBox>
 
             <!-- 2. Tabla de Productos Disponibles -->
             <TableView fx:id="tablaProductosDisponibles">
                 <columns>
-                    <TableColumn fx:id="colIdProducto" prefWidth="50" text="ID"/>
-                    <TableColumn fx:id="colNombreProducto" prefWidth="150" text="Nombre"/>
-                    <TableColumn fx:id="colCategoriaProducto" prefWidth="100" text="Categoría"/>
-                    <TableColumn fx:id="colPrecioProducto" prefWidth="80" text="Precio"/>
-                    <TableColumn fx:id="colStockProducto" prefWidth="50" text="Stock"/>
-                    <TableColumn fx:id="colDescripcionProducto" prefWidth="250" text="Descripción"/>
+                    <TableColumn fx:id="colIdProducto" prefWidth="50" text="ID" />
+                    <TableColumn fx:id="colNombreProducto" prefWidth="150" text="Nombre" />
+                    <TableColumn fx:id="colCategoriaProducto" prefWidth="100" text="Categoría" />
+                    <TableColumn fx:id="colPrecioProducto" prefWidth="80" text="Precio" />
+                    <TableColumn fx:id="colStockProducto" prefWidth="50" text="Stock" />
+                    <TableColumn fx:id="colDescripcionProducto" prefWidth="250"
+                        text="Descripción" />
                 </columns>
             </TableView>
 
             <!-- 3. Sección del Carrito (la añadiremos más adelante) -->
-            <Label text="Carrito de la Compra" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10 0 0 0;"/>
-            <Label text="Aquí irá la tabla con los productos seleccionados."/>
+            <Label text="Carrito de la Compra"
+                style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10 0 0 0;" />
+            <Label text="Aquí irá la tabla con los productos seleccionados." />
 
         </VBox>
-    </center>
 
-    <!-- Barra de Botones Inferior -->
-    <bottom>
+
+        <!-- Barra de Botones Inferior -->
+
         <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 10;">
             <!-- Aquí irán los botones para finalizar la venta -->
         </HBox>
-    </bottom>
 
+    </Scrollpane>
 </BorderPane>

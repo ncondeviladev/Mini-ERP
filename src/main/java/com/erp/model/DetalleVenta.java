@@ -1,40 +1,53 @@
 package com.erp.model;
 
+import com.erp.model.Producto;
+
 /**
- * Representa un detalle de línea de una venta, especificando un producto,
- * su cantidad y el precio unitario al momento de la venta.
+ * Representa una línea de detalle dentro de una Venta.
+ * <p>
+ * Cada instancia de esta clase corresponde a un producto específico que ha sido
+ * vendido, incluyendo la cantidad y el precio unitario en el momento de la transacción.
+ * Esto permite mantener un registro histórico preciso de los precios.
  */
 public class DetalleVenta {
     
     /**
-     * Identificador único del detalle de venta.
+     * Identificador único autoincremental para el registro del detalle de venta en la base de datos.
      */
     private Integer id;
+    
     /**
-     * ID de la venta a la que pertenece este detalle.
+     * ID de la venta (de la tabla `ventas`) a la que pertenece este detalle.
+     * Sirve como clave foránea para relacionar el detalle con su venta principal.
      */
     private Integer ventaId;
+    
     /**
-     * El producto que se vendió en este detalle.
+     * El objeto {@link Producto} que se vendió.
+     * Contiene toda la información del producto.
      */
     private Producto producto;
+    
     /**
-     * La cantidad del producto vendido.
+     * La cantidad de unidades del producto que se vendieron.
      */
     private Integer cantidad;
+    
     /**
-     * El precio unitario del producto al momento de la venta.
+     * El precio de una sola unidad del producto en el momento exacto de la venta.
+     * Se almacena aquí para evitar que futuros cambios de precio en el producto afecten
+     * a los registros de ventas pasadas.
      */
     private double precioUnitario;
 
     /**
      * Constructor para crear una nueva instancia de DetalleVenta.
      *
-     * @param id Identificador único del detalle de venta. Puede ser null para nuevos detalles.
-     * @param ventaId ID de la venta a la que pertenece este detalle.
+     * @param id Identificador único del detalle. Generalmente es null al crear un nuevo detalle antes de guardarlo en la BD.
+     * @param ventaId ID de la venta a la que pertenece.
      * @param producto El producto asociado a este detalle.
-     * @param cantidad La cantidad del producto vendido.
-     * @param precioUnitario El precio unitario del producto al momento de la venta.
+     * @param cantidad La cantidad de producto vendido.
+     * @param precioUnitario El precio unitario del producto en el momento de la venta.
      */
     public DetalleVenta(Integer id, Integer ventaId, Producto producto, Integer cantidad, double precioUnitario) {
         this.id = id;
@@ -43,6 +56,8 @@ public class DetalleVenta {
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
     }
+
+    // --- Getters y Setters ---
 
     /**
      * Obtiene el identificador único del detalle de venta.
@@ -54,7 +69,7 @@ public class DetalleVenta {
 
     /**
      * Establece el identificador único del detalle de venta.
-     * @param id El nuevo ID del detalle de venta.
+     * @param id El nuevo ID para el detalle de venta.
      */
     public void setId(Integer id) {
         this.id = id;
@@ -78,7 +93,7 @@ public class DetalleVenta {
 
     /**
      * Obtiene el producto asociado a este detalle de venta.
-     * @return El objeto Producto.
+     * @return El objeto {@link Producto}.
      */
     public Producto getProducto() {
         return producto;
@@ -86,14 +101,14 @@ public class DetalleVenta {
 
     /**
      * Establece el producto asociado a este detalle de venta.
-     * @param producto El nuevo objeto Producto.
+     * @param producto El nuevo objeto {@link Producto}.
      */
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
 
     /**
-     * Obtiene la cantidad del producto vendido en este detalle.
+     * Obtiene la cantidad del producto vendido.
      * @return La cantidad del producto.
      */
     public Integer getCantidad() {
@@ -101,7 +116,7 @@ public class DetalleVenta {
     }
 
     /**
-     * Establece la cantidad del producto vendido en este detalle.
+     * Establece la cantidad del producto vendido.
      * @param cantidad La nueva cantidad del producto.
      */
     public void setCantidad(Integer cantidad) {
@@ -109,7 +124,7 @@ public class DetalleVenta {
     }
 
     /**
-     * Obtiene el precio unitario del producto al momento de la venta.
+     * Obtiene el precio unitario del producto en el momento de la venta.
      * @return El precio unitario.
      */
     public double getPrecioUnitario() {
@@ -117,7 +132,7 @@ public class DetalleVenta {
     }
 
     /**
-     * Establece el precio unitario del producto al momento de la venta.
+     * Establece el precio unitario del producto.
      * @param precioUnitario El nuevo precio unitario.
      */
     public void setPrecioUnitario(double precioUnitario) {
@@ -125,11 +140,14 @@ public class DetalleVenta {
     }
 
     /**
-     * Calcula y obtiene el subtotal de este detalle de venta (cantidad * precioUnitario).
+     * Calcula y devuelve el subtotal para esta línea de detalle.
+     * El cálculo es {@code cantidad * precioUnitario}.
+     * 
      * @return El subtotal del detalle de venta.
      */
-    public double getSubTotal(){
+    public double getSubTotal() {
+        // El subtotal se calcula dinámicamente y no se almacena en la BD
+        // para asegurar que siempre sea consistente con la cantidad y el precio.
         return cantidad * precioUnitario;
     }
 }
-
