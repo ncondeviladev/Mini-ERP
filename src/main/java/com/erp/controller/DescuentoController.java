@@ -1,20 +1,25 @@
 package com.erp.controller;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.erp.dao.DescuentoDAO;
 import com.erp.model.Cliente;
 import com.erp.model.Descuento;
+import com.erp.utils.Alerta;
 import com.erp.utils.AnimationUtils;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Controlador para la vista de gestión de descuentos (descuento.fxml).
@@ -183,7 +188,7 @@ public class DescuentoController {
     @FXML
     private void agregarDescuento() {
         if (clienteSeleccionado == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Sin Cliente", "No se ha seleccionado un cliente para añadirle un descuento.");
+            Alerta.mostrarAdvertencia("Sin Cliente", "No se ha seleccionado un cliente para añadirle un descuento.");
             return;
         }
         modoEdicion = false;
@@ -200,7 +205,7 @@ public class DescuentoController {
     private void editarDescuento() {
         descuentoAEditar = tablaDescuentos.getSelectionModel().getSelectedItem();
         if (descuentoAEditar == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Sin Selección", "Debes seleccionar un descuento para editar.");
+            Alerta.mostrarAdvertencia("Sin Selección", "Debes seleccionar un descuento para editar.");
             return;
         }
         modoEdicion = true;
@@ -217,22 +222,20 @@ public class DescuentoController {
     private void eliminarDescuento() {
         Descuento descuentoAEliminar = tablaDescuentos.getSelectionModel().getSelectedItem();
         if (descuentoAEliminar == null) {
-            mostrarAlerta(Alert.AlertType.WARNING, "Sin Selección", "Por favor, selecciona un descuento para eliminar.");
+            Alerta.mostrarAdvertencia("Sin Selección", "Por favor, selecciona un descuento para eliminar.");
             return;
         }
 
-        // Muestra un diálogo de confirmación.
-        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar Eliminación");
-        confirmacion.setHeaderText("¿Seguro que quieres eliminar el descuento?");
-        confirmacion.setContentText(descuentoAEliminar.getDescripcion());
+        boolean confirmado = Alerta.mostrarConfirmacion(
+                "Confirmar Eliminación",
+                "¿Seguro que quieres eliminar el descuento?",
+                descuentoAEliminar.getDescripcion());
 
-        Optional<ButtonType> resultado = confirmacion.showAndWait();
-        if (resultado.isPresent() && resultado.get() == ButtonType.OK) {
+        if (confirmado) {
             if (descuentoDAO.eliminarDescuentoDb(descuentoAEliminar.getId())) {
                 cargarDatosDescuentos();
             } else {
-                mostrarAlerta(Alert.AlertType.ERROR, "Error", "No se pudo eliminar el descuento de la base de datos.");
+                Alerta.mostrarError("Error", "No se pudo eliminar el descuento de la base de datos.");
             }
         }
     }
@@ -244,7 +247,7 @@ public class DescuentoController {
         }
 
         if (clienteSeleccionado == null) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error Crítico", "No hay un cliente seleccionado para asociar el descuento.");
+            Alerta.mostrarError("Error Crítico", "No hay un cliente seleccionado para asociar el descuento.");
             return;
         }
 
@@ -262,7 +265,7 @@ public class DescuentoController {
                 if (descuentoDAO.actualizarDescuentoDb(descuentoAEditar)) {
                     tablaDescuentos.refresh();
                 } else {
-                    mostrarAlerta(Alert.AlertType.ERROR, "Error de Base de Datos", "No se pudo actualizar el descuento.");
+                    Alerta.mostrarError("Error de Base de Datos", "No se pudo actualizar el descuento.");
                 }
             } else {
                 LocalDate fechaInicio = LocalDate.now();
@@ -272,29 +275,29 @@ public class DescuentoController {
                 if (descuentoDAO.guardarDescuentoDb(nuevoDescuento)) {
                     listaDescuentos.add(nuevoDescuento);
                 } else {
-                    mostrarAlerta(Alert.AlertType.ERROR, "Error de Base de Datos", "No se pudo guardar el descuento.");
+                    Alerta.mostrarError("Error de Base de Datos", "No se pudo guardar el descuento.");
                 }
             }
             ocultarFormulario();
 
         } catch (NumberFormatException e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error de Formato", "El porcentaje y la duración deben ser números válidos.");
+            Alerta.mostrarError("Error de Formato", "El porcentaje y la duración deben ser números válidos.");
         } catch (Exception e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error Inesperado", "Ocurrió un error: " + e.getMessage());
+            Alerta.mostrarError("Error Inesperado", "Ocurrió un error: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     private boolean esFormularioValido() {
         if (descripcionField.getText().isEmpty() || porcentajeField.getText().isEmpty() || duracionField.getText().isEmpty()) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación", "Todos los campos son obligatorios.");
+            Alerta.mostrarError("Error de Validación", "Todos los campos son obligatorios.");
             return false;
         }
         try {
             Double.parseDouble(porcentajeField.getText());
             Integer.parseInt(duracionField.getText());
         } catch (NumberFormatException e) {
-            mostrarAlerta(Alert.AlertType.ERROR, "Error de Validación", "Porcentaje y duración deben ser números.");
+            Alerta.mostrarError("Error de Validación", "Porcentaje y duración deben ser números.");
             return false;
         }
         return true;
@@ -324,11 +327,4 @@ public class DescuentoController {
         duracionField.setPromptText("Introduce nueva duración en meses");
     }
 
-    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
 }

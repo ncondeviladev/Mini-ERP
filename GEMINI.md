@@ -74,3 +74,25 @@ Para asegurar la integridad de los datos al guardar una venta (que implica múlt
 
 - **Fase 4: Generar Factura [PENDIENTE]**
     - Crear clase de utilidad para generar un PDF de la factura con iText.
+
+## 7. Arquitectura de Componentes FXML Reutilizables
+
+Para evitar la duplicación de código y fomentar un diseño modular, el proyecto adopta una estrategia de componentes FXML reutilizables.
+
+- **Principio:** Cada pieza de la interfaz que se usa en más de un lugar (ej. un formulario de búsqueda, una tabla de datos) se extrae a su propio fichero FXML. Estos ficheros se almacenan en `src/main/resources/fxml/components/`.
+
+- **Un Controlador por Componente:** Cada fichero FXML de un componente tiene su propio controlador Java asociado (`fx:controller`). Esto es fundamental por dos razones:
+    1.  **Limitación Técnica de `@FXML`**: Un controlador solo puede inyectar (`@FXML`) los nodos definidos dentro de su *propio* fichero FXML. Un controlador "padre" no puede acceder directamente a los nodos de un FXML incluido.
+    2.  **Encapsulación**: El componente se convierte en una "caja negra" que gestiona su propia lógica interna.
+
+- **Patrón "Controlador de Controladores"**: La comunicación entre un controlador padre (ej. `ProductoController`) y el controlador de un componente incluido se realiza de la siguiente manera:
+    1.  En el FXML padre, se le da un `fx:id` a la inclusión:
+        `<fx:include fx:id="formBusqueda" source="components/producto-formulario-buscar.fxml"/>`
+    2.  En el controlador padre, se inyecta el *controlador del componente* usando una convención de nombrado: el `fx:id` del `include` seguido de la palabra "Controller".
+        ```java
+        // Inyecta el controlador del componente, no sus piezas internas
+        @FXML private ProductoFormularioBuscarController formBusquedaController;
+        ```
+    3.  El controlador padre interactúa con el componente a través de los métodos públicos de su controlador, dándole órdenes (`formBusquedaController.limpiarCampos()`) o pidiéndole información (`formBusquedaController.getTextoBusqueda()`), sin conocer sus detalles internos.
+
+Este patrón asegura que el código sea limpio, mantenible y verdaderamente modular.
