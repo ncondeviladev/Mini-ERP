@@ -68,18 +68,5 @@ public class App extends Application {
         stage.show(); // ¡Y finalmente, la muestro!
     }
 
-    /*
-     * Dejo este bloque comentado por si necesito hacer una prueba rápida
-     * de JavaFX sin tener que cargar toda la aplicación.
-     * Es útil para verificar que el entorno funciona correctamente.
-     *
-     * @Override
-     * public void start(Stage stage) {
-     *     Label label = new Label("Hola, Noé 👋");
-     *     Scene scene = new Scene(new StackPane(label), 400, 200);
-     *     stage.setScene(scene);
-     *     stage.setTitle("Prueba JavaFX");
-     *     stage.show();
-     * }
-     */
+   
 }

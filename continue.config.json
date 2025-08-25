@@ -1,0 +1,11 @@
+{
+  "models": [
+    {
+      "title": "Mi Copilot NPU",
+      "model": "local-npu",
+      "apiBase": "http://localhost:8000/v1",
+      "apiKey": "none",
+      "provider": "openai"
+    }
+  ]
+}

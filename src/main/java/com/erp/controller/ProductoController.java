@@ -5,27 +5,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.erp.controller.components.ProductoFormularioAñadirController;
+import com.erp.controller.components.ProductoFormularioBuscarController;
+import com.erp.controller.components.ProductoTablaController;
 import com.erp.dao.ProductoDAO;
 import com.erp.model.Producto;
-import com.erp.utils.AnimationUtils;
-import com.erp.controller.components.*;
 import com.erp.utils.Alerta;
+import com.erp.utils.AnimationUtils;
 
-import javafx.scene.control.Alert.AlertType;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 /**
  * Controlador para la vista de gestión de productos.
@@ -104,6 +97,7 @@ public class ProductoController {
     public void mostrarVistaBuscar() {
         ocultarTodosLosFormularios();
         formBuscar.setVisible(true);
+        formBuscar.setManaged(true);
         inicioProducto.setVisible(false);
     }
 
@@ -209,8 +203,12 @@ public class ProductoController {
 
     private void ocultarTodosLosFormularios() {
         formAnadir.setVisible(false);
+        formAnadir.setManaged(false);
         formBuscar.setVisible(false);
-        inicioProducto.setVisible(true);
+        formBuscar.setManaged(false);
+
+                inicioProducto.setVisible(false);
+        inicioProducto.setManaged(false);
     }
 
    
@@ -226,3 +224,6 @@ public class ProductoController {
         return texto.substring(0, 1).toUpperCase() + texto.substring(1).toLowerCase();
     }
 }
+
+
+

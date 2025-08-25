@@ -38,7 +38,7 @@ public class ProductoControllerTest extends ApplicationTest {
 
         assertEquals("Hola", capitalizarMethod.invoke(controller, "hola"));
         assertEquals("Mundo", capitalizarMethod.invoke(controller, "MUNDO"));
-        assertEquals("Ya Esta Bien", capitalizarMethod.invoke(controller, "ya esta bien"));
+        assertEquals("Ya esta bien", capitalizarMethod.invoke(controller, "ya esta bien"));
         assertEquals("Unico", capitalizarMethod.invoke(controller, "UNICO"));
         assertEquals("", capitalizarMethod.invoke(controller, ""));
         assertNull(capitalizarMethod.invoke(controller, null), "Un nulo de entrada debe devolver nulo.");

@@ -40,7 +40,7 @@
     /* --- Tipografía --- */
     -fx-font-family-base: "Segoe UI";
     -fx-font-family-header: "Roboto";
-    -fx-font-size-base: 13px;
+    -fx-font-size-base: 13;
 
     /* --- Aplicación de Estilos Base --- */
     -fx-font-family: -fx-font-family-base;
@@ -202,7 +202,7 @@
     -fx-background-color: -fx-color-fondo-panel-secundario;
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
-    -fx-font-size: 12px;
+    -fx-font-size: 12;
     -fx-padding: 8;
 }
 

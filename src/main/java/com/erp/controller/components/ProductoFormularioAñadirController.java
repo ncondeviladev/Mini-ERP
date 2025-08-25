@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.input.KeyCode; // Importar KeyCode
 
 /**
  * Controlador para el componente de formulario de añadir/modificar producto.
@@ -48,6 +49,13 @@ public class ProductoFormularioAñadirController {
     private void initialize() {
         // La acción del botón ahora se maneja aquí
         botonGuardarProducto.setOnAction(event -> handleGuardarProducto());
+
+        // Configurar la pulsación de Enter en los campos de texto para que active el botón de guardar
+        configurarEnterParaGuardar(nombreProductoField, botonGuardarProducto);
+        configurarEnterParaGuardar(descripcionProductoField, botonGuardarProducto);
+        configurarEnterParaGuardar(categoriaProductoField, botonGuardarProducto);
+        configurarEnterParaGuardar(precioProductoField, botonGuardarProducto);
+        configurarEnterParaGuardar(stockProductoField, botonGuardarProducto);
     }
 
     /**
@@ -72,6 +80,7 @@ public class ProductoFormularioAñadirController {
             stockProductoField.setText(String.valueOf(producto.getStock()));
         }
         formularioAñadirProducto.setVisible(true);
+        formularioAñadirProducto.setManaged(true);
     }
 
     /**
@@ -119,5 +128,19 @@ public class ProductoFormularioAñadirController {
         categoriaProductoField.clear();
         precioProductoField.clear();
         stockProductoField.clear();
+    }
+
+    /**
+     * Configura un campo de texto para que, al presionar la tecla ENTER,
+     * se simule un clic en el botón especificado.
+     * @param campoTexto El campo de texto al que se le añade el manejador.
+     * @param botonGuardar El botón que se debe "clicar" al presionar Enter.
+     */
+    private void configurarEnterParaGuardar(TextField campoTexto, Button botonGuardar) {
+        campoTexto.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                botonGuardar.fire(); // Simula un clic en el botón
+            }
+        });
     }
 }

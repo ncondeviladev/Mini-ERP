@@ -14,7 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * Controlador para el componente de la tabla de productos.
- * Gestiona la visualización de los datos y las acciones sobre la tabla.
+ * Gestiona la visualizacion de los datos y las acciones sobre la tabla.
  */
 public class ProductoTablaController {
 
@@ -39,8 +39,6 @@ public class ProductoTablaController {
 
     private ProductoController productoController;
 
-    
-
     public void setProductoController(ProductoController productoController) {
         this.productoController = productoController;
     }
@@ -59,10 +57,29 @@ public class ProductoTablaController {
         tablaProducto.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> productoController.actualizarEstadoBotones(newSelection));
 
-        // Asignar las acciones a los botones para que llamen al controlador principal
-        botonModificarProducto.setOnAction(event -> productoController.modificarProductoSeleccionado());
-        botonEliminarProducto.setOnAction(event -> productoController.eliminarProductoSeleccionado());
+        // Las acciones de los botones ahora se gestionan mediante onAction en el FXML.
+    }
 
+    /**
+     * Método invocado por el onAction del botón 'Modificar'.
+     * Notifica al controlador principal para que inicie el proceso de modificación.
+     */
+    @FXML
+    private void modificarProductoSeleccionado() {
+        if (productoController != null) {
+            productoController.modificarProductoSeleccionado();
+        }
+    }
+
+    /**
+     * Método invocado por el onAction del botón 'Eliminar'.
+     * Notifica al controlador principal para que inicie el proceso de eliminación.
+     */
+    @FXML
+    private void eliminarProductoSeleccionado() {
+        if (productoController != null) {
+            productoController.eliminarProductoSeleccionado();
+        }
     }
 
     public void setItems(List<Producto> productos) {

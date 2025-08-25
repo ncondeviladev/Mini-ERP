@@ -57,19 +57,19 @@
                     Este StackPane es una zona dinámica que mostrará diferentes formularios 
                     (Añadir, Buscar) según la acción del usuario. Solo uno será visible a la vez.
                 -->
-                <StackPane fx:id="zonaFormulariosProducto" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
+                <StackPane fx:id="zonaFormulariosProducto"  alignment="TOP_CENTER">
                     <!-- Etiqueta inicial que se muestra por defecto. -->
                     <Label fx:id="inicioProducto" managed="true" />
 
                     <!-- Incluir el formulario de añadir/modificar producto -->
-                    <fx:include fx:id="formAnadir" source="components/producto-formulario-añadir.fxml"/>
+                    <fx:include fx:id="formAnadir" source="components/producto-formulario-anadir.fxml"/>
 
                     <!-- Incluir el formulario de buscar producto -->
                     <fx:include fx:id="formBuscar" source="components/producto-formulario-buscar.fxml"/>
                 </StackPane>
 
                 <!-- Incluir la tabla de productos -->
-                <fx:include fx:id="tablaProductosComponent" source="components/producto-tabla.fxml"/>
+                <fx:include fx:id="tablaProductosComponent" VBox.vgrow="ALWAYS" source="components/producto-tabla.fxml"/>
 
             </VBox>
         </ScrollPane>
