@@ -1,222 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Importaciones de los componentes de JavaFX que se utilizarán en esta vista. -->
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.ScrollPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<!-- 
-    Vista para la Gestión de Clientes.
-    Define la estructura y los componentes de la interfaz de usuario para añadir, buscar,
-    modificar y eliminar clientes.
-    El controlador asociado es 'com.erp.controller.ClienteController'.
+<!--
+    Vista Principal para la Gestión de Clientes (Refactorizada)
+    Ahora solo contiene la estructura base y carga los componentes mediante <fx:include>.
+    El controlador asociado sigue siendo 'com.erp.controller.ClienteController'.
 -->
-<AnchorPane xmlns="http://javafx.com/javafx"
-    xmlns:fx="http://javafx.com/fxml"
-    fx:controller="com.erp.controller.ClienteController"
-    prefWidth="800" prefHeight="600" stylesheets="@../css/estilo.css">
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="com.erp.controller.ClienteController" prefWidth="800" prefHeight="600"
+    stylesheets="@../css/estilo.css">
 
-    <!-- 
-        StackPane principal que actúa como contenedor de todo el contenido de la pestaña de clientes.
-        Se ancla a los cuatro lados del AnchorPane para ocupar todo el espacio.
-    -->
-    <StackPane fx:id="zonaContenidoCliente"
-        AnchorPane.topAnchor="10"
-        AnchorPane.leftAnchor="10"
-        AnchorPane.rightAnchor="10"
-        AnchorPane.bottomAnchor="10"
-        styleClass="panel-contenido">
+    <StackPane fx:id="zonaContenidoCliente" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"
+        AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10" styleClass="panel-contenido">
 
-        <!-- ScrollPane para asegurar que todo el contenido sea accesible si la ventana es muy
-        pequeña. -->
         <ScrollPane styleClass="panel-scroll-pane" fitToWidth="true">
 
-            <!-- VBox es el contenedor principal que apila los elementos verticalmente. -->
             <VBox spacing="10" prefWidth="600">
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10" />
                 </padding>
 
-                <!-- Título principal de la vista. -->
                 <Label text="Gestión de Clientes" styleClass="titulo-panel" />
 
-                <!-- HBox para los botones de acción principales: Añadir y Buscar. -->
                 <HBox fx:id="subMenuAcciones" spacing="10" alignment="CENTER_LEFT">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
                     </padding>
-                    <Button fx:id="botonAñadirCliente" id="botonAñadirCliente"
-                        text="Añadir" prefWidth="100" prefHeight="40"
+                    <Button fx:id="botonAñadirCliente" text="Añadir" prefWidth="100" prefHeight="40"
                         onAction="#mostrarVistaAñadir" styleClass="button-cliente" />
-                    <Button fx:id="botonBuscarCliente" id="botonMostrarBuscarCliente"
-                        text="Buscar" prefWidth="100" prefHeight="40"
-                        onAction="#mostrarVistaBuscar"
-                        styleClass="button-cliente" />
+                    <Button fx:id="botonBuscarCliente" text="Buscar" prefWidth="100" prefHeight="40"
+                        onAction="#mostrarVistaBuscar" styleClass="button-cliente" />
                 </HBox>
 
                 <!-- 
-                    Este StackPane es una zona dinámica que mostrará diferentes formularios 
-                    (Añadir, Buscar) según la acción del usuario. Solo uno será visible a la vez.
+                    Zona dinámica que carga los formularios como componentes.
+                    Se les asigna un fx:id para poder acceder a sus controladores desde ClienteController.
                 -->
                 <StackPane fx:id="zonaFormulariosCliente" VBox.vgrow="ALWAYS" alignment="TOP_CENTER">
-                    <!-- Etiqueta inicial que se muestra por defecto. -->
                     <Label fx:id="inicioCliente" managed="true" />
 
-                    <!-- Formulario para Añadir o Modificar un Cliente. Inicialmente está oculto. -->
-                    <VBox fx:id="formularioAñadirCliente" id="formularioCliente"
-                        spacing="10" prefWidth="600" styleClass="formulario-panel" visible="false">
-                        <padding>
-                            <Insets top="10" right="10" bottom="10" left="10" />
-                        </padding>
+                    <!-- Componente del formulario de añadir/modificar -->
+                    <fx:include fx:id="formAnadir" source="components/cliComp/cliente-formulario-anadir.fxml" />
 
-                        <!-- Título del formulario, que cambiará si es para añadir o modificar. -->
-                        <Label fx:id="tituloFormularioCliente" id="tituloFormularioCliente"
-                            text="Formulario añadir Cliente" styleClass="subtitulo-panel" />
-
-                        <!-- Selector para el tipo de cliente (Particular o Empresa). -->
-                        <GridPane hgap="10" vgap="5" alignment="CENTER_LEFT">
-                            <Label text="Tipo de Cliente:" GridPane.columnIndex="0"
-                                GridPane.rowIndex="0" />
-                            <HBox styleClass="segmented-button-container" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                <children>
-                                    <ToggleButton fx:id="particularToggle" text="Particular" selected="true">
-                                        <toggleGroup>
-                                            <ToggleGroup fx:id="tipoClienteToggleGroup" />
-                                        </toggleGroup>
-                                    </ToggleButton>
-                                    <ToggleButton fx:id="empresaToggle" text="Empresa" toggleGroup="$tipoClienteToggleGroup" />
-                                </children>
-                            </HBox>
-                        </GridPane>
-
-                        <!-- 
-                            StackPane para los campos dinámicos. Dependiendo del tipo de cliente seleccionado,
-                            se mostrará el GridPane de 'Particular' o el de 'Empresa'.
-                        -->
-                        <StackPane fx:id="camposDinamicosPane">
-                            <!-- Campos específicos para un cliente Particular. -->
-                            <GridPane fx:id="camposParticular" hgap="10" vgap="10" visible="false">
-                                <columnConstraints>
-                                    <ColumnConstraints prefWidth="130" />
-                                    <ColumnConstraints hgrow="NEVER" />
-                                </columnConstraints>
-                                <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                <TextField fx:id="nombreClienteField" GridPane.columnIndex="1"
-                                    GridPane.rowIndex="0" styleClass="campo-formulario" />
-                                <Label text="Apellidos:" GridPane.columnIndex="0"
-                                    GridPane.rowIndex="1" />
-                                <TextField fx:id="apellidosClienteField" GridPane.columnIndex="1"
-                                    GridPane.rowIndex="1" styleClass="campo-formulario" />
-                                <Label text="NIF:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                <TextField fx:id="nifClienteField" GridPane.columnIndex="1"
-                                    GridPane.rowIndex="2" styleClass="campo-formulario" />
-                            </GridPane>
-                            <!-- Campos específicos para un cliente Empresa. -->
-                            <GridPane fx:id="camposEmpresa" hgap="10" vgap="10" visible="false">
-                                <columnConstraints>
-                                    <ColumnConstraints prefWidth="130" />
-                                    <ColumnConstraints hgrow="NEVER" />
-                                </columnConstraints>
-                                <Label text="Razón Social:" GridPane.columnIndex="0"
-                                    GridPane.rowIndex="0" />
-                                <TextField fx:id="razonSocialClienteField" GridPane.columnIndex="1"
-                                    GridPane.rowIndex="0" styleClass="campo-formulario" />
-                                <Label text="Persona Contacto:" GridPane.columnIndex="0"
-                                    GridPane.rowIndex="1" />
-                                <TextField fx:id="personaContactoClienteField"
-                                    GridPane.columnIndex="1" GridPane.rowIndex="1"
-                                    styleClass="campo-formulario" />
-                                <Label text="CIF:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                                <TextField fx:id="cifClienteField" GridPane.columnIndex="1"
-                                    GridPane.rowIndex="2" styleClass="campo-formulario" />
-                            </GridPane>
-                        </StackPane>
-
-                        <!-- Campos comunes para todos los tipos de cliente. -->
-                        <GridPane hgap="10" vgap="10">
-                            <columnConstraints>
-                                <ColumnConstraints prefWidth="130" />
-                                <ColumnConstraints hgrow="NEVER" />
-                            </columnConstraints>
-                            <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField fx:id="direccionClienteField" GridPane.columnIndex="1"
-                                GridPane.rowIndex="0" styleClass="campo-formulario" />
-                            <Label text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                            <TextField fx:id="telefonoClienteField" GridPane.columnIndex="1"
-                                GridPane.rowIndex="1" styleClass="campo-formulario" />
-                            <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                            <TextField fx:id="emailClienteField" GridPane.columnIndex="1"
-                                GridPane.rowIndex="2" styleClass="campo-formulario" />
-                        </GridPane>
-
-                        <!-- Botón para guardar el nuevo cliente o las modificaciones. -->
-                        <Button fx:id="botonGuardarCliente" id="botonGuardarCliente" text="Añadir cliente"
-                            onAction="#guardarCliente" styleClass="button-cliente" />
-                    </VBox>
-
-                    <!-- Formulario para Buscar un Cliente. Inicialmente está oculto. -->
-                    <VBox fx:id="formularioBuscarCliente" id="formularioBusquedaCliente"
-                        spacing="10" prefWidth="600" styleClass="formulario-panel" visible="false">
-                        <padding>
-                            <Insets top="10" right="10" bottom="10" left="10" />
-                        </padding>
-                        <Label text="Formulario buscar Cliente" styleClass="subtitulo-panel" />
-                        <GridPane hgap="10" vgap="10">
-                            <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <TextField fx:id="buscarIdClienteField" GridPane.columnIndex="1"
-                                GridPane.rowIndex="0" styleClass="campo-formulario" />
-                            <Label text="Nombre/Razón/Contacto:" GridPane.columnIndex="0"
-                                GridPane.rowIndex="1" />
-                            <TextField fx:id="buscarNombreClienteField" GridPane.columnIndex="1"
-                                GridPane.rowIndex="1" styleClass="campo-formulario" />
-                            <Label text="NIF/CIF:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                            <TextField fx:id="buscarCifApellidosClienteField"
-                                GridPane.columnIndex="1"
-                                GridPane.rowIndex="2" styleClass="campo-formulario" />
-                        </GridPane>
-                    </VBox>
+                    <!-- Componente del formulario de búsqueda -->
+                    <fx:include fx:id="formBuscar" source="components/cliComp/cliente-formulario-buscar.fxml" />
                 </StackPane>
 
-                <!-- Título para la sección de la tabla de clientes. -->
                 <Label text="Listado de Clientes" styleClass="subtitulo-panel " />
 
-                <!-- Tabla que muestra la lista de clientes. -->
-                <TableView fx:id="tablaCliente" prefHeight="300" VBox.vgrow="NEVER"
-                    prefWidth="550" styleClass="table-view table-cliente">
-                    <columns>
-                        <TableColumn fx:id="colIdCliente" text="ID" />
-                        <TableColumn fx:id="colNombreApellidos" text="Nombre&#10;y Apellidos" />
-                        <TableColumn fx:id="colRazonContacto" text="Razón Social&#10;y Contacto" />
-                        <TableColumn fx:id="colTelefonoEmail" text="Teléfono&#10;y Email" />
-                        <TableColumn fx:id="colDireccion" text="Dirección" />
-                        <TableColumn fx:id="colCifNif" text="CIF/NIF" />
-                    </columns>
-                    <!-- Política de redimensionamiento para que las columnas ocupen todo el ancho
-                    disponible. -->
-                    <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                    </columnResizePolicy>
-                </TableView>
+                <!-- Componente de la tabla de clientes -->
+                <fx:include fx:id="tablaClientes" source="components/cliComp/cliente-tabla.fxml" />
 
-                <!-- HBox para los botones de acción sobre un cliente seleccionado en la tabla. -->
-                <HBox fx:id="accionesCliente" spacing="10" alignment="CENTER_RIGHT">
-                    <!-- Estos botones están deshabilitados por defecto y se activan al seleccionar
-                    una fila. -->
-                    <Button fx:id="botonDescuentoCliente" id="botonDescuentoCliente"
-                        text="Ver descuentos" onAction="#verDescuentosCliente" disable="true"
-                        styleClass="button-cliente" />
-                    <Button fx:id="botonModificarCliente" id="botonModificarCliente"
-                        text="Modificar cliente" onAction="#modificarClienteSeleccionado"
-                        disable="true" styleClass="button-cliente" />
-                    <Button fx:id="botonEliminarCliente" id="botonEliminarCliente"
-                        text="Eliminar cliente" onAction="#eliminarClienteSeleccionado"
-                        disable="true" styleClass="botonSalir" />
-                </HBox>
             </VBox>
-
         </ScrollPane>
     </StackPane>
 </AnchorPane>

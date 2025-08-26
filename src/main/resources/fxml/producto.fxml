@@ -62,14 +62,14 @@
                     <Label fx:id="inicioProducto" managed="true" />
 
                     <!-- Incluir el formulario de añadir/modificar producto -->
-                    <fx:include fx:id="formAnadir" source="components/producto-formulario-anadir.fxml"/>
+                    <fx:include fx:id="formAnadir" source="components/prodComp/producto-formulario-anadir.fxml"/>
 
                     <!-- Incluir el formulario de buscar producto -->
-                    <fx:include fx:id="formBuscar" source="components/producto-formulario-buscar.fxml"/>
+                    <fx:include fx:id="formBuscar" source="components/prodComp/producto-formulario-buscar.fxml"/>
                 </StackPane>
 
                 <!-- Incluir la tabla de productos -->
-                <fx:include fx:id="tablaProductosComponent" VBox.vgrow="ALWAYS" source="components/producto-tabla.fxml"/>
+                <fx:include fx:id="tablaProductosComponent" VBox.vgrow="ALWAYS" source="components/prodComp/producto-tabla.fxml"/>
 
             </VBox>
         </ScrollPane>

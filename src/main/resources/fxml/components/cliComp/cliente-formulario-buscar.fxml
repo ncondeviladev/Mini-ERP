@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- 
+    Componente FXML: Formulario de Búsqueda de Clientes
+    Controlador: com.erp.controller.components.cliComp.ClienteFormularioBuscarController
+-->
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.erp.controller.components.cliComp.ClienteFormularioBuscarController"
+    spacing="10" styleClass="formulario-panel">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10" />
+    </padding>
+    <Label text="Formulario buscar Cliente" styleClass="subtitulo-panel" />
+    <GridPane hgap="10" vgap="10">
+        <Label text="ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="buscarIdClienteField" GridPane.columnIndex="1"
+            GridPane.rowIndex="0" styleClass="campo-formulario" />
+        <Label text="Nombre/Razón/Contacto:" GridPane.columnIndex="0"
+            GridPane.rowIndex="1" />
+        <TextField fx:id="buscarNombreClienteField" GridPane.columnIndex="1"
+            GridPane.rowIndex="1" styleClass="campo-formulario" />
+        <Label text="NIF/CIF:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="buscarCifApellidosClienteField"
+            GridPane.columnIndex="1"
+            GridPane.rowIndex="2" styleClass="campo-formulario" />
+    </GridPane>
+</VBox>
