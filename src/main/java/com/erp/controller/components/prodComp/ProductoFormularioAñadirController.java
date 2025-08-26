@@ -1,4 +1,4 @@
-package com.erp.controller.components;
+package com.erp.controller.components.prodComp;
 
 import com.erp.controller.ProductoController;
 import com.erp.model.Producto;
@@ -8,8 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import javafx.scene.input.KeyCode; // Importar KeyCode
 
 /**
  * Controlador para el componente de formulario de añadir/modificar producto.

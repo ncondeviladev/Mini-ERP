@@ -14,7 +14,7 @@ SQLite.
   <modelVersion>4.0.0</modelVersion>
 
   <!-- Identificador base del proyecto -->
-  <groupId>com.noe.erp</groupId>
+  <groupId>com.erp</groupId>
   <artifactId>mini-erp</artifactId>
   <version>1.0-SNAPSHOT</version>
 
@@ -51,12 +51,8 @@ SQLite.
     </dependency>
 
     <!-- Librería iText para generación de PDF -->
-    <dependency>
-        <groupId>com.itextpdf</groupId>
-        <artifactId>itext7-core</artifactId>
+            <artifactId>itext7-core</artifactId>
         <version>7.2.0</version>
-        <type>pom</type>
-    </dependency>
 
     <!-- Framework de pruebas JUnit 5 -->
     <dependency>

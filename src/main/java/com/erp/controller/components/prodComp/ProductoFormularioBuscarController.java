@@ -1,4 +1,4 @@
-package com.erp.controller.components;
+package com.erp.controller.components.prodComp;
 
 import java.util.HashMap;
 import java.util.Map;

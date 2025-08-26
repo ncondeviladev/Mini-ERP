@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.erp.controller.components.ProductoFormularioAñadirController;
-import com.erp.controller.components.ProductoFormularioBuscarController;
-import com.erp.controller.components.ProductoTablaController;
+import com.erp.controller.components.prodComp.ProductoFormularioAñadirController;
+import com.erp.controller.components.prodComp.ProductoFormularioBuscarController;
+import com.erp.controller.components.prodComp.ProductoTablaController;
 import com.erp.dao.ProductoDAO;
 import com.erp.model.Producto;
 import com.erp.utils.Alerta;
