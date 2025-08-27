@@ -45,7 +45,9 @@ public class App extends Application {
         // Antes de mostrar nada, me aseguro de que la base de datos esté lista.
         // Esto crea las tablas si es la primera vez que se ejecuta.
         SQLiteConnector.initDatabase();
-
+        // DatosDePrueba.cargarDatosIniciales();
+        
+        
         // Carga el diseño de la interfaz principal desde el archivo FXML.
         // Parent es un nodo genérico que puede contener a todos los demás nodos de la UI.
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/main.fxml"));
