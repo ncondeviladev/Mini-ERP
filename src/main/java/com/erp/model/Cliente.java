@@ -57,6 +57,26 @@ public class Cliente {
         this.descuentos = new ArrayList<>(); // Inicializamos la lista vacía
     }
 
+    /**
+     * Constructor público sin argumentos.
+     * Necesario para crear una instancia vacía desde los controladores de formulario
+     * antes de poblarla con los datos de la UI.
+     */
+    public Cliente() {
+        this.id = new SimpleObjectProperty<>();
+        this.tipoCliente = new SimpleStringProperty();
+        this.email = new SimpleStringProperty();
+        this.telefono = new SimpleStringProperty();
+        this.direccion = new SimpleStringProperty();
+        this.cifnif = new SimpleStringProperty();
+        this.fechaAlta = new SimpleObjectProperty<>(LocalDate.now()); // Por defecto, la fecha actual
+        this.nombre = new SimpleStringProperty();
+        this.apellidos = new SimpleStringProperty();
+        this.razonSocial = new SimpleStringProperty();
+        this.personaContacto = new SimpleStringProperty();
+        this.descuentos = new ArrayList<>();
+    }
+
     // --- MÉTODOS DE FÁBRICA ESTÁTICOS ---
 
     /**
@@ -105,6 +125,9 @@ public class Cliente {
 
     public String getTipoCliente() { return tipoCliente.get(); }
     public StringProperty tipoClienteProperty() { return tipoCliente; }
+    public void setTipoCliente(String tipoCliente) { this.tipoCliente.set(tipoCliente); }
+
+    
 
     public String getEmail() { return email.get(); }
     public void setEmail(String email) { this.email.set(email); }
@@ -146,4 +169,29 @@ public class Cliente {
     public void setDescuentos(List<Descuento> descuentos) { this.descuentos = descuentos; }
     public void añadirDescuento(Descuento descuento) { this.descuentos.add(descuento); }
 
+    // --- Métodos de conveniencia ---
+
+    public boolean isEmpresa() {
+        return "Empresa".equals(this.tipoCliente.get());
+    }
+
+    // --- Propiedades Computadas para la TableView ---
+
+    public StringProperty nombreCompletoProperty() {
+        if (isEmpresa()) {
+            return new SimpleStringProperty("");
+        }
+        return new SimpleStringProperty(nombre.get() + " " + apellidos.get());
+    }
+
+    public StringProperty razonSocialContactoProperty() {
+        if (!isEmpresa()) {
+            return new SimpleStringProperty("");
+        }
+        return new SimpleStringProperty(razonSocial.get() + " (" + personaContacto.get() + ")");
+    }
+
+    public StringProperty telefonoEmailProperty() {
+        return new SimpleStringProperty(telefono.get() + " / " + email.get());
+    }
 }
