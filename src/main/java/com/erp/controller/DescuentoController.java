@@ -8,6 +8,7 @@ import com.erp.model.Cliente;
 import com.erp.model.Descuento;
 import com.erp.utils.Alerta;
 import com.erp.utils.AnimationUtils;
+import com.erp.controller.components.descComp.DescuentoTablaController; // Importa el nuevo controlador del componente de tabla de descuentos
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,18 +42,11 @@ public class DescuentoController {
     private Button botonGuardarDescuento;
     @FXML
     private Button botonCancelarDescuento;
+
+    // New injection for the component controller
     @FXML
-    private TableView<Descuento> tablaDescuentos;
-    @FXML
-    private TableColumn<Descuento, String> columnaDescripcion;
-    @FXML
-    private TableColumn<Descuento, Double> columnaPorcentaje;
-    @FXML
-    private TableColumn<Descuento, String> columnaFechaInicio;
-    @FXML
-    private TableColumn<Descuento, String> columnaFechaFin;
-    @FXML
-    private TableColumn<Descuento, Boolean> columnaEstado;
+    private DescuentoTablaController tablaDescuentosComponenteController;
+
     @FXML
     private Button botonAgregarDescuento;
     @FXML
@@ -63,6 +57,7 @@ public class DescuentoController {
     private MainController mainController;
     private Cliente clienteSeleccionado;
     private final DescuentoDAO descuentoDAO = new DescuentoDAO();
+    // The ObservableList is still useful for managing data before passing to the component
     private final ObservableList<Descuento> listaDescuentos = FXCollections.observableArrayList();
     private boolean modoEdicion = false;
     private Descuento descuentoAEditar = null;
@@ -73,12 +68,11 @@ public class DescuentoController {
      */
     @FXML
     public void initialize() {
-        // Enlaza las columnas de la tabla con las propiedades del modelo Descuento.
-        configurarColumnasTabla();
-        // Asigna la lista observable a la tabla para que se actualice automáticamente.
-        tablaDescuentos.setItems(listaDescuentos);
+        // The table column configuration is now handled by DescuentoTablaController
+        // The table items are set via the component controller
 
-        tablaDescuentos.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+        // Listener for table selection
+        tablaDescuentosComponenteController.getTablaDescuentos().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             boolean haySeleccion = newSelection != null;
             botonEditarDescuento.setDisable(!haySeleccion);
             botonEliminarDescuento.setDisable(!haySeleccion);
@@ -120,6 +114,10 @@ public class DescuentoController {
      */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
+        // Pass mainController to the child component controller
+        if (tablaDescuentosComponenteController != null) {
+            tablaDescuentosComponenteController.setMainController(mainController);
+        }
     }
 
     /**
@@ -133,52 +131,15 @@ public class DescuentoController {
     }
 
     /**
-     * Configura las columnas de la tabla de descuentos, enlazándolas a las propiedades
-     * del modelo {@link Descuento} y personalizando la apariencia de la columna de estado.
-     */
-    private void configurarColumnasTabla() {
-        columnaDescripcion.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
-        columnaPorcentaje.setCellValueFactory(new PropertyValueFactory<>("porcentaje"));
-        columnaFechaInicio.setCellValueFactory(new PropertyValueFactory<>("fechaInicioFormatted"));
-        columnaFechaFin.setCellValueFactory(new PropertyValueFactory<>("fechaFinFormatted"));
-        columnaEstado.setCellValueFactory(new PropertyValueFactory<>("activo"));
-
-        // Personaliza la celda de la columna "Estado" para mostrar texto y color
-        // en lugar de un simple "true" o "false".
-        columnaEstado.setCellFactory(columna -> new TableCell<Descuento, Boolean>() {
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-
-                if (empty || item == null) {
-                    // Si la fila está vacía, limpiamos la celda.
-                    setText(null);
-                    setStyle("");
-                } else {
-                    // Si el valor es 'true', mostramos "Activo" en verde.
-                    if (item) {
-                        setText("Activo");
-                        setStyle("-fx-text-fill: #28a745; -fx-font-weight: bold;");
-                    } else { // Si el valor es 'false'
-                        // Si no, mostramos "Caducado" en rojo.
-                        setText("Caducado");
-                        setStyle("-fx-text-fill: #dc3545; -fx-font-weight: bold;");
-                    }
-                }
-            }
-        });
-    }
-
-    /**
      * Carga los descuentos del cliente seleccionado desde la base de datos
      * y los muestra en la tabla.
      */
     private void cargarDatosDescuentos() {
         if (clienteSeleccionado != null) {
             List<Descuento> descuentosDesdeDB = descuentoDAO.listarDescuentosPorCliente(clienteSeleccionado.getId());
-            listaDescuentos.setAll(descuentosDesdeDB);
+            tablaDescuentosComponenteController.setDescuentos(descuentosDesdeDB);
         } else {
-            listaDescuentos.clear();
+            tablaDescuentosComponenteController.setDescuentos(new java.util.ArrayList<>());
         }
     }
 
@@ -203,7 +164,7 @@ public class DescuentoController {
      */
     @FXML
     private void editarDescuento() {
-        descuentoAEditar = tablaDescuentos.getSelectionModel().getSelectedItem();
+        descuentoAEditar = tablaDescuentosComponenteController.getSelectedDescuento();
         if (descuentoAEditar == null) {
             Alerta.mostrarAdvertencia("Sin Selección", "Debes seleccionar un descuento para editar.");
             return;
@@ -220,7 +181,7 @@ public class DescuentoController {
      */
     @FXML
     private void eliminarDescuento() {
-        Descuento descuentoAEliminar = tablaDescuentos.getSelectionModel().getSelectedItem();
+        Descuento descuentoAEliminar = tablaDescuentosComponenteController.getSelectedDescuento();
         if (descuentoAEliminar == null) {
             Alerta.mostrarAdvertencia("Sin Selección", "Por favor, selecciona un descuento para eliminar.");
             return;
@@ -263,7 +224,7 @@ public class DescuentoController {
                 descuentoAEditar.actualizarActivo();
 
                 if (descuentoDAO.actualizarDescuentoDb(descuentoAEditar)) {
-                    tablaDescuentos.refresh();
+                    tablaDescuentosComponenteController.getTablaDescuentos().refresh();
                 } else {
                     Alerta.mostrarError("Error de Base de Datos", "No se pudo actualizar el descuento.");
                 }
@@ -273,7 +234,7 @@ public class DescuentoController {
                 Descuento nuevoDescuento = new Descuento(clienteSeleccionado.getId(), descripcion, porcentaje, fechaInicio, fechaFin);
 
                 if (descuentoDAO.guardarDescuentoDb(nuevoDescuento)) {
-                    listaDescuentos.add(nuevoDescuento);
+                    tablaDescuentosComponenteController.getTablaDescuentos().getItems().add(nuevoDescuento);
                 } else {
                     Alerta.mostrarError("Error de Base de Datos", "No se pudo guardar el descuento.");
                 }
@@ -328,3 +289,4 @@ public class DescuentoController {
     }
 
 }
+

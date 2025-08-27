@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.erp.controller.components.ventaComp.VentaCestaTablaController">
+    <TableView fx:id="tablaCesta" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="columnaProducto" text="Producto" prefWidth="200" />
+            <TableColumn fx:id="columnaCantidad" text="Cantidad" prefWidth="80" />
+            <TableColumn fx:id="columnaPrecioUnitario" text="P. Unitario" prefWidth="100" />
+            <TableColumn fx:id="columnaSubtotal" text="Subtotal" prefWidth="100" />
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+    </TableView>
+</VBox>

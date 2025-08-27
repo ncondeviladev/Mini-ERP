@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.erp.controller.components.descComp.DescuentoTablaController">
+    <TableView fx:id="tablaDescuentos" prefHeight="400">
+        <columns>
+            <TableColumn fx:id="columnaDescripcion" text="Descripción" prefWidth="250" />
+            <TableColumn fx:id="columnaPorcentaje" text="Porcentaje" prefWidth="100" />
+            <TableColumn fx:id="columnaFechaInicio" text="Fecha Inicio" prefWidth="150" />
+            <TableColumn fx:id="columnaFechaFin" text="Fecha Fin" prefWidth="150" />
+            <TableColumn fx:id="columnaEstado" text="Estado" prefWidth="80" />
+        </columns>
+        <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+        </columnResizePolicy>
+    </TableView>
+</VBox>

@@ -63,11 +63,13 @@ Para asegurar la integridad de los datos al guardar una venta (que implica múlt
     - Librería iText para PDFs añadida al `pom.xml`.
 
 - **Fase 2: Lógica de la Venta (Seleccionar Productos) [EN CURSO]**
-    - **Tarea Actual**: Crear la vista `venta.fxml` y su controlador `VentaController.java` (Controlador creado, pendiente de implementar la lógica y la vista FXML).
+    - **Tarea Actual**: `venta.fxml` y `VentaController.java` creados y estructurados para la selección de productos.
+    - Se ha decidido que la selección de productos precede a la selección de cliente.
     - Reutilizar la tabla de productos y la funcionalidad de búsqueda.
     - Implementar una segunda tabla como "carrito".
 
 - **Fase 3: Finalizar la Venta [PENDIENTE]**
+    - `cesta.fxml` creado como una nueva vista principal para la gestión de la cesta y selección de cliente.
     - Diálogo para seleccionar cliente.
     - Aplicar descuentos.
     - Guardar en BD.
@@ -94,5 +96,8 @@ Para evitar la duplicación de código y fomentar un diseño modular, el proyect
         @FXML private ProductoFormularioBuscarController formBusquedaController;
         ```
     3.  El controlador padre interactúa con el componente a través de los métodos públicos de su controlador, dándole órdenes (`formBusquedaController.limpiarCampos()`) o pidiéndole información (`formBusquedaController.getTextoBusqueda()`), sin conocer sus detalles internos.
+
+**Actualizaciones Recientes:**
+- La tabla de descuentos ha sido modularizada en `src/main/resources/fxml/components/descComp/descuento-tabla.fxml` y su controlador `com.erp.controller.components.descComp.DescuentoTablaController.java`.
 
 Este patrón asegura que el código sea limpio, mantenible y verdaderamente modular.

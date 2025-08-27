@@ -2,69 +2,51 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="com.erp.controller.VentaController">
 
-    <Scrollpane styleClass="panel-scroll-pane" fitToWidth="true" fitToHeight="true">
+    <ScrollPane styleClass="panel-scroll-pane" fitToWidth="true" fitToHeight="true">
 
-
-        <!-- Contenido Principal -->
-
-        <VBox spacing="10" style="-fx-padding: 10;">
+        <VBox spacing="10" prefWidth="600">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
-            <!-- Título de la Vista -->
 
-            <Label text="Módulo de Ventas"
-                styleClass="titulo-panel" />
-
+            <Label text="Gestión de Ventas" styleClass="titulo-panel" />
 
             <HBox spacing="10" alignment="CENTER_LEFT">
-
-                <!-- 1. Sección de Búsqueda de Productos -->
-                <Label text="Buscar Productos" styleClass="subtitulo-panel" />
-                
-                <TextField fx:id="buscarIdProductoField" promptText="Buscar por ID" />
-                <TextField fx:id="buscarNombreProductoField" promptText="Buscar por Nombre"
-                    HBox.hgrow="ALWAYS" />
-                <TextField fx:id="buscarCategoriaProductoField"
-                    promptText="Buscar por Categoría" />
+                <Button fx:id="botonBuscarProducto" text="Buscar Producto" onAction="#mostrarOcultarFormularioBusqueda" styleClass="boton-accion"/>
             </HBox>
 
-            <!-- 2. Tabla de Productos Disponibles -->
-            <TableView fx:id="tablaProductosDisponibles">
-                <columns>
-                    <TableColumn fx:id="colIdProducto" prefWidth="50" text="ID" />
-                    <TableColumn fx:id="colNombreProducto" prefWidth="150" text="Nombre" />
-                    <TableColumn fx:id="colCategoriaProducto" prefWidth="100" text="Categoría" />
-                    <TableColumn fx:id="colPrecioProducto" prefWidth="80" text="Precio" />
-                    <TableColumn fx:id="colStockProducto" prefWidth="50" text="Stock" />
-                    <TableColumn fx:id="colDescripcionProducto" prefWidth="250"
-                        text="Descripción" />
-                </columns>
-            </TableView>
+            <VBox fx:id="formularioBuscarProducto" spacing="10" styleClass="contenedor-formulario">
+                <padding>
+                    <Insets top="15" right="15" bottom="15" left="15" />
+                </padding>
+                <fx:include fx:id="formularioBuscarProductoComponente" source="components/prodComp/producto-formulario-buscar.fxml"/>
+            </VBox>
 
-            <!-- 3. Sección del Carrito (la añadiremos más adelante) -->
-            <Label text="Carrito de la Compra"
-                style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 10 0 0 0;" />
-            <Label text="Aquí irá la tabla con los productos seleccionados." />
+            <fx:include fx:id="productoTablaComponente" source="components/prodComp/producto-tabla.fxml"/>
 
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Cantidad:"/>
+                <TextField fx:id="campoCantidad" prefWidth="80"/>
+                <Button fx:id="botonAnadirCesta" text="Añadir a la Cesta" onAction="#anadirProductoACesta" styleClass="boton-accion"/>
+                <Button fx:id="botonVerCesta" text="Ver Cesta" onAction="#verCesta" styleClass="boton-accion"/>
+            </HBox>
+            
         </VBox>
 
-
-        <!-- Barra de Botones Inferior -->
-
-        <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding: 10;">
-            <!-- Aquí irán los botones para finalizar la venta -->
-        </HBox>
-
-    </Scrollpane>
+    </ScrollPane>
 </BorderPane>

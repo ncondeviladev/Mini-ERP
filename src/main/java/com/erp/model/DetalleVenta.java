@@ -150,4 +150,12 @@ public class DetalleVenta {
         // para asegurar que siempre sea consistente con la cantidad y el precio.
         return cantidad * precioUnitario;
     }
+
+    /**
+     * Obtiene el nombre del producto asociado a este detalle de venta.
+     * @return El nombre del producto.
+     */
+    public String getNombreProducto() {
+        return producto != null ? producto.getNombre() : "";
+    }
 }

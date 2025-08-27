@@ -52,18 +52,7 @@
                 </children>
             </VBox>
 
-            <TableView fx:id="tablaDescuentos" prefHeight="400">
-                <columns>
-                    <TableColumn fx:id="columnaDescripcion" text="Descripción" prefWidth="250" />
-                    <TableColumn fx:id="columnaPorcentaje" text="Porcentaje" prefWidth="100" />
-                    <TableColumn fx:id="columnaFechaInicio" text="Fecha Inicio" prefWidth="150" />
-                    <TableColumn fx:id="columnaFechaFin" text="Fecha Fin" prefWidth="150" />
-                    <TableColumn fx:id="columnaEstado" text="Estado" prefWidth="80" />
-                </columns>
-                <columnResizePolicy>
-                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                </columnResizePolicy>
-            </TableView>
+            <fx:include fx:id="tablaDescuentosComponente" source="components/descComp/descuento-tabla.fxml"/>
 
             <HBox fx:id="accionesDescuentos" spacing="10" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
                 <Button fx:id="botonAgregarDescuento" text="Agregar Descuento" onAction="#agregarDescuento" styleClass="button-descuento"/>
