@@ -15,13 +15,13 @@
     <Label text="Mini ERP - Menú principal" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
     <!-- Botón para abrir el formulario de producto -->
-    <Button text="Añadir Producto" onAction="#abrirFormularioProducto" />
+    <Button text="Añadir Producto" onAction="#abrirFormularioProducto" styleClass="button" />
 
     <!-- Botón para abrir el formulario de cliente -->
-    <Button text="Añadir Cliente" onAction="#abrirFormularioCliente" />
+    <Button text="Añadir Cliente" onAction="#abrirFormularioCliente" styleClass="button" />
 
     <!-- Botón para abrir el formulario de venta -->
-    <Button text="Añadir Venta" onAction="#abrirFormularioVenta" />
+    <Button text="Añadir Venta" onAction="#abrirFormularioVenta" styleClass="button" />
 
     <!-- Botón para salir de la aplicación -->
     <Button text="Salir" onAction="#salirAplicacion" style="-fx-text-fill: red;" />

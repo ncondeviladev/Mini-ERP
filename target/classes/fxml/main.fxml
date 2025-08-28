@@ -30,7 +30,7 @@
             <!-- Botones de navegación principal. Cada uno llama a un método en el MainController. -->
             <Button fx:id="botonProductos" text="Productos" onAction="#mostrarProductos" styleClass="button-producto"/>
             <Button fx:id="botonClientes" text="Clientes" onAction="#mostrarClientes" styleClass="button-cliente"/>
-            <Button fx:id="botonVentas" text="Ventas" onAction="#mostrarVentas" />
+            <Button fx:id="botonVentas" text="Ventas" onAction="#mostrarVentas" styleClass="button-ventas"/>
             
             <!-- Botón para cerrar la aplicación. -->
             <Button fx:id="botonSalir" text="Salir" onAction="#salirAplicacion" styleClass="botonSalir" />

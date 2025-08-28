@@ -12,6 +12,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javafx.scene.layout.HBox; // Added this import
+
 /**
  * Controlador para el componente de la tabla de productos.
  * Gestiona la visualizacion de los datos y las acciones sobre la tabla.
@@ -37,6 +39,9 @@ public class ProductoTablaController {
     @FXML
     private Button botonEliminarProducto;
 
+    @FXML
+    private HBox accionesProducto; // Add this line
+
     private ProductoController productoController;
 
     public void setProductoController(ProductoController productoController) {
@@ -55,7 +60,11 @@ public class ProductoTablaController {
 
         // Listener para habilitar/deshabilitar botones
         tablaProducto.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldSelection, newSelection) -> productoController.actualizarEstadoBotones(newSelection));
+                (obs, oldSelection, newSelection) -> {
+                    if (productoController != null) {
+                        productoController.actualizarEstadoBotones(newSelection);
+                    }
+                });
 
         // Las acciones de los botones ahora se gestionan mediante onAction en el FXML.
     }
@@ -97,5 +106,12 @@ public class ProductoTablaController {
 
     public TableView<Producto> getTablaProducto() {
         return tablaProducto;
+    }
+
+    public void setAccionesProductoVisible(boolean visible) {
+        if (accionesProducto != null) {
+            accionesProducto.setVisible(visible);
+            accionesProducto.setManaged(visible);
+        }
     }
 }

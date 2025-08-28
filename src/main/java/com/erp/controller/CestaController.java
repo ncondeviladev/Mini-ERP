@@ -7,8 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.Node;
+import com.erp.utils.Alerta;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,6 +18,9 @@ public class CestaController implements Initializable {
 
     private MainController mainController;
     private ObservableList<DetalleVenta> cestaItems;
+
+    @FXML
+    private AnchorPane rootPane; // Inyectar el AnchorPane raíz
 
     @FXML
     private VentaCestaTablaController cestaTablaComponenteController;
@@ -50,10 +54,23 @@ public class CestaController implements Initializable {
         }
     }
 
+    public Node getVista() {
+        return rootPane;
+    }
+
     public void actualizarTotalCesta() {
         if (cestaTablaComponenteController != null) {
             double total = cestaTablaComponenteController.calcularTotalCesta();
             labelTotalCesta.setText(String.format("%.2f€", total));
+        }
+    }
+
+    @FXML
+    private void limpiarCesta() {
+        if (cestaItems != null) {
+            cestaItems.clear();
+            actualizarTotalCesta();
+            Alerta.mostrarAlertaTemporal(javafx.scene.control.Alert.AlertType.INFORMATION, "Cesta Limpiada", null, "La cesta ha sido vaciada.");
         }
     }
 
@@ -67,11 +84,7 @@ public class CestaController implements Initializable {
     @FXML
     private void procederConCesta() {
         if (cestaItems == null || cestaItems.isEmpty()) {
-            Alert alerta = new Alert(AlertType.WARNING);
-            alerta.setTitle("Advertencia");
-            alerta.setHeaderText("Cesta vacía");
-            alerta.setContentText("No puedes continuar con una cesta vacía.");
-            alerta.showAndWait();
+            Alerta.mostrarAlertaTemporal(javafx.scene.control.Alert.AlertType.WARNING, "Advertencia", "Cesta vacía", "No puedes continuar con una cesta vacía.");
             return;
         }
 

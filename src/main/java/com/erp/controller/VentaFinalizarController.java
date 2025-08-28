@@ -135,7 +135,7 @@ public class VentaFinalizarController implements Initializable {
     @FXML
     private void cancelar() {
         if (mainController != null) {
-            mainController.mostrarCesta(this.cestaItems);
+            mainController.mostrarCesta();
         }
     }
 }

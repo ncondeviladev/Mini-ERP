@@ -16,9 +16,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.fxml.FXMLLoader; // Importar FXMLLoader
-import javafx.scene.Scene; // Importar Scene
-import javafx.stage.Modality; // Importar Modality
-import javafx.stage.Stage; // Importar Stage
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.Node;
+import javafx.scene.layout.Region; // Importar Region
 
 import java.io.IOException; // Importar IOException
 import java.net.URL;
@@ -32,6 +32,9 @@ public class VentaController implements Initializable {
     private MainController mainController;
     private ObservableList<DetalleVenta> cestaItems;
     private ProductoDAO productoDAO; // Added instance variable
+
+    @FXML
+    private AnchorPane rootPane; // Inyectar el AnchorPane raíz
 
     @FXML
     private VBox contenedorFormularioBusqueda; // El VBox que contiene el formulario de búsqueda incluido
@@ -57,15 +60,35 @@ public class VentaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Ocultar el formulario de búsqueda al inicio
-        contenedorFormularioBusqueda.setVisible(false); // Uncommented
-        contenedorFormularioBusqueda.setManaged(false); // Uncommented
-        cestaItems = FXCollections.observableArrayList();
+        contenedorFormularioBusqueda.setVisible(false);
+        contenedorFormularioBusqueda.setMinHeight(0);
+        contenedorFormularioBusqueda.setManaged(false);
+        // cestaItems = FXCollections.observableArrayList(); // Eliminado: la cesta se inyecta desde MainController
         productoDAO = new ProductoDAO(); // Initialized ProductoDAO
         productoTablaController.setItems(productoDAO.listarProductos()); // Load products
+
+        // Hide the action buttons (Modify/Delete) from the product table in the sales view
+        if (productoTablaController != null) {
+            productoTablaController.setAccionesProductoVisible(false);
+        }
 
         // Add listener to product table for auto-focus on quantity field
         productoTablaController.getTablaProducto().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
+                campoCantidad.requestFocus();
+            }
+        });
+
+        // Add double-click listener to product table for auto-focus on quantity field
+        productoTablaController.getTablaProducto().setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                campoCantidad.requestFocus();
+            }
+        });
+
+        // Add listener to product table for Enter key action to focus quantity field
+        productoTablaController.getTablaProducto().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
                 campoCantidad.requestFocus();
             }
         });
@@ -82,12 +105,27 @@ public class VentaController implements Initializable {
         this.mainController = mainController;
     }
 
+    public void setCestaItems(ObservableList<DetalleVenta> cestaItems) {
+        this.cestaItems = cestaItems;
+    }
+
+    public Node getVista() {
+        return rootPane;
+    }
+
     @FXML
     private void mostrarOcultarFormularioBusqueda() {
         // Alternar la visibilidad del formulario de búsqueda
         boolean estaVisible = contenedorFormularioBusqueda.isVisible();
-        contenedorFormularioBusqueda.setVisible(!estaVisible);
-        contenedorFormularioBusqueda.setManaged(!estaVisible);
+        if (estaVisible) {
+            contenedorFormularioBusqueda.setVisible(false);
+            contenedorFormularioBusqueda.setMinHeight(0);
+            contenedorFormularioBusqueda.setManaged(false);
+        } else {
+            contenedorFormularioBusqueda.setVisible(true);
+            contenedorFormularioBusqueda.setMinHeight(Region.USE_COMPUTED_SIZE);
+            contenedorFormularioBusqueda.setManaged(true);
+        }
     }
 
     @FXML
@@ -144,7 +182,7 @@ public class VentaController implements Initializable {
     @FXML
     private void verCesta() {
         if (mainController != null) {
-            mainController.mostrarCesta(cestaItems);
+            mainController.mostrarCesta();
         }
     }
 }

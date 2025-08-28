@@ -4,6 +4,7 @@ import com.erp.model.Cliente;
 import com.erp.model.DetalleVenta;
 import com.erp.utils.AnimationUtils;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,12 +36,17 @@ public class MainController {
     @FXML
     private Button botonSalir;
 
+    private ObservableList<DetalleVenta> cestaItems;
+    private VentaController ventaController;
+    private CestaController cestaController;
+
     /**
      * Método de inicialización que se llama automáticamente al cargar el FXML.
      * Carga la vista de bienvenida por defecto.
      */
     @FXML
     public void initialize() {
+        cestaItems = FXCollections.observableArrayList();
         // Al iniciar la aplicación, se muestra la pantalla de bienvenida.
         cargarVista("inicio.fxml");
 
@@ -97,21 +103,31 @@ public class MainController {
      */
     @FXML
     public void mostrarVentas() {
-        cargarVista("venta.fxml");
+        if (ventaController == null) {
+            cargarVista("venta.fxml");
+        } else {
+            contenedorCentral.getChildren().setAll(ventaController.getVista());
+            ventaController.setCestaItems(cestaItems); // Asegurarse de que la cesta esté actualizada
+        }
     }
 
-    public void mostrarCesta(ObservableList<DetalleVenta> cestaItems) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cesta.fxml"));
-            Node vista = loader.load();
+    public void mostrarCesta() {
+        if (cestaController == null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cesta.fxml"));
+                Node vista = loader.load();
 
-            CestaController controller = loader.getController();
-            controller.setMainController(this);
-            controller.setCestaItems(cestaItems);
+                this.cestaController = loader.getController();
+                this.cestaController.setMainController(this);
+                this.cestaController.setCestaItems(this.cestaItems);
 
-            contenedorCentral.getChildren().setAll(vista);
-        } catch (Exception e) {
-            e.printStackTrace();
+                contenedorCentral.getChildren().setAll(vista);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            contenedorCentral.getChildren().setAll(cestaController.getVista());
+            cestaController.setCestaItems(cestaItems); // Asegurarse de que la cesta esté actualizada
         }
     }
 
@@ -156,8 +172,10 @@ public class MainController {
                 ((ClienteController) controller).setMainController(this);
             } else if (controller instanceof DescuentoController) {
                 ((DescuentoController) controller).setMainController(this);
-            } else if (controller instanceof VentaController) { // <-- AÑADIDO
-                ((VentaController) controller).setMainController(this);
+            } else if (controller instanceof VentaController) {
+                this.ventaController = (VentaController) controller;
+                this.ventaController.setMainController(this);
+                this.ventaController.setCestaItems(this.cestaItems);
             }
 
             contenedorCentral.getChildren().setAll(vista);

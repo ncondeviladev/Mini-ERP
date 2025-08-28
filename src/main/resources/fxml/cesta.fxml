@@ -8,32 +8,37 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.StackPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane fx:id="rootPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.erp.controller.CestaController"
-            prefWidth="900" prefHeight="700" stylesheets="@../css/estilo.css">
+            prefWidth="800" prefHeight="600" stylesheets="@../css/estilo.css">
 
-    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
-        <padding>
-            <Insets top="10" right="10" bottom="10" left="10" />
-        </padding>
+    <StackPane AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
+               styleClass="panel-contenido">
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10" />
+            </padding>
 
-        <Label text="Cesta de Compra" styleClass="titulo-panel" />
+            <Label text="Cesta de Compra" styleClass="titulo-panel" />
 
-        <!-- Incluir la tabla de la cesta -->
-        <fx:include fx:id="cestaTablaComponente" source="components/ventaComp/venta-cesta-tabla.fxml" VBox.vgrow="ALWAYS"/>
+            <!-- Incluir la tabla de la cesta -->
+            <fx:include fx:id="cestaTablaComponente" source="components/ventaComp/venta-cesta-tabla.fxml" VBox.vgrow="ALWAYS"/>
 
-        <HBox spacing="10" alignment="CENTER_RIGHT">
-            <Label text="Total Cesta:"/>
-            <Label fx:id="labelTotalCesta" text="0.00€" styleClass="label-total"/>
-        </HBox>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Label text="Total Cesta:"/>
+                <Label fx:id="labelTotalCesta" text="0.00€" styleClass="label-total-cesta"/>
+            </HBox>
 
-        <Region VBox.vgrow="ALWAYS" />
+            <Region VBox.vgrow="ALWAYS" />
 
-        <HBox spacing="10" alignment="CENTER_RIGHT">
-            <Button fx:id="botonVolver" text="Volver a Productos" onAction="#volverAVentas" styleClass="boton-secundario"/>
-            <Button fx:id="botonConfirmarCesta" text="Confirmar Cesta" onAction="#procederConCesta" styleClass="boton-primario"/>
-        </HBox>
+            <HBox spacing="10" alignment="CENTER_RIGHT">
+                <Button fx:id="botonLimpiarCesta" text="Limpiar Cesta" onAction="#limpiarCesta" styleClass="boton-rojo"/>
+                <Button fx:id="botonVolver" text="Volver a Productos" onAction="#volverAVentas" styleClass="boton-secundario"/>
+                <Button fx:id="botonConfirmarCesta" text="Confirmar Cesta" onAction="#procederConCesta" styleClass="boton-primario"/>
+            </HBox>
 
-    </VBox>
+        </VBox>
+    </StackPane>
 </AnchorPane>
