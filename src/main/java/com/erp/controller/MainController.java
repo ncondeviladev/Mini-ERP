@@ -1,10 +1,10 @@
 package com.erp.controller;
 
-import java.net.URL;
-
 import com.erp.model.Cliente;
+import com.erp.model.DetalleVenta;
 import com.erp.utils.AnimationUtils;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -100,6 +100,36 @@ public class MainController {
         cargarVista("venta.fxml");
     }
 
+    public void mostrarCesta(ObservableList<DetalleVenta> cestaItems) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cesta.fxml"));
+            Node vista = loader.load();
+
+            CestaController controller = loader.getController();
+            controller.setMainController(this);
+            controller.setCestaItems(cestaItems);
+
+            contenedorCentral.getChildren().setAll(vista);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void mostrarSeleccionClienteParaVenta(ObservableList<DetalleVenta> cestaItems) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/VentaFinalizar.fxml"));
+            Node vista = loader.load();
+
+            VentaFinalizarController controller = loader.getController();
+            controller.setMainController(this);
+            controller.setData(cestaItems);
+
+            contenedorCentral.getChildren().setAll(vista);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Cierra la aplicación de forma limpia.
      */
@@ -126,6 +156,8 @@ public class MainController {
                 ((ClienteController) controller).setMainController(this);
             } else if (controller instanceof DescuentoController) {
                 ((DescuentoController) controller).setMainController(this);
+            } else if (controller instanceof VentaController) { // <-- AÑADIDO
+                ((VentaController) controller).setMainController(this);
             }
 
             contenedorCentral.getChildren().setAll(vista);

@@ -94,4 +94,8 @@ public class ProductoTablaController {
         botonModificarProducto.setDisable(disable);
         botonEliminarProducto.setDisable(disable);
     }
+
+    public TableView<Producto> getTablaProducto() {
+        return tablaProducto;
+    }
 }

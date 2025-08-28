@@ -3,7 +3,9 @@ package com.erp.model;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -22,6 +24,7 @@ public class Descuento {
     private final ObjectProperty<LocalDate> fechaInicio;
     private final ObjectProperty<LocalDate> fechaFin;
     private final ObjectProperty<Boolean> activo; // true para "Activo", false para "Caducado"
+    private final BooleanProperty seleccionado; // Para uso en UI (CheckBoxListCell)
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
@@ -36,7 +39,7 @@ public class Descuento {
         this.fechaInicio = new SimpleObjectProperty<>(fechaInicio);
         this.fechaFin = new SimpleObjectProperty<>(fechaFin);
         this.activo = new SimpleObjectProperty<>(calcularActivo(fechaFin));
-        
+        this.seleccionado = new SimpleBooleanProperty(false);
     }
 
     /**
@@ -50,6 +53,7 @@ public class Descuento {
         this.fechaInicio = new SimpleObjectProperty<>(fechaInicio);
         this.fechaFin = new SimpleObjectProperty<>(fechaFin);
         this.activo = new SimpleObjectProperty<>(calcularActivo(fechaFin));
+        this.seleccionado = new SimpleBooleanProperty(false);
     }
     /**
      * Constructor para reconstruir un Descuento existente desde la base de datos con atributo activo.
@@ -62,7 +66,7 @@ public class Descuento {
         this.fechaInicio = new SimpleObjectProperty<>(fechaInicio);
         this.fechaFin = new SimpleObjectProperty<>(fechaFin);
         this.activo = new SimpleObjectProperty<>(activo);
-        
+        this.seleccionado = new SimpleBooleanProperty(false);
     }
 
     
@@ -95,6 +99,10 @@ public class Descuento {
     public void setActivo(Boolean activo) { this.activo.set(activo); }
     public ObjectProperty<Boolean> activoProperty() { return activo; }
 
+    public boolean isSeleccionado() { return seleccionado.get(); }
+    public void setSeleccionado(boolean seleccionado) { this.seleccionado.set(seleccionado); }
+    public BooleanProperty seleccionadoProperty() { return seleccionado; }
+
     // --- Métodos de Formato ---
 
     public String getFechaInicioFormatted() {
@@ -126,5 +134,10 @@ public class Descuento {
      */
     public void actualizarActivo() {
         this.activo.set(calcularActivo(this.getFechaFin()));
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("%s (%.2f%%)", getDescripcion(), getPorcentaje());
     }
 }

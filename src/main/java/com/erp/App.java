@@ -1,6 +1,7 @@
 package com.erp;
 
 import com.erp.db.SQLiteConnector;
+import com.erp.utils.DatosDePrueba;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -45,7 +46,7 @@ public class App extends Application {
         // Antes de mostrar nada, me aseguro de que la base de datos esté lista.
         // Esto crea las tablas si es la primera vez que se ejecuta.
         SQLiteConnector.initDatabase();
-        // DatosDePrueba.cargarDatosIniciales();
+        DatosDePrueba.cargarDatosIniciales();
         
         
         // Carga el diseño de la interfaz principal desde el archivo FXML.

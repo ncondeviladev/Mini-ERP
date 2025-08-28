@@ -11,8 +11,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
+import com.erp.utils.Alerta;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.fxml.FXMLLoader; // Importar FXMLLoader
 import javafx.scene.Scene; // Importar Scene
 import javafx.stage.Modality; // Importar Modality
@@ -23,13 +25,16 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.erp.dao.ProductoDAO; // Added import
+
 public class VentaController implements Initializable {
 
     private MainController mainController;
     private ObservableList<DetalleVenta> cestaItems;
+    private ProductoDAO productoDAO; // Added instance variable
 
     @FXML
-    private VBox formularioBuscarProducto; // El VBox que contiene el formulario de búsqueda incluido
+    private VBox contenedorFormularioBusqueda; // El VBox que contiene el formulario de búsqueda incluido
 
     @FXML
     private ProductoFormularioBuscarController formularioBuscarProductoController; // Controlador para el formulario de búsqueda de producto incluido
@@ -52,39 +57,44 @@ public class VentaController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Ocultar el formulario de búsqueda al inicio
-        formularioBuscarProducto.setVisible(false);
-        formularioBuscarProducto.setManaged(false);
+        contenedorFormularioBusqueda.setVisible(false); // Uncommented
+        contenedorFormularioBusqueda.setManaged(false); // Uncommented
         cestaItems = FXCollections.observableArrayList();
+        productoDAO = new ProductoDAO(); // Initialized ProductoDAO
+        productoTablaController.setItems(productoDAO.listarProductos()); // Load products
+
+        // Add listener to product table for auto-focus on quantity field
+        productoTablaController.getTablaProducto().getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                campoCantidad.requestFocus();
+            }
+        });
+
+        // Add listener to quantity field for Enter key action
+        campoCantidad.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                anadirProductoACesta();
+            }
+        });
     }
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
-        // Pasar el mainController a los controladores hijos si lo necesitan
-        if (formularioBuscarProductoController != null) {
-            formularioBuscarProductoController.setMainController(mainController);
-        }
-        if (productoTablaController != null) {
-            productoTablaController.setMainController(mainController);
-        }
     }
 
     @FXML
     private void mostrarOcultarFormularioBusqueda() {
         // Alternar la visibilidad del formulario de búsqueda
-        boolean estaVisible = formularioBuscarProducto.isVisible();
-        formularioBuscarProducto.setVisible(!estaVisible);
-        formularioBuscarProducto.setManaged(!estaVisible);
+        boolean estaVisible = contenedorFormularioBusqueda.isVisible();
+        contenedorFormularioBusqueda.setVisible(!estaVisible);
+        contenedorFormularioBusqueda.setManaged(!estaVisible);
     }
 
     @FXML
     private void anadirProductoACesta() {
-        Producto selectedProduct = productoTablaController.getTablaProductos().getSelectionModel().getSelectedItem();
+        Producto selectedProduct = productoTablaController.getTablaProducto().getSelectionModel().getSelectedItem();
         if (selectedProduct == null) {
-            Alert alerta = new Alert(AlertType.WARNING);
-            alerta.setTitle("Advertencia");
-            alerta.setHeaderText(null);
-            alerta.setContentText("Por favor, selecciona un producto de la tabla.");
-            alerta.showAndWait();
+            Alerta.mostrarAlertaTemporal(AlertType.WARNING, "Advertencia", null, "Por favor, selecciona un producto de la tabla.");
             return;
         }
 
@@ -95,20 +105,12 @@ public class VentaController implements Initializable {
                 throw new NumberFormatException();
             }
         } catch (NumberFormatException e) {
-            Alert alerta = new Alert(AlertType.WARNING);
-            alerta.setTitle("Advertencia");
-            alerta.setHeaderText(null);
-            alerta.setContentText("Por favor, introduce una cantidad válida (número entero positivo).");
-            alerta.showAndWait();
+            Alerta.mostrarAlertaTemporal(AlertType.WARNING, "Advertencia", null, "Por favor, introduce una cantidad válida (número entero positivo).");
             return;
         }
 
         if (cantidad > selectedProduct.getStock()) {
-            Alert alerta = new Alert(AlertType.WARNING);
-            alerta.setTitle("Advertencia");
-            alerta.setHeaderText(null);
-            alerta.setContentText("No hay suficiente stock para el producto seleccionado. Stock disponible: " + selectedProduct.getStock());
-            alerta.showAndWait();
+            Alerta.mostrarAlertaTemporal(AlertType.WARNING, "Advertencia", null, "No hay suficiente stock para el producto seleccionado. Stock disponible: " + selectedProduct.getStock());
             return;
         }
 
@@ -120,6 +122,8 @@ public class VentaController implements Initializable {
         if (existingDetalle.isPresent()) {
             DetalleVenta detalle = existingDetalle.get();
             detalle.setCantidad(detalle.getCantidad() + cantidad);
+            // Forzar la actualización de la TableView en la cesta
+            cestaItems.set(cestaItems.indexOf(detalle), detalle);
             // No es necesario actualizar el precio unitario si ya está en la cesta,
             // ya que se asume que el precio unitario en el detalle de venta es el precio en el momento de la adición.
             // Si el precio del producto cambia, el detalle de venta existente mantiene el precio original.
@@ -134,36 +138,13 @@ public class VentaController implements Initializable {
             cestaItems.add(newDetalle);
         }
 
-        Alert alerta = new Alert(AlertType.INFORMATION);
-        alerta.setTitle("Éxito");
-        alerta.setHeaderText(null);
-        alerta.setContentText("Producto añadido a la cesta correctamente.");
-        alerta.showAndWait();
+        Alerta.mostrarAlertaTemporal(AlertType.INFORMATION, "Éxito", null, "Producto añadido a la cesta correctamente.");
     }
 
     @FXML
     private void verCesta() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cesta.fxml"));
-            VBox root = loader.load();
-
-            CestaController cestaController = loader.getController();
-            cestaController.setMainController(mainController); // Pasar el mainController
-            cestaController.setCestaItems(cestaItems); // Pasar los items de la cesta
-
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL); // Bloquear la ventana principal
-            stage.setTitle("Cesta de Compra");
-            stage.setScene(new Scene(root));
-            cestaController.setStage(stage); // Pasar la referencia del Stage al controlador de la cesta
-            stage.showAndWait(); // Mostrar y esperar hasta que se cierre
-        } catch (IOException e) {
-            e.printStackTrace();
-            Alert alerta = new Alert(AlertType.ERROR);
-            alerta.setTitle("Error");
-            alerta.setHeaderText("Error al cargar la cesta");
-            alerta.setContentText("No se pudo cargar la ventana de la cesta. " + e.getMessage());
-            alerta.showAndWait();
+        if (mainController != null) {
+            mainController.mostrarCesta(cestaItems);
         }
     }
 }

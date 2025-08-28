@@ -130,4 +130,8 @@ public class ClienteTablaController {
         botonEliminarCliente.setDisable(disable);
         botonDescuentoCliente.setDisable(disable);
     }
+
+    public TableView<Cliente> getTablaCliente() {
+        return tablaCliente;
+    }
 }

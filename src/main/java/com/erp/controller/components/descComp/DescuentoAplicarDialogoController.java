@@ -44,10 +44,10 @@ public class DescuentoAplicarDialogoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         descuentoDAO = new DescuentoDAO();
 
-        columnaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        columnaNombre.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         columnaPorcentaje.setCellValueFactory(new PropertyValueFactory<>("porcentaje"));
 
-        masterData.addAll(descuentoDAO.getAllDescuentos());
+        masterData.addAll(descuentoDAO.listarDescuentos());
         tablaDescuentos.setItems(masterData);
     }
 

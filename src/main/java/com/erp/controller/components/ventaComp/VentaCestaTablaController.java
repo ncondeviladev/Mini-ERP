@@ -33,7 +33,7 @@ public class VentaCestaTablaController implements Initializable {
         columnaProducto.setCellValueFactory(new PropertyValueFactory<>("nombreProducto")); // Assuming DetalleVenta has getNombreProducto()
         columnaCantidad.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         columnaPrecioUnitario.setCellValueFactory(new PropertyValueFactory<>("precioUnitario"));
-        columnaSubtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+        columnaSubtotal.setCellValueFactory(new PropertyValueFactory<>("subTotal"));
     }
 
     public void setMainController(MainController mainController) {
@@ -62,7 +62,7 @@ public class VentaCestaTablaController implements Initializable {
     // Método para calcular el total de la cesta
     public double calcularTotalCesta() {
         return tablaCesta.getItems().stream()
-                .mapToDouble(DetalleVenta::getSubtotal)
+                .mapToDouble(DetalleVenta::getSubTotal)
                 .sum();
     }
 }

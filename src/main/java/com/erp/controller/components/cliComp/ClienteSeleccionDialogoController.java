@@ -49,12 +49,12 @@ public class ClienteSeleccionDialogoController implements Initializable {
         clienteDAO = new ClienteDAO();
 
         columnaNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-        columnaNIF.setCellValueFactory(new PropertyValueFactory<>("nif"));
+        columnaNIF.setCellValueFactory(new PropertyValueFactory<>("cifnif"));
         columnaEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         columnaTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
 
         // Load all clients
-        masterData.addAll(clienteDAO.getAllClientes());
+        masterData.addAll(clienteDAO.listarClientes());
         filteredData = new FilteredList<>(masterData, p -> true); // Initially display all clients
         tablaClientes.setItems(filteredData);
 
@@ -67,7 +67,7 @@ public class ClienteSeleccionDialogoController implements Initializable {
                 String lowerCaseFilter = newValue.toLowerCase();
                 if (cliente.getNombre().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
-                } else if (cliente.getNif().toLowerCase().contains(lowerCaseFilter)) {
+                } else if (cliente.getCifnif().toLowerCase().contains(lowerCaseFilter)) {
                     return true;
                 }
                 return false; // No match
