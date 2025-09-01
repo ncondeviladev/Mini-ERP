@@ -67,6 +67,7 @@ public class ProductoController {
         formAnadirController.setProductoController(this);
         formBuscarController.setProductoController(this);
         tablaProductosComponentController.setProductoController(this);
+        formBuscarController.vincularControlador();
 
         // 2. Cargar los datos iniciales en la tabla
         cargarYMostrarProductos();

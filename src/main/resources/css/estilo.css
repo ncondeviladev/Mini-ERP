@@ -22,6 +22,9 @@
     -fx-color-rojo-inicio: #d9534f; /* Rojo suave */
     -fx-color-rojo-fin: #c9302c;
 
+    -fx-color-verde-inicio: #8FBC8F; /* Pistacho oscuro (Verde Mar Oscuro) */
+    -fx-color-verde-fin: #556B2F; /* Pistacho más oscuro (Oliva Oscuro) */
+
     /* --- Fondos --- */
     -fx-color-fondo: #8b8b8b;
     -fx-color-fondo-panel-principal: #f5f5f5; /* Gris claro para el contenido principal */
@@ -158,6 +161,7 @@
     -fx-background-color: -fx-color-ventas-hover;
 }
 
+/* Estilo para el botón de salir o acciones destructivas (ej. eliminar, limpiar) */
 .botonSalir {
     -fx-background-color: linear-gradient(to bottom, -fx-color-rojo-inicio, -fx-color-rojo-fin);
 }
@@ -166,13 +170,16 @@
     -fx-background-color: -fx-color-rojo-inicio;
 }
 
-.boton-rojo {
-    -fx-background-color: linear-gradient(to bottom, -fx-color-rojo-inicio, -fx-color-rojo-fin);
+/* Estilo para el botón de confirmar o acciones de éxito (ej. guardar, aceptar) */
+.botonVerde {
+    -fx-background-color: linear-gradient(to bottom, -fx-color-verde-inicio, -fx-color-verde-fin);
 }
 
-.boton-rojo:hover {
-    -fx-background-color: -fx-color-rojo-inicio;
+.botonVerde:hover {
+    -fx-background-color: -fx-color-verde-inicio;
 }
+
+
 
 /* --- CAMPOS DE TEXTO --- */
 .text-field,

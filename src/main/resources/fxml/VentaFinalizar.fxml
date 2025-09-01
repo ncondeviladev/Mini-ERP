@@ -9,55 +9,56 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.control.cell.CheckBoxListCell?>
+<?import javafx.scene.layout.StackPane?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.erp.controller.VentaFinalizarController"
-            prefWidth="900" prefHeight="700" stylesheets="@css/estilo.css">
+            prefWidth="900" prefHeight="700" stylesheets="@../css/estilo.css" styleClass="panel-fondo">
 
-    <VBox spacing="10" AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
-        <padding>
-            <Insets top="10" right="10" bottom="10" left="10" />
-        </padding>
-
-        <Label text="Finalizar Venta" styleClass="titulo-panel" />
-
-        <!-- SELECCIÓN DE CLIENTE -->
-        <Label text="1. Seleccione un Cliente" styleClass="subtitulo-panel" />
-        <fx:include fx:id="formularioBuscarCliente" source="components/cliComp/cliente-formulario-buscar.fxml"/>
-        <fx:include fx:id="clienteTabla" source="components/cliComp/cliente-tabla.fxml" VBox.vgrow="ALWAYS"/>
-
-        <!-- SELECCIÓN DE DESCUENTOS -->
-        <Label text="2. Seleccione los Descuentos a Aplicar" styleClass="subtitulo-panel" />
-        <ListView fx:id="listaDescuentos" VBox.vgrow="ALWAYS" maxHeight="150">
-            <cellFactory>
-                <CheckBoxListCell fx:factory="forListView"/>
-            </cellFactory>
-        </ListView>
-
-        <!-- RESUMEN FINAL -->
-        <VBox spacing="5" styleClass="contenedor-formulario" alignment="CENTER_RIGHT">
+    <StackPane styleClass="panel-contenido" AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+        <VBox spacing="10">
             <padding>
-                <Insets top="10" right="15" bottom="10" left="15" />
+                <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
+
+            <Label text="Finalizar Venta" styleClass="titulo-panel" />
+
+            <!-- SELECCIÓN DE CLIENTE -->
+            <Label text="1. Seleccione un Cliente" styleClass="subtitulo-panel" />
+            <fx:include fx:id="formularioBuscarCliente" source="components/cliComp/cliente-formulario-buscar.fxml"/>
+            <fx:include fx:id="clienteTabla" source="components/cliComp/cliente-tabla.fxml" VBox.vgrow="ALWAYS"/>
+
+            <!-- SELECCIÓN DE DESCUENTOS -->
+            <Label text="2. Seleccione los Descuentos a Aplicar" styleClass="subtitulo-panel" />
+            <ListView fx:id="listaDescuentos" VBox.vgrow="ALWAYS" maxHeight="150">
+            </ListView>
+
+            <!-- RESUMEN FINAL -->
+            <VBox spacing="5" styleClass="contenedor-formulario" alignment="CENTER_RIGHT">
+                <padding>
+                    <Insets top="10" right="15" bottom="10" left="15" />
+                </padding>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Label text="Subtotal:"/>
+                    <Label fx:id="labelSubtotal" text="0.00€" styleClass="label-total-sm"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Label text="Descuento Total:"/>
+                    <Label fx:id="labelDescuento" text="0.00%" styleClass="label-total-sm"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Label text="TOTAL A PAGAR:" styleClass="label-total-header"/>
+                    <Label fx:id="labelTotalFinal" text="0.00€" styleClass="label-total"/>
+                </HBox>
+            </VBox>
+
+            <!-- BOTONES DE ACCIÓN -->
             <HBox spacing="10" alignment="CENTER_RIGHT">
-                <Label text="Subtotal:"/>
-                <Label fx:id="labelSubtotal" text="0.00€" styleClass="label-total-sm"/>
+                <Button fx:id="botonCancelar" text="Cancelar" onAction="#cancelar" styleClass="boton-secundario"/>
+                <Button fx:id="botonFinalizarVenta" text="Finalizar Venta" onAction="#finalizarVenta" styleClass="boton-primario"/>
             </HBox>
-            <HBox spacing="10" alignment="CENTER_RIGHT">
-                <Label text="Descuento Total:"/>
-                <Label fx:id="labelDescuento" text="0.00%" styleClass="label-total-sm"/>
-            </HBox>
-            <HBox spacing="10" alignment="CENTER_RIGHT">
-                <Label text="TOTAL A PAGAR:" styleClass="label-total-header"/>
-                <Label fx:id="labelTotalFinal" text="0.00€" styleClass="label-total"/>
-            </HBox>
+
         </VBox>
-
-        <!-- BOTONES DE ACCIÓN -->
-        <HBox spacing="10" alignment="CENTER_RIGHT">
-            <Button fx:id="botonCancelar" text="Cancelar" onAction="#cancelar" styleClass="boton-secundario"/>
-            <Button fx:id="botonFinalizarVenta" text="Finalizar Venta" onAction="#finalizarVenta" styleClass="boton-primario"/>
-        </HBox>
-
-    </VBox>
+    </StackPane>
 </AnchorPane>
+

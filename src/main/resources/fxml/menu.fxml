@@ -3,27 +3,33 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 
+<!--
+    Define la vista del menú principal de la aplicación.
+    Este VBox organiza los elementos del menú verticalmente, con un espaciado uniforme.
+    El controlador asociado es 'com.erp.controller.MenuController', que maneja las acciones de los botones.
+-->
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
     fx:controller="com.erp.controller.MenuController"
     spacing="10">
 
-    <!-- Padding interno del VBox -->
+    <!-- Define un padding interno para el contenedor principal del menú, creando espacio alrededor de los elementos. -->
     <padding>
         <Insets top="15" right="15" bottom="15" left="15" />
     </padding>
 
+    <!-- Título principal del menú, con un estilo de fuente grande y negrita para destacarlo. -->
     <Label text="Mini ERP - Menú principal" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
 
-    <!-- Botón para abrir el formulario de producto -->
+    <!-- Botón para navegar a la sección de gestión de productos. Utiliza el estilo base de botón. -->
     <Button text="Añadir Producto" onAction="#abrirFormularioProducto" styleClass="button" />
 
-    <!-- Botón para abrir el formulario de cliente -->
+    <!-- Botón para navegar a la sección de gestión de clientes. Utiliza el estilo base de botón. -->
     <Button text="Añadir Cliente" onAction="#abrirFormularioCliente" styleClass="button" />
 
-    <!-- Botón para abrir el formulario de venta -->
+    <!-- Botón para navegar a la sección de gestión de ventas. Utiliza el estilo base de botón. -->
     <Button text="Añadir Venta" onAction="#abrirFormularioVenta" styleClass="button" />
 
-    <!-- Botón para salir de la aplicación -->
+    <!-- Botón para salir de la aplicación. Se le aplica un estilo de texto rojo para indicar una acción de cierre. -->
     <Button text="Salir" onAction="#salirAplicacion" style="-fx-text-fill: red;" />
 
 </VBox>

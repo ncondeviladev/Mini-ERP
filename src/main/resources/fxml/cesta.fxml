@@ -10,33 +10,57 @@
 <?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.StackPane?>
 
+<!--
+    Vista para la gestión de la cesta de compra.
+    Permite visualizar los productos añadidos, el total, y ofrece opciones para limpiar la cesta,
+    volver a la selección de productos o confirmar la compra.
+    El controlador asociado es 'com.erp.controller.CestaController'.
+-->
 <AnchorPane fx:id="rootPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.erp.controller.CestaController"
             prefWidth="800" prefHeight="600" stylesheets="@../css/estilo.css">
 
+    <!--
+        Contenedor principal que envuelve todo el contenido de la cesta.
+        Se ancla a los cuatro lados del AnchorPane raíz con un margen de 10 píxeles,
+        lo que permite que el fondo gris principal de la aplicación sea visible alrededor.
+        Aplica el estilo 'panel-contenido' para un fondo claro y sombra.
+    -->
     <StackPane AnchorPane.topAnchor="10" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
                styleClass="panel-contenido">
+        <!--
+            VBox principal dentro del StackPane, organiza los elementos verticalmente.
+            Define un padding interno para el contenido.
+        -->
         <VBox spacing="10">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
 
+            <!-- Título de la sección de la cesta de compra. -->
             <Label text="Cesta de Compra" styleClass="titulo-panel" />
 
-            <!-- Incluir la tabla de la cesta -->
+            <!-- Incluye el componente de la tabla de la cesta, donde se listan los productos. -->
             <fx:include fx:id="cestaTablaComponente" source="components/ventaComp/venta-cesta-tabla.fxml" VBox.vgrow="ALWAYS"/>
 
+            <!-- Contenedor para mostrar el total de la cesta. -->
             <HBox spacing="10" alignment="CENTER_RIGHT">
                 <Label text="Total Cesta:"/>
+                <!-- Etiqueta que muestra el valor total de la cesta, con un estilo elegante para destacarlo. -->
                 <Label fx:id="labelTotalCesta" text="0.00€" styleClass="label-total-cesta"/>
             </HBox>
 
+            <!-- Región flexible que empuja los elementos inferiores hacia abajo, ocupando el espacio disponible. -->
             <Region VBox.vgrow="ALWAYS" />
 
+            <!-- Contenedor para los botones de acción de la cesta, alineados a la derecha. -->
             <HBox spacing="10" alignment="CENTER_RIGHT">
-                <Button fx:id="botonLimpiarCesta" text="Limpiar Cesta" onAction="#limpiarCesta" styleClass="boton-rojo"/>
+                <!-- Botón para limpiar todos los productos de la cesta. Utiliza el estilo 'botonSalir' para indicar una acción destructiva (rojo). -->
+                <Button fx:id="botonLimpiarCesta" text="Limpiar Cesta" onAction="#limpiarCesta" styleClass="botonSalir"/>
+                <!-- Botón para volver a la vista de selección de productos, permitiendo añadir más artículos a la cesta. -->
                 <Button fx:id="botonVolver" text="Volver a Productos" onAction="#volverAVentas" styleClass="boton-secundario"/>
-                <Button fx:id="botonConfirmarCesta" text="Confirmar Cesta" onAction="#procederConCesta" styleClass="boton-primario"/>
+                <!-- Botón para confirmar la cesta actual y proceder al siguiente paso del proceso de venta (ej. selección de cliente, pago). -->
+                <Button fx:id="botonConfirmarCesta" text="Confirmar Cesta" onAction="#procederConCesta" styleClass="botonVerde"/>
             </HBox>
 
         </VBox>

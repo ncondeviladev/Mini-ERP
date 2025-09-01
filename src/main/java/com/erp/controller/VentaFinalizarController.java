@@ -2,6 +2,7 @@ package com.erp.controller;
 
 import com.erp.controller.components.cliComp.ClienteFormularioBuscarController;
 import com.erp.controller.components.cliComp.ClienteTablaController;
+import com.erp.dao.ClienteDAO;
 import com.erp.dao.DescuentoDAO;
 import com.erp.dao.VentaDAO;
 import com.erp.model.Cliente;
@@ -47,10 +48,16 @@ public class VentaFinalizarController implements Initializable {
     @FXML
     private Button botonFinalizarVenta;
 
+    private ClienteDAO clienteDAO;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.descuentoDAO = new DescuentoDAO();
         this.ventaDAO = new VentaDAO();
+        this.clienteDAO = new ClienteDAO();
+
+        clienteTablaController.setItems(this.clienteDAO.listarClientes());
+        clienteTablaController.setAccionesVisible(false);
 
         listaDescuentos.setCellFactory(CheckBoxListCell.forListView(Descuento::seleccionadoProperty));
 

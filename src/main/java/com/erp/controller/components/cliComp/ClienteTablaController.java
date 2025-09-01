@@ -15,6 +15,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 public class ClienteTablaController {
@@ -39,6 +40,8 @@ public class ClienteTablaController {
     private Button botonEliminarCliente;
     @FXML
     private Button botonDescuentoCliente;
+    @FXML
+    private HBox accionesCliente;
 
     private ClienteController clienteController;
 
@@ -133,5 +136,10 @@ public class ClienteTablaController {
 
     public TableView<Cliente> getTablaCliente() {
         return tablaCliente;
+    }
+
+    public void setAccionesVisible(boolean visible) {
+        accionesCliente.setVisible(visible);
+        accionesCliente.setManaged(visible);
     }
 }

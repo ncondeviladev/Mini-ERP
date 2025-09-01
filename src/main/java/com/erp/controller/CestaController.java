@@ -2,6 +2,7 @@ package com.erp.controller;
 
 import com.erp.controller.components.ventaComp.VentaCestaTablaController;
 import com.erp.model.DetalleVenta;
+import com.erp.utils.AnimationUtils;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +30,9 @@ public class CestaController implements Initializable {
     private Label labelTotalCesta;
 
     @FXML
+    private Button botonLimpiarCesta;
+
+    @FXML
     private Button botonVolver;
 
     @FXML
@@ -36,7 +40,9 @@ public class CestaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Lógica de inicialización futura si es necesaria
+        AnimationUtils.addHoverAnimation(botonLimpiarCesta);
+        AnimationUtils.addHoverAnimation(botonVolver);
+        AnimationUtils.addHoverAnimation(botonConfirmarCesta);
     }
 
     public void setMainController(MainController mainController) {

@@ -29,11 +29,18 @@ public class ProductoFormularioBuscarController {
     }
 
     @FXML
-    private void initialize() {
-        // Añadimos listeners para que el filtrado sea en tiempo real
-        buscarIdProductoField.textProperty().addListener((obs, old, aNew) -> productoController.filtrarProductos());
-        buscarNombreProductoField.textProperty().addListener((obs, old, aNew) -> productoController.filtrarProductos());
-        buscarCategoriaProductoField.textProperty().addListener((obs, old, aNew) -> productoController.filtrarProductos());
+    public void initialize() {
+        // El contenido se mueve a vincularControlador para evitar NullPointerException
+    }
+
+    /**
+     * Vincula los listeners de los campos de texto al método de filtrado del controlador principal.
+     * Debe llamarse después de que el productoController haya sido inyectado.
+     */
+    public void vincularControlador() {
+        buscarIdProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
+        buscarNombreProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
+        buscarCategoriaProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
     }
 
     /**

@@ -8,39 +8,43 @@
 <?import javafx.geometry.Insets?>
 
 <!--
-    Vista principal de la aplicación (main.fxml).
-    Uso un BorderPane como contenedor raíz para organizar la interfaz en secciones.
-    El controlador asociado es 'com.erp.controller.MainController'.
+    Esta es la vista principal de la aplicación (main.fxml).
+    Utiliza un BorderPane como contenedor raíz para organizar la interfaz de usuario en distintas secciones:
+    un panel lateral izquierdo para la navegación y un área central para el contenido dinámico.
+    El controlador asociado es 'com.erp.controller.MainController', que gestiona la lógica de navegación y la interacción general.
 -->
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
     fx:controller="com.erp.controller.MainController" stylesheets="@../css/estilo.css">
 
-    <!-- 
-        Panel lateral izquierdo (menú de navegación).
-        Uso un VBox para apilar los botones verticalmente.
+    <!--
+        Define el panel lateral izquierdo de la aplicación, que actúa como el menú de navegación principal.
+        Es un VBox que apila los botones verticalmente, centrándolos y asignándoles un ancho fijo.
     -->
     <left>
         <VBox fx:id="panelLateral" id="panelLateral" spacing="12" alignment="CENTER" prefWidth="180">
+            <!-- Define un padding interno para el panel lateral, creando espacio alrededor de los elementos. -->
             <padding>
                 <Insets top="20" right="10" bottom="20" left="10" />
             </padding>
-            <!-- Título de la aplicación en el panel lateral. -->
+            <!-- Título de la aplicación mostrado en el panel lateral, con un identificador para aplicar estilos específicos. -->
             <Label text="Mini ERP" id="tituloMiniErp" />
             
-            <!-- Botones de navegación principal. Cada uno llama a un método en el MainController. -->
+            <!-- Botones de navegación principal. Cada botón está asociado a un método en el MainController
+                 para mostrar la vista correspondiente. Se les aplican estilos específicos de cada sección. -->
             <Button fx:id="botonProductos" text="Productos" onAction="#mostrarProductos" styleClass="button-producto"/>
             <Button fx:id="botonClientes" text="Clientes" onAction="#mostrarClientes" styleClass="button-cliente"/>
             <Button fx:id="botonVentas" text="Ventas" onAction="#mostrarVentas" styleClass="button-ventas"/>
             
-            <!-- Botón para cerrar la aplicación. -->
+            <!-- Botón para cerrar la aplicación. Utiliza un estilo específico para acciones de salida. -->
             <Button fx:id="botonSalir" text="Salir" onAction="#salirAplicacion" styleClass="botonSalir" />
         </VBox>
     </left>
 
-    <!-- 
-        Contenedor central.
-        Uso un StackPane para que las diferentes vistas (productos, clientes, etc.)
-        se puedan apilar y mostrar una a la vez, ocupando todo el espacio disponible.
+    <!--
+        Define el contenedor central de la aplicación.
+        Es un StackPane, lo que permite que diferentes vistas (como productos, clientes, ventas)
+        se puedan superponer y mostrar una a la vez, ocupando todo el espacio disponible en el centro.
+        Tiene un identificador para aplicar estilos de fondo.
     -->
     <center>
         <StackPane fx:id="contenedorCentral" id="contenedorCentral" />
