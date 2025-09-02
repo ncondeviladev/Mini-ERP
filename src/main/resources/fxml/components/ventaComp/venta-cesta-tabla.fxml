@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.erp.controller.components.ventaComp.VentaCestaTablaController">
-    <TableView fx:id="tablaCesta" prefHeight="200">
+    <TableView fx:id="tablaCesta" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="columnaProducto" text="Producto" prefWidth="200" />
             <TableColumn fx:id="columnaCantidad" text="Cantidad" prefWidth="80" />

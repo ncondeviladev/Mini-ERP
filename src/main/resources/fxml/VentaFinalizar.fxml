@@ -16,7 +16,7 @@
             prefWidth="900" prefHeight="700" stylesheets="@../css/estilo.css" styleClass="panel-fondo">
 
     <StackPane styleClass="panel-contenido" AnchorPane.topAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
-        <VBox spacing="10">
+        <VBox spacing="10" VBox.vgrow="ALWAYS">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10" />
             </padding>
@@ -25,7 +25,15 @@
 
             <!-- SELECCIÓN DE CLIENTE -->
             <Label text="1. Seleccione un Cliente" styleClass="subtitulo-panel" />
-            <fx:include fx:id="formularioBuscarCliente" source="components/cliComp/cliente-formulario-buscar.fxml"/>
+            
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="botonBuscarCliente" text="Buscar Cliente" onAction="#mostrarVistaBuscar" styleClass="button-cliente"/>
+            </HBox>
+
+            <VBox fx:id="zonaFormulariosCliente" VBox.vgrow="ALWAYS">
+                <fx:include fx:id="formularioBuscarCliente" source="components/cliComp/cliente-formulario-buscar.fxml"/>
+            </VBox>
+
             <fx:include fx:id="clienteTabla" source="components/cliComp/cliente-tabla.fxml" VBox.vgrow="ALWAYS"/>
 
             <!-- SELECCIÓN DE DESCUENTOS -->

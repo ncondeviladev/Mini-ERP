@@ -41,7 +41,7 @@ public class Alerta {
         alert.setContentText(content);
 
         // Configurar la alerta para que se cierre automáticamente después de 2 segundos
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+        PauseTransition delay = new PauseTransition(Duration.seconds(1));
         delay.setOnFinished(event -> alert.hide());
         alert.show();
         delay.play();

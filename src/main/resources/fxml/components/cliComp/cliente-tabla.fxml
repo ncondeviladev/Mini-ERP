@@ -13,11 +13,11 @@
 -->
 <VBox xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="com.erp.controller.components.cliComp.ClienteTablaController" 
-      spacing="10">
+      spacing="10" VBox.vgrow="ALWAYS">
     <children>
         <!-- La tabla de clientes que cortaste -->
-        <TableView fx:id="tablaCliente" prefHeight="300" VBox.vgrow="ALWAYS"
-            prefWidth="550" styleClass="table-view, table-cliente">
+        <TableView fx:id="tablaCliente" VBox.vgrow="ALWAYS"
+            styleClass="table-view, table-cliente">
             <columns>
                 <TableColumn fx:id="colIdCliente" text="ID" />
                 <TableColumn fx:id="colNombreApellidos" text="Nombre&#10;y Apellidos" />

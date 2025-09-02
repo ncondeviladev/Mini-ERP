@@ -22,8 +22,12 @@ import javafx.scene.layout.Region; // Importar Region
 
 import java.io.IOException; // Importar IOException
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import com.erp.dao.ProductoDAO; // Added import
 
@@ -32,6 +36,7 @@ public class VentaController implements Initializable {
     private MainController mainController;
     private ObservableList<DetalleVenta> cestaItems;
     private ProductoDAO productoDAO; // Added instance variable
+    private List<Producto> productosOriginales = new ArrayList<>();
 
     @FXML
     private AnchorPane rootPane; // Inyectar el AnchorPane raíz
@@ -61,11 +66,15 @@ public class VentaController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Ocultar el formulario de búsqueda al inicio
         contenedorFormularioBusqueda.setVisible(false);
-        contenedorFormularioBusqueda.setMinHeight(0);
         contenedorFormularioBusqueda.setManaged(false);
-        // cestaItems = FXCollections.observableArrayList(); // Eliminado: la cesta se inyecta desde MainController
-        productoDAO = new ProductoDAO(); // Initialized ProductoDAO
-        productoTablaController.setItems(productoDAO.listarProductos()); // Load products
+        
+        productoDAO = new ProductoDAO();
+        this.productosOriginales = productoDAO.listarProductos();
+        productoTablaController.setItems(this.productosOriginales);
+
+        // Vincular controladores para el filtro
+        formularioBuscarProductoController.setVentaController(this);
+        formularioBuscarProductoController.vincularControlador();
 
         // Hide the action buttons (Modify/Delete) from the product table in the sales view
         if (productoTablaController != null) {
@@ -113,18 +122,36 @@ public class VentaController implements Initializable {
         return rootPane;
     }
 
+    public void filtrarProductos() {
+        Map<String, String> criterios = formularioBuscarProductoController.getCriteriosBusqueda();
+        String filtroId = criterios.get("id").toLowerCase();
+        String filtroNombre = criterios.get("nombre").toLowerCase();
+        String filtroCategoria = criterios.get("categoria").toLowerCase();
+
+        List<Producto> filtrados = productosOriginales.stream()
+            .filter(p -> filtroId.isEmpty() || String.valueOf(p.getId()).contains(filtroId))
+            .filter(p -> filtroNombre.isEmpty() || p.getNombre().toLowerCase().contains(filtroNombre))
+            .filter(p -> filtroCategoria.isEmpty() || (p.getCategoria() != null && p.getCategoria().toLowerCase().contains(filtroCategoria)))
+            .collect(Collectors.toList());
+
+        productoTablaController.setItems(filtrados);
+    }
+
     @FXML
     private void mostrarOcultarFormularioBusqueda() {
         // Alternar la visibilidad del formulario de búsqueda
         boolean estaVisible = contenedorFormularioBusqueda.isVisible();
+        System.out.println("Estado actual del formulario de búsqueda: " + estaVisible);
         if (estaVisible) {
             contenedorFormularioBusqueda.setVisible(false);
             contenedorFormularioBusqueda.setMinHeight(0);
             contenedorFormularioBusqueda.setManaged(false);
+            System.out.println("Formulario de búsqueda ocultado.");
         } else {
             contenedorFormularioBusqueda.setVisible(true);
             contenedorFormularioBusqueda.setMinHeight(Region.USE_COMPUTED_SIZE);
             contenedorFormularioBusqueda.setManaged(true);
+            System.out.println("Formulario de búsqueda mostrado.");
         }
     }
 

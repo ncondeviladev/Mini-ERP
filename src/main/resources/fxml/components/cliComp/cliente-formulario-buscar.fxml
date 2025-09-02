@@ -11,7 +11,7 @@
     Controlador: com.erp.controller.components.cliComp.ClienteFormularioBuscarController
 -->
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.erp.controller.components.cliComp.ClienteFormularioBuscarController"
-    spacing="10" styleClass="formulario-panel">
+    fx:id="panelRaiz" spacing="10" styleClass="formulario-panel">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10" />
     </padding>
@@ -30,3 +30,4 @@
             GridPane.rowIndex="2" styleClass="campo-formulario" />
     </GridPane>
 </VBox>
+

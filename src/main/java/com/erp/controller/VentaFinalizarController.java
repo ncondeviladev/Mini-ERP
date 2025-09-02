@@ -15,13 +15,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.layout.StackPane;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+import com.erp.utils.Alerta;
+
+// import com.erp.utils.FacturaPDFGenerator;
 
 public class VentaFinalizarController implements Initializable {
 
@@ -31,6 +39,8 @@ public class VentaFinalizarController implements Initializable {
     private VentaDAO ventaDAO;
     private double subtotal = 0.0;
 
+    @FXML
+    private StackPane zonaFormulariosCliente;
     @FXML
     private ClienteFormularioBuscarController formularioBuscarClienteController;
     @FXML
@@ -47,8 +57,11 @@ public class VentaFinalizarController implements Initializable {
     private Button botonCancelar;
     @FXML
     private Button botonFinalizarVenta;
+    @FXML
+    private Button botonBuscarCliente;
 
     private ClienteDAO clienteDAO;
+    private List<Cliente> clientesOriginales = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -56,8 +69,14 @@ public class VentaFinalizarController implements Initializable {
         this.ventaDAO = new VentaDAO();
         this.clienteDAO = new ClienteDAO();
 
-        clienteTablaController.setItems(this.clienteDAO.listarClientes());
+        // Cargar todos los clientes y mostrarlos inicialmente
+        clientesOriginales = this.clienteDAO.listarClientes();
+        clienteTablaController.setItems(clientesOriginales);
         clienteTablaController.setAccionesVisible(false);
+
+        // Vincular el controlador de búsqueda para que los listeners funcionen
+        formularioBuscarClienteController.setVentaFinalizarController(this);
+        formularioBuscarClienteController.vincularControlador();
 
         listaDescuentos.setCellFactory(CheckBoxListCell.forListView(Descuento::seleccionadoProperty));
 
@@ -66,6 +85,36 @@ public class VentaFinalizarController implements Initializable {
         );
 
         listaDescuentos.setDisable(true);
+
+        // Ocultar el formulario de búsqueda al inicio
+        formularioBuscarClienteController.getPanelRaiz().setVisible(false);
+        formularioBuscarClienteController.getPanelRaiz().setManaged(false);
+    }
+
+    /**
+     * Filtra la lista de clientes mostrada en la tabla.
+     * Este método es invocado por el {@link ClienteFormularioBuscarController}.
+     */
+    public void filtrarClientes() {
+        Map<String, String> criterios = formularioBuscarClienteController.getCriteriosBusqueda();
+        String filtroId = criterios.get("id").toLowerCase();
+        String filtroNombre = criterios.get("nombre").toLowerCase();
+        String filtroCifNif = criterios.get("cifnif").toLowerCase();
+
+        List<Cliente> filtrados = clientesOriginales.stream()
+            .filter(c -> filtroId.isEmpty() || String.valueOf(c.getId()).contains(filtroId))
+            .filter(c -> filtroCifNif.isEmpty() || (c.getCifnif() != null && c.getCifnif().toLowerCase().contains(filtroCifNif)))
+            .filter(c -> {
+                if (filtroNombre.isEmpty()) return true;
+                if ("Particular".equals(c.getTipoCliente())) {
+                    return (c.getNombre() + " " + c.getApellidos()).toLowerCase().contains(filtroNombre);
+                } else { // Empresa
+                    return c.getRazonSocial().toLowerCase().contains(filtroNombre);
+                }
+            })
+            .collect(Collectors.toList());
+
+        clienteTablaController.setItems(filtrados);
     }
 
     public void setMainController(MainController mainController) {
@@ -81,14 +130,18 @@ public class VentaFinalizarController implements Initializable {
     }
 
     private void onClienteSeleccionado(Cliente cliente) {
+        System.out.println("onClienteSeleccionado llamado. Cliente: " + (cliente != null ? cliente.getNombre() : "null"));
         listaDescuentos.getItems().clear();
         if (cliente != null) {
             ObservableList<Descuento> descuentos = FXCollections.observableArrayList(descuentoDAO.listarDescuentosPorCliente(cliente.getId()));
+            System.out.println("Descuentos encontrados para el cliente: " + descuentos.size());
             descuentos.forEach(d -> d.seleccionadoProperty().addListener((obs, oldVal, newVal) -> recalcularTotales()));
             listaDescuentos.setItems(descuentos);
             listaDescuentos.setDisable(descuentos.isEmpty());
+            System.out.println("Lista de descuentos deshabilitada: " + listaDescuentos.isDisabled());
         } else {
             listaDescuentos.setDisable(true);
+            System.out.println("Cliente nulo, lista de descuentos deshabilitada.");
         }
         recalcularTotales();
     }
@@ -110,7 +163,7 @@ public class VentaFinalizarController implements Initializable {
     private void finalizarVenta() {
         Cliente clienteSeleccionado = clienteTablaController.getClienteSeleccionado();
         if (clienteSeleccionado == null) {
-            new Alert(Alert.AlertType.WARNING, "Debe seleccionar un cliente.").showAndWait();
+            Alerta.mostrarAlertaTemporal(Alert.AlertType.WARNING, "Advertencia", null, "Debe seleccionar un cliente.");
             return;
         }
 
@@ -131,11 +184,27 @@ public class VentaFinalizarController implements Initializable {
 
         try {
             ventaDAO.guardarVenta(nuevaVenta);
-            new Alert(Alert.AlertType.INFORMATION, "Venta guardada correctamente.").showAndWait();
+            // FacturaPDFGenerator.generateInvoicePDF(nuevaVenta);
+            Alerta.mostrarAlertaTemporal(Alert.AlertType.INFORMATION, "Éxito", "Venta guardada correctamente.", "Se ha generado la factura en: " /*+ FacturaPDFGenerator.getInvoiceFilePath()*/);
+
+            // Abrir el PDF generado
+            /*
+            if (Desktop.isDesktopSupported()) {
+                new Thread(() -> {
+                    try {
+                        File myFile = new File(FacturaPDFGenerator.getInvoiceFilePath());
+                        Desktop.getDesktop().open(myFile);
+                    } catch (IOException ex) {
+                        System.err.println("Error al abrir el PDF: " + ex.getMessage());
+                    }
+                }).start();
+            }
+            */
+
             mainController.mostrarVentas();
         } catch (Exception e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Error al guardar la venta: " + e.getMessage()).showAndWait();
+            Alerta.mostrarAlertaTemporal(Alert.AlertType.ERROR, "Error", "Error al guardar la venta", e.getMessage());
         }
     }
 
@@ -144,5 +213,12 @@ public class VentaFinalizarController implements Initializable {
         if (mainController != null) {
             mainController.mostrarCesta();
         }
+    }
+
+    @FXML
+    private void mostrarVistaBuscar() {
+        boolean isVisible = formularioBuscarClienteController.getPanelRaiz().isVisible();
+        formularioBuscarClienteController.getPanelRaiz().setVisible(!isVisible);
+        formularioBuscarClienteController.getPanelRaiz().setManaged(!isVisible);
     }
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.erp.controller.ProductoController;
-
+import com.erp.controller.VentaController;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
@@ -23,9 +23,14 @@ public class ProductoFormularioBuscarController {
     private TextField buscarCategoriaProductoField;
 
     private ProductoController productoController;
+    private VentaController ventaController;
 
     public void setProductoController(ProductoController productoController) {
         this.productoController = productoController;
+    }
+
+    public void setVentaController(VentaController ventaController) {
+        this.ventaController = ventaController;
     }
 
     @FXML
@@ -35,12 +40,18 @@ public class ProductoFormularioBuscarController {
 
     /**
      * Vincula los listeners de los campos de texto al método de filtrado del controlador principal.
-     * Debe llamarse después de que el productoController haya sido inyectado.
+     * Debe llamarse después de que el productoController o ventaController hayan sido inyectados.
      */
     public void vincularControlador() {
-        buscarIdProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
-        buscarNombreProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
-        buscarCategoriaProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
+        if (productoController != null) {
+            buscarIdProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
+            buscarNombreProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
+            buscarCategoriaProductoField.textProperty().addListener((obs, old, val) -> productoController.filtrarProductos());
+        } else if (ventaController != null) {
+            buscarIdProductoField.textProperty().addListener((obs, old, val) -> ventaController.filtrarProductos());
+            buscarNombreProductoField.textProperty().addListener((obs, old, val) -> ventaController.filtrarProductos());
+            buscarCategoriaProductoField.textProperty().addListener((obs, old, val) -> ventaController.filtrarProductos());
+        }
     }
 
     /**
