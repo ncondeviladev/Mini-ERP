@@ -49,7 +49,7 @@ public class ProductoTablaController {
     }
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         // Configurar las columnas de la tabla
         colIdProducto.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNombreProducto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -74,7 +74,7 @@ public class ProductoTablaController {
      * Notifica al controlador principal para que inicie el proceso de modificación.
      */
     @FXML
-    private void modificarProductoSeleccionado() {
+    public void modificarProductoSeleccionado() {
         if (productoController != null) {
             productoController.modificarProductoSeleccionado();
         }
@@ -85,7 +85,7 @@ public class ProductoTablaController {
      * Notifica al controlador principal para que inicie el proceso de eliminación.
      */
     @FXML
-    private void eliminarProductoSeleccionado() {
+    public void eliminarProductoSeleccionado() {
         if (productoController != null) {
             productoController.eliminarProductoSeleccionado();
         }

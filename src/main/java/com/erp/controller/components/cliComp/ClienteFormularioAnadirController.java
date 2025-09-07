@@ -65,7 +65,7 @@ public class ClienteFormularioAnadirController {
         this.clienteController = clienteController;
     }
 
-    private void configurarVisibilidadCampos() {
+    public void configurarVisibilidadCampos() {
         boolean isParticular = particularToggle.isSelected();
         camposParticular.setVisible(isParticular);
         camposParticular.setManaged(isParticular);
@@ -74,7 +74,7 @@ public class ClienteFormularioAnadirController {
     }
 
     @FXML
-    private void guardarCliente() {
+    public void guardarCliente() {
         // 1. Validar campos (simplificado, se puede mejorar con ValidationUtils)
         if (isCamposVacios()) {
             Alerta.mostrarError("Error de Validación", "Todos los campos obligatorios deben estar rellenos.");
@@ -152,7 +152,7 @@ public class ClienteFormularioAnadirController {
         emailClienteField.clear();
     }
 
-    private boolean isCamposVacios() {
+    public boolean isCamposVacios() {
         if (particularToggle.isSelected()) {
             return nombreClienteField.getText().isBlank() ||
                    apellidosClienteField.getText().isBlank() ||

@@ -12,26 +12,50 @@ import com.erp.db.SQLiteConnector;
 import com.erp.model.Producto;
 
 /**
- * DAO encargado de gestionar operaciones sobre la tabla 'productos'
- * Compatible con controlador ProductoViewController
+ * DAO (Data Access Object) para la entidad {@link Producto}.
+ * 
+ * <p>Esta clase encapsula toda la lógica de acceso a datos para la tabla `productos`
+ * en la base de datos. Proporciona métodos para realizar las operaciones CRUD 
+ * (Crear, Leer, Actualizar, Eliminar) de manera que el resto de la aplicación
+ * no necesita conocer los detalles de las sentencias SQL ni de la gestión de la
+ * conexión con la base de datos.</p>
+ *
+ * @author Noé
+ * @see Producto
+ * @see com.erp.db.SQLiteConnector
  */
 public class ProductoDAO {
 
+    /**
+     * La conexión a la base de datos. Se mantiene como un campo de instancia para ser
+     * reutilizada por todos los métodos del DAO.
+     */
     private final Connection conexion;
 
+    /**
+     * Constructor del DAO.
+     * Se encarga de obtener una conexión a la base de datos a través de la clase
+     * {@link SQLiteConnector} en el momento de su instanciación.
+     * Si la conexión falla, lanza una {@code RuntimeException} para detener la ejecución,
+     * ya que el DAO no puede funcionar sin una conexión válida.
+     */
     public ProductoDAO() {
         try {
             this.conexion = SQLiteConnector.connect();
         } catch (SQLException e) {
-            throw new RuntimeException("Error al conectar con la base de datos", e);
+            throw new RuntimeException("Error fatal: no se pudo conectar con la base de datos.", e);
         }
     }
 
     /**
-     * Guarda un nuevo producto en la base de datos
+     * Guarda un nuevo producto en la base de datos.
+     * <p>
+     * Utiliza un {@link PreparedStatement} para insertar los datos del producto
+     * y recupera el ID autogenerado por la base de datos, asignándolo de nuevo al objeto.
+     * </p>
      * 
-     * @param producto objeto Producto con datos
-     * @return true si se inserta correctamente
+     * @param producto El objeto {@link Producto} con los datos a guardar. Su ID debe ser nulo.
+     * @return {@code true} si el producto se guardó correctamente, {@code false} en caso contrario.
      */
     public boolean guardarProductoDb(Producto producto) {
         String sql = "INSERT INTO productos(nombre, descripcion, categoria, precioUnitario, stock) VALUES (?, ?, ?, ?, ?)";
@@ -53,16 +77,21 @@ public class ProductoDAO {
             }
 
         } catch (SQLException e) {
+            System.err.println("Error al guardar el producto en la base de datos.");
             e.printStackTrace();
         }
         return false;
     }
 
     /**
-     * Actualiza un producto existente en la base de datos
+     * Actualiza los datos de un producto existente en la base de datos.
+     * <p>
+     * El producto es identificado por su ID. Todos los campos del objeto {@link Producto}
+     * se utilizan para actualizar el registro correspondiente en la tabla `productos`.
+     * </p>
      * 
-     * @param producto objeto Producto con ID y nuevos valores
-     * @return true si se actualiza correctamente
+     * @param producto El objeto {@link Producto} con los datos actualizados. Debe tener un ID válido.
+     * @return {@code true} si la actualización fue exitosa, {@code false} en caso contrario.
      */
     public boolean actualizarProductoEnDb(Producto producto) {
         String sql = "UPDATE productos SET nombre = ?, descripcion = ?, categoria = ?, precioUnitario = ?, stock = ? WHERE id = ?";
@@ -75,16 +104,17 @@ public class ProductoDAO {
             stmt.setInt(6, producto.getId());
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            System.err.println("Error al actualizar el producto en la base de datos.");
             e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * Elimina un producto por ID
+     * Elimina un producto de la base de datos utilizando su ID.
      * 
-     * @param id identificador del producto
-     * @return true si se elimina correctamente
+     * @param id El ID del producto a eliminar.
+     * @return {@code true} si el producto se eliminó correctamente (se afectó una o más filas), {@code false} en caso contrario.
      */
     public boolean eliminarProductoPorId(int id) {
         String sql = "DELETE FROM productos WHERE id = ?";
@@ -92,16 +122,17 @@ public class ProductoDAO {
             stmt.setInt(1, id);
             return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
+            System.err.println("Error al eliminar el producto de la base de datos.");
             e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * Busca un producto por ID
+     * Busca y devuelve un producto por su ID.
      * 
-     * @param id identificador
-     * @return Producto si se encuentra, null si no
+     * @param id El ID del producto a buscar.
+     * @return Un objeto {@link Producto} si se encuentra, o {@code null} si no existe un producto con ese ID.
      */
     public Producto buscarProductoPorId(int id) {
         String sql = "SELECT * FROM productos WHERE id = ?";
@@ -112,6 +143,7 @@ public class ProductoDAO {
                 return construirProducto(rs);
             }
         } catch (SQLException e) {
+            System.err.println("Error al buscar el producto por ID.");
             e.printStackTrace();
         }
         return null;
@@ -149,3 +181,6 @@ public class ProductoDAO {
                 rs.getInt("stock"));
     }
 }
+
+
+

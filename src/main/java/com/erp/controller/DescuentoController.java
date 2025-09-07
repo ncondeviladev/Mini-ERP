@@ -201,6 +201,13 @@ public class DescuentoController {
         }
     }
 
+    /**
+     * Guarda un nuevo descuento o actualiza uno existente en la base de datos.
+     * Realiza validaciones de formulario y maneja la lógica de persistencia.
+     * Si el formulario es válido, crea un nuevo descuento o actualiza el existente
+     * y lo guarda/actualiza en la base de datos a través de {@link DescuentoDAO}.
+     * Finalmente, actualiza la tabla de descuentos y oculta el formulario.
+     */
     @FXML
     private void guardarDescuento() {
         if (!esFormularioValido()) {

@@ -46,7 +46,7 @@ public class ProductoFormularioAñadirController {
     }
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         // La acción del botón ahora se maneja aquí
         botonGuardarProducto.setOnAction(event -> handleGuardarProducto());
 
@@ -87,7 +87,7 @@ public class ProductoFormularioAñadirController {
      * Recoge los datos del formulario, crea un objeto Producto y lo pasa
      * al controlador principal para que lo guarde o actualice.
      */
-    private void handleGuardarProducto() {
+    public void handleGuardarProducto() {
         if (!validarCampos()) {
             Alerta.mostrarAdvertencia("Campos incompletos", "Nombre, precio y stock son obligatorios.");
             return; // Si la validación falla, no continuamos.
@@ -116,7 +116,7 @@ public class ProductoFormularioAñadirController {
         }
     }
 
-    private boolean validarCampos() {
+    public boolean validarCampos() {
         return !nombreProductoField.getText().trim().isEmpty() &&
                !precioProductoField.getText().trim().isEmpty() &&
                !stockProductoField.getText().trim().isEmpty();

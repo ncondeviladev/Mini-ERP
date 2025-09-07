@@ -84,13 +84,13 @@ public class ClienteSeleccionDialogoController implements Initializable {
     }
 
     @FXML
-    private void buscarCliente() {
+    public void buscarCliente() {
         // The filtering is already handled by the listener on campoBusquedaCliente.textProperty()
         // This method can be empty or trigger a refresh if needed for other reasons.
     }
 
     @FXML
-    private void seleccionar() {
+    public void seleccionar() {
         selectedClient = tablaClientes.getSelectionModel().getSelectedItem();
         if (selectedClient != null) {
             dialogStage.close();
@@ -104,7 +104,7 @@ public class ClienteSeleccionDialogoController implements Initializable {
     }
 
     @FXML
-    private void cancelar() {
+    public void cancelar() {
         selectedClient = null; // No client selected
         dialogStage.close();
     }

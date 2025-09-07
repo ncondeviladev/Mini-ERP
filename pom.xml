@@ -84,7 +84,7 @@ SQLite.
     <dependency>
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
-        <version>5.3.1</version>
+        <version>5.12.0</version>
         <scope>test</scope>
     </dependency>
 
@@ -175,7 +175,7 @@ SQLite.
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.2.5</version>
         <configuration>
-          <skipTests>true</skipTests>
+          <skipTests>false</skipTests>
         </configuration>
       </plugin>
     </plugins>

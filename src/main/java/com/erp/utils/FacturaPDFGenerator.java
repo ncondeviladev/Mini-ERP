@@ -21,12 +21,11 @@ import java.time.format.DateTimeFormatter;
 
 public class FacturaPDFGenerator {
 
-    private static final String DEST_DIR = "facturas";
     private static String lastGeneratedPath = "";
     private static final double TASA_IVA = 0.21;
 
-    public static void generateInvoicePDF(Venta venta) throws IOException {
-        File dir = new File(DEST_DIR);
+    public static void generateInvoicePDF(Venta venta, String destDir) throws IOException {
+        File dir = new File(destDir);
         if (!dir.exists()) {
             dir.mkdirs();
         }
@@ -34,7 +33,7 @@ public class FacturaPDFGenerator {
         String fileName = String.format("Factura_%d_%s.pdf", 
                                     venta.getId() != null ? venta.getId() : 0, 
                                     venta.getFecha().format(DateTimeFormatter.ISO_LOCAL_DATE));
-        String filePath = DEST_DIR + File.separator + fileName;
+        String filePath = destDir + File.separator + fileName;
         lastGeneratedPath = filePath;
 
         PdfWriter writer = new PdfWriter(filePath);

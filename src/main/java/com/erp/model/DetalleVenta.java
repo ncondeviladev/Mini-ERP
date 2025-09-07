@@ -1,53 +1,68 @@
 package com.erp.model;
 
-import com.erp.model.Producto;
-
 /**
- * Representa una línea de detalle dentro de una Venta.
- * <p>
- * Cada instancia de esta clase corresponde a un producto específico que ha sido
- * vendido, incluyendo la cantidad y el precio unitario en el momento de la transacción.
- * Esto permite mantener un registro histórico preciso de los precios.
+ * Representa una línea de detalle dentro de una {@link Venta}.
+ * 
+ * <p>Cada instancia de esta clase corresponde a un único producto que ha sido
+ * vendido como parte de una transacción más grande. Su propósito es capturar el
+ * estado de esa parte de la venta en un momento concreto.</p>
+ * 
+ * <p><b>Importancia del Diseño:</b></p>
+ * <ul>
+ *     <li><b>Historial de Precios:</b> Almacena {@code precioUnitario} directamente.
+ *     Esto es crucial porque si el precio de un {@link Producto} cambia en el futuro,
+ *     los registros de ventas pasadas no se verán alterados, garantizando la 
+ *     integridad de los informes históricos.</li>
+ *     <li><b>Granularidad:</b> Permite un registro detallado de cada transacción, 
+ *     facilitando la gestión de inventario, análisis de ventas por producto, etc.</li>
+ *     <li><b>Relación con Venta:</b> Se vincula a una {@code Venta} principal a través 
+ *     de {@code ventaId}, formando una relación clásica de maestro-detalle.</li>
+ * </ul>
+ *
+ * @see Venta
+ * @see Producto
+ * @see com.erp.dao.VentaDAO
  */
 public class DetalleVenta {
     
     /**
-     * Identificador único autoincremental para el registro del detalle de venta en la base de datos.
+     * Identificador único autoincremental para este registro de detalle en la base de datos.
+     * Es la clave primaria de la tabla de detalles de venta.
      */
     private Integer id;
     
     /**
-     * ID de la venta (de la tabla `ventas`) a la que pertenece este detalle.
-     * Sirve como clave foránea para relacionar el detalle con su venta principal.
+     * ID de la {@link Venta} a la que pertenece este detalle. 
+     * Actúa como clave foránea para establecer la relación con la tabla de ventas.
      */
     private Integer ventaId;
     
     /**
-     * El objeto {@link Producto} que se vendió.
-     * Contiene toda la información del producto.
+     * El objeto {@link Producto} que se vendió en esta línea de detalle.
+     * Contiene toda la información del producto (nombre, descripción, etc.).
      */
     private Producto producto;
     
     /**
-     * La cantidad de unidades del producto que se vendieron.
+     * La cantidad de unidades de este producto que se vendieron en la transacción.
      */
     private Integer cantidad;
     
     /**
      * El precio de una sola unidad del producto en el momento exacto de la venta.
-     * Se almacena aquí para evitar que futuros cambios de precio en el producto afecten
-     * a los registros de ventas pasadas.
+     * Se almacena aquí para preservar el valor histórico y evitar que futuros cambios
+     * de precio en la ficha del producto afecten a este registro.
      */
     private double precioUnitario;
 
     /**
      * Constructor para crear una nueva instancia de DetalleVenta.
      *
-     * @param id Identificador único del detalle. Generalmente es null al crear un nuevo detalle antes de guardarlo en la BD.
-     * @param ventaId ID de la venta a la que pertenece.
-     * @param producto El producto asociado a este detalle.
-     * @param cantidad La cantidad de producto vendido.
-     * @param precioUnitario El precio unitario del producto en el momento de la venta.
+     * @param id El identificador único del detalle. Suele ser {@code null} al crear un nuevo detalle antes de persistirlo.
+     * @param ventaId El ID de la venta a la que este detalle pertenece.
+     * @param producto El producto asociado a esta línea de venta.
+     * @param cantidad La cantidad de unidades vendidas.
+     * @param precioUnitario El precio unitario del producto en el momento de la transacción.
      */
     public DetalleVenta(Integer id, Integer ventaId, Producto producto, Integer cantidad, double precioUnitario) {
         this.id = id;
@@ -57,10 +72,10 @@ public class DetalleVenta {
         this.precioUnitario = precioUnitario;
     }
 
-    // --- Getters y Setters ---
+    // --- GETTERS Y SETTERS ---
 
     /**
-     * Obtiene el identificador único del detalle de venta.
+     * Obtiene el identificador único de esta línea de detalle.
      * @return El ID del detalle de venta.
      */
     public Integer getId() {
@@ -68,7 +83,7 @@ public class DetalleVenta {
     }
 
     /**
-     * Establece el identificador único del detalle de venta.
+     * Establece el identificador único de esta línea de detalle.
      * @param id El nuevo ID para el detalle de venta.
      */
     public void setId(Integer id) {
@@ -76,7 +91,7 @@ public class DetalleVenta {
     }
 
     /**
-     * Obtiene el ID de la venta a la que pertenece este detalle.
+     * Obtiene el ID de la venta principal a la que pertenece este detalle.
      * @return El ID de la venta.
      */
     public Integer getVentaId() {
@@ -84,7 +99,7 @@ public class DetalleVenta {
     }
 
     /**
-     * Establece el ID de la venta a la que pertenece este detalle.
+     * Establece el ID de la venta principal a la que pertenece este detalle.
      * @param ventaId El nuevo ID de la venta.
      */
     public void setVentaId(Integer ventaId) {
@@ -92,8 +107,8 @@ public class DetalleVenta {
     }
 
     /**
-     * Obtiene el producto asociado a este detalle de venta.
-     * @return El objeto {@link Producto}.
+     * Obtiene el objeto Producto completo asociado a este detalle de venta.
+     * @return El {@link Producto} vendido.
      */
     public Producto getProducto() {
         return producto;
@@ -101,14 +116,14 @@ public class DetalleVenta {
 
     /**
      * Establece el producto asociado a este detalle de venta.
-     * @param producto El nuevo objeto {@link Producto}.
+     * @param producto El nuevo {@link Producto}.
      */
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
 
     /**
-     * Obtiene la cantidad del producto vendido.
+     * Obtiene la cantidad de unidades vendidas de este producto.
      * @return La cantidad del producto.
      */
     public Integer getCantidad() {
@@ -116,7 +131,7 @@ public class DetalleVenta {
     }
 
     /**
-     * Establece la cantidad del producto vendido.
+     * Establece la cantidad de unidades vendidas de este producto.
      * @param cantidad La nueva cantidad del producto.
      */
     public void setCantidad(Integer cantidad) {
@@ -124,8 +139,8 @@ public class DetalleVenta {
     }
 
     /**
-     * Obtiene el precio unitario del producto en el momento de la venta.
-     * @return El precio unitario.
+     * Obtiene el precio unitario del producto en el momento en que se realizó la venta.
+     * @return El precio unitario histórico.
      */
     public double getPrecioUnitario() {
         return precioUnitario;
@@ -139,21 +154,26 @@ public class DetalleVenta {
         this.precioUnitario = precioUnitario;
     }
 
+    // --- MÉTODOS CALCULADOS ---
+
     /**
      * Calcula y devuelve el subtotal para esta línea de detalle.
-     * El cálculo es {@code cantidad * precioUnitario}.
-     * 
-     * @return El subtotal del detalle de venta.
+     * El cálculo es siempre {@code cantidad * precioUnitario}.
+     * <p>
+     * Este valor no se almacena en la base de datos, se calcula dinámicamente
+     * para asegurar que siempre sea consistente con la cantidad y el precio, 
+     * evitando la redundancia de datos.
+     * </p>
+     * @return El subtotal del detalle de venta (cantidad * precio).
      */
     public double getSubTotal() {
-        // El subtotal se calcula dinámicamente y no se almacena en la BD
-        // para asegurar que siempre sea consistente con la cantidad y el precio.
         return cantidad * precioUnitario;
     }
 
     /**
-     * Obtiene el nombre del producto asociado a este detalle de venta.
-     * @return El nombre del producto.
+     * Método de conveniencia para obtener el nombre del producto directamente.
+     * Evita tener que hacer {@code detalle.getProducto().getNombre()} en otras partes del código.
+     * @return El nombre del producto, o una cadena vacía si el producto es nulo.
      */
     public String getNombreProducto() {
         return producto != null ? producto.getNombre() : "";

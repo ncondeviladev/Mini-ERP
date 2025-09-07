@@ -30,6 +30,10 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+/**
+ * Controlador para la vista de finalización de venta (VentaFinalizar.fxml).
+ * Permite seleccionar un cliente, aplicar descuentos y finalizar la venta.
+ */
 public class VentaFinalizarController implements Initializable {
 
     private static final double TASA_IVA = 0.21; // 21% de IVA
@@ -60,6 +64,11 @@ public class VentaFinalizarController implements Initializable {
     private ClienteDAO clienteDAO;
     private List<Cliente> clientesOriginales = new ArrayList<>();
 
+    /**
+     * Inicializa el controlador.
+     * @param url La ubicación utilizada para resolver rutas relativas para el objeto raíz, o null si la ubicación no es conocida.
+     * @param rb Los recursos utilizados para localizar el objeto raíz, o null si el objeto raíz no fue localizado.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.descuentoDAO = new DescuentoDAO();
@@ -88,6 +97,9 @@ public class VentaFinalizarController implements Initializable {
         zonaDescuentos.setManaged(false);
     }
 
+    /**
+     * Filtra la lista de clientes según los criterios de búsqueda.
+     */
     public void filtrarClientes() {
         Map<String, String> criterios = formularioBuscarClienteController.getCriteriosBusqueda();
         String filtroId = criterios.get("id").toLowerCase();
@@ -110,10 +122,18 @@ public class VentaFinalizarController implements Initializable {
         clienteTablaController.setItems(filtrados);
     }
 
+    /**
+     * Establece el controlador principal.
+     * @param mainController El controlador principal.
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Establece los datos de la cesta y calcula el subtotal.
+     * @param cestaItems La lista de detalles de venta.
+     */
     public void setData(ObservableList<DetalleVenta> cestaItems) {
         this.cestaItems = cestaItems;
         this.subtotal = cestaItems.stream()
@@ -122,7 +142,11 @@ public class VentaFinalizarController implements Initializable {
         recalcularTotales();
     }
 
-    private void onClienteSeleccionado(Cliente cliente) {
+    /**
+     * Se ejecuta cuando se selecciona un cliente en la tabla.
+     * @param cliente El cliente seleccionado.
+     */
+    public void onClienteSeleccionado(Cliente cliente) {
         if (cliente != null && cliente.getId() != 0) {
             List<Descuento> descuentos = descuentoDAO.listarDescuentosPorCliente(cliente.getId());
             descuentoTablaController.setDescuentos(descuentos);
@@ -140,7 +164,10 @@ public class VentaFinalizarController implements Initializable {
         recalcularTotales();
     }
 
-    private void recalcularTotales() {
+    /**
+     * Recalcula los totales de la venta (subtotal, descuento, IVA y total final).
+     */
+    public void recalcularTotales() {
         double porcentajeDescuentoTotal = descuentoTablaController.getDescuentosSeleccionados().stream()
                 .mapToDouble(Descuento::getPorcentaje)
                 .sum();
@@ -155,8 +182,11 @@ public class VentaFinalizarController implements Initializable {
         labelTotalFinal.setText(String.format("%.2f€", totalFinal));
     }
 
+    /**
+     * Finaliza la venta, guarda los datos en la base de datos y genera la factura en PDF.
+     */
     @FXML
-    private void finalizarVenta() {
+    public void finalizarVenta() {
         Cliente clienteSeleccionado = clienteTablaController.getClienteSeleccionado();
         if (clienteSeleccionado == null) {
             Alerta.mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", null, "Debe seleccionar un cliente.");
@@ -180,7 +210,7 @@ public class VentaFinalizarController implements Initializable {
             Alerta.mostrarAlertaTemporal(Alert.AlertType.INFORMATION, "Éxito", "Venta guardada correctamente.", null);
             
             // Generar y mostrar factura
-            FacturaPDFGenerator.generateInvoicePDF(nuevaVenta);
+            FacturaPDFGenerator.generateInvoicePDF(nuevaVenta, FacturaPDFGenerator.getInvoiceFilePath());
             File pdfFile = new File(FacturaPDFGenerator.getInvoiceFilePath());
             if (pdfFile.exists()) {
                 Desktop.getDesktop().open(pdfFile);
@@ -193,15 +223,21 @@ public class VentaFinalizarController implements Initializable {
         }
     }
 
+    /**
+     * Cancela la finalización de la venta y vuelve a la vista de la cesta.
+     */
     @FXML
-    private void cancelar() {
+    public void cancelar() {
         if (mainController != null) {
             mainController.mostrarCesta();
         }
     }
 
+    /**
+     * Muestra u oculta el formulario de búsqueda de clientes.
+     */
     @FXML
-    private void mostrarVistaBuscar() {
+    public void mostrarVistaBuscar() {
         boolean isVisible = formularioBuscarClienteController.getPanelRaiz().isVisible();
         formularioBuscarClienteController.getPanelRaiz().setVisible(!isVisible);
         formularioBuscarClienteController.getPanelRaiz().setManaged(!isVisible);

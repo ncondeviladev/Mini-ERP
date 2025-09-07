@@ -106,17 +106,17 @@ public class ClienteTablaController {
     }
 
     @FXML
-    private void modificarClienteSeleccionado() {
+    public void modificarClienteSeleccionado() {
         clienteController.modificarClienteSeleccionado();
     }
 
     @FXML
-    private void eliminarClienteSeleccionado() {
+    public void eliminarClienteSeleccionado() {
         clienteController.eliminarClienteSeleccionado();
     }
 
     @FXML
-    private void verDescuentosCliente() {
+    public void verDescuentosCliente() {
         clienteController.verDescuentos();
     }
 

@@ -60,7 +60,7 @@ public class DescuentoAplicarDialogoController implements Initializable {
     }
 
     @FXML
-    private void aplicarDescuentoManual() {
+    public void aplicarDescuentoManual() {
         try {
             double manualDiscount = Double.parseDouble(campoDescuentoManual.getText());
             if (manualDiscount < 0 || manualDiscount > 100) {
@@ -78,7 +78,7 @@ public class DescuentoAplicarDialogoController implements Initializable {
     }
 
     @FXML
-    private void aplicarDescuentoSeleccionado() {
+    public void aplicarDescuentoSeleccionado() {
         Descuento selectedDescuento = tablaDescuentos.getSelectionModel().getSelectedItem();
         if (selectedDescuento != null) {
             appliedDiscount = selectedDescuento.getPorcentaje();
@@ -93,7 +93,7 @@ public class DescuentoAplicarDialogoController implements Initializable {
     }
 
     @FXML
-    private void cancelar() {
+    public void cancelar() {
         appliedDiscount = 0.0; // No discount applied
         dialogStage.close();
     }

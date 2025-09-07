@@ -31,6 +31,10 @@ import java.util.stream.Collectors;
 
 import com.erp.dao.ProductoDAO; // Added import
 
+/**
+ * Controlador para la vista de ventas (venta.fxml).
+ * Permite buscar productos, añadirlos a la cesta de la compra y navegar a la vista de la cesta.
+ */
 public class VentaController implements Initializable {
 
     private MainController mainController;
@@ -62,6 +66,11 @@ public class VentaController implements Initializable {
     @FXML
     private Button botonVerCesta; // Botón para ver la cesta
 
+    /**
+     * Inicializa el controlador.
+     * @param url La ubicación utilizada para resolver rutas relativas para el objeto raíz, o null si la ubicación no es conocida.
+     * @param rb Los recursos utilizados para localizar el objeto raíz, o null si el objeto raíz no fue localizado.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Forzar la renderización inicial y luego ocultar
@@ -112,18 +121,33 @@ public class VentaController implements Initializable {
         });
     }
 
+    /**
+     * Establece el controlador principal.
+     * @param mainController El controlador principal.
+     */
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
 
+    /**
+     * Establece los items de la cesta.
+     * @param cestaItems La lista de detalles de venta.
+     */
     public void setCestaItems(ObservableList<DetalleVenta> cestaItems) {
         this.cestaItems = cestaItems;
     }
 
+    /**
+     * Obtiene la vista raíz.
+     * @return El nodo raíz.
+     */
     public Node getVista() {
         return rootPane;
     }
 
+    /**
+     * Filtra la lista de productos según los criterios de búsqueda.
+     */
     public void filtrarProductos() {
         Map<String, String> criterios = formularioBuscarProductoController.getCriteriosBusqueda();
         String filtroId = criterios.get("id").toLowerCase();
@@ -139,8 +163,11 @@ public class VentaController implements Initializable {
         productoTablaController.setItems(filtrados);
     }
 
+    /**
+     * Muestra u oculta el formulario de búsqueda.
+     */
     @FXML
-    private void mostrarOcultarFormularioBusqueda() {
+    public void mostrarOcultarFormularioBusqueda() {
         // Alternar la visibilidad del formulario de búsqueda
         boolean estaVisible = contenedorFormularioBusqueda.isVisible();
         if (estaVisible) {
@@ -154,8 +181,11 @@ public class VentaController implements Initializable {
         }
     }
 
+    /**
+     * Añade el producto seleccionado a la cesta.
+     */
     @FXML
-    private void anadirProductoACesta() {
+    public void anadirProductoACesta() {
         Producto selectedProduct = productoTablaController.getTablaProducto().getSelectionModel().getSelectedItem();
         if (selectedProduct == null) {
             Alerta.mostrarAlertaTemporal(AlertType.WARNING, "Advertencia", null, "Por favor, selecciona un producto de la tabla.");
@@ -206,7 +236,7 @@ public class VentaController implements Initializable {
     }
 
     @FXML
-    private void verCesta() {
+    public void verCesta() {
         if (mainController != null) {
             mainController.mostrarCesta();
         }
