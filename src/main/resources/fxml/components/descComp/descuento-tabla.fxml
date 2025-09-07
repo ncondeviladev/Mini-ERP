@@ -6,8 +6,9 @@
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.erp.controller.components.descComp.DescuentoTablaController">
-    <TableView fx:id="tablaDescuentos" prefHeight="400">
+    <TableView fx:id="tablaDescuentos" minHeight="250" prefHeight="250">
         <columns>
+            <TableColumn fx:id="columnaSeleccion" prefWidth="50" text="Sel."/>
             <TableColumn fx:id="columnaDescripcion" text="Descripción" prefWidth="250" />
             <TableColumn fx:id="columnaPorcentaje" text="Porcentaje" prefWidth="100" />
             <TableColumn fx:id="columnaFechaInicio" text="Fecha Inicio" prefWidth="150" />
@@ -18,4 +19,4 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
         </columnResizePolicy>
     </TableView>
-</VBox>W
+</VBox>

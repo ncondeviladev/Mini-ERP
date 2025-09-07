@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- Importaciones necesarias para este componente -->
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<!-- 
-    Elemento raíz VBox que envuelve la tabla y los botones.
-    Se asigna el controlador específico para este componente.
--->
 <VBox xmlns:fx="http://javafx.com/fxml/1" 
       fx:controller="com.erp.controller.components.cliComp.ClienteTablaController" 
-      spacing="10" VBox.vgrow="ALWAYS">
+      spacing="10">
     <children>
-        <!-- La tabla de clientes que cortaste -->
-        <TableView fx:id="tablaCliente" VBox.vgrow="ALWAYS"
-            styleClass="table-view, table-cliente">
+        <TableView fx:id="tablaCliente" 
+                   minHeight="250" prefHeight="250"
+                   styleClass="table-view, table-cliente">
             <columns>
                 <TableColumn fx:id="colIdCliente" text="ID" />
                 <TableColumn fx:id="colNombreApellidos" text="Nombre&#10;y Apellidos" />
@@ -31,7 +26,6 @@
             </columnResizePolicy>
         </TableView>
 
-        <!-- El HBox con los botones de acción que cortaste -->
         <HBox fx:id="accionesCliente" spacing="10" alignment="CENTER_RIGHT">
             <Button fx:id="botonDescuentoCliente" text="Ver descuentos" onAction="#verDescuentosCliente" disable="true"
                 styleClass="button-cliente" />

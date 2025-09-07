@@ -45,11 +45,12 @@ public class ClienteFormularioBuscarController {
      * Debe llamarse después de que el controlador padre haya sido inyectado.
      */
     public void vincularControlador() {
-        if (clienteController != null) {
+        if (this.clienteController != null) {
             buscarIdClienteField.textProperty().addListener((obs, old, val) -> clienteController.filtrarClientes());
             buscarNombreClienteField.textProperty().addListener((obs, old, val) -> clienteController.filtrarClientes());
             buscarCifApellidosClienteField.textProperty().addListener((obs, old, val) -> clienteController.filtrarClientes());
-        } else if (ventaFinalizarController != null) {
+        }
+        if (this.ventaFinalizarController != null) {
             buscarIdClienteField.textProperty().addListener((obs, old, val) -> ventaFinalizarController.filtrarClientes());
             buscarNombreClienteField.textProperty().addListener((obs, old, val) -> ventaFinalizarController.filtrarClientes());
             buscarCifApellidosClienteField.textProperty().addListener((obs, old, val) -> ventaFinalizarController.filtrarClientes());

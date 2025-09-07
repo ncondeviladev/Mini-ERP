@@ -2,6 +2,7 @@ package com.erp.controller;
 
 import com.erp.controller.components.cliComp.ClienteFormularioBuscarController;
 import com.erp.controller.components.cliComp.ClienteTablaController;
+import com.erp.controller.components.descComp.DescuentoTablaController;
 import com.erp.dao.ClienteDAO;
 import com.erp.dao.DescuentoDAO;
 import com.erp.dao.VentaDAO;
@@ -9,14 +10,18 @@ import com.erp.model.Cliente;
 import com.erp.model.Descuento;
 import com.erp.model.DetalleVenta;
 import com.erp.model.Venta;
-import javafx.collections.FXCollections;
+import com.erp.utils.Alerta;
+import com.erp.utils.FacturaPDFGenerator;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxListCell;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,14 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import com.erp.utils.Alerta;
-
-// import com.erp.utils.FacturaPDFGenerator;
 
 public class VentaFinalizarController implements Initializable {
+
+    private static final double TASA_IVA = 0.21; // 21% de IVA
 
     private MainController mainController;
     private ObservableList<DetalleVenta> cestaItems;
@@ -40,25 +41,21 @@ public class VentaFinalizarController implements Initializable {
     private double subtotal = 0.0;
 
     @FXML
-    private StackPane zonaFormulariosCliente;
-    @FXML
     private ClienteFormularioBuscarController formularioBuscarClienteController;
     @FXML
     private ClienteTablaController clienteTablaController;
     @FXML
-    private ListView<Descuento> listaDescuentos;
+    private DescuentoTablaController descuentoTablaController;
     @FXML
     private Label labelSubtotal;
     @FXML
     private Label labelDescuento;
     @FXML
+    private Label labelIva;
+    @FXML
     private Label labelTotalFinal;
     @FXML
-    private Button botonCancelar;
-    @FXML
-    private Button botonFinalizarVenta;
-    @FXML
-    private Button botonBuscarCliente;
+    private VBox zonaDescuentos;
 
     private ClienteDAO clienteDAO;
     private List<Cliente> clientesOriginales = new ArrayList<>();
@@ -74,27 +71,23 @@ public class VentaFinalizarController implements Initializable {
         clienteTablaController.setItems(clientesOriginales);
         clienteTablaController.setAccionesVisible(false);
 
-        // Vincular el controlador de búsqueda para que los listeners funcionen
+        // Vincular controladores de componentes
         formularioBuscarClienteController.setVentaFinalizarController(this);
         formularioBuscarClienteController.vincularControlador();
+        descuentoTablaController.setOnSelectionChanged(this::recalcularTotales);
 
-        listaDescuentos.setCellFactory(CheckBoxListCell.forListView(Descuento::seleccionadoProperty));
-
+        // Listener para seleccion de cliente
         clienteTablaController.getTablaCliente().getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> onClienteSeleccionado(newValue)
         );
 
-        listaDescuentos.setDisable(true);
-
-        // Ocultar el formulario de búsqueda al inicio
+        // Ocultar vistas secundarias al inicio
         formularioBuscarClienteController.getPanelRaiz().setVisible(false);
         formularioBuscarClienteController.getPanelRaiz().setManaged(false);
+        zonaDescuentos.setVisible(false);
+        zonaDescuentos.setManaged(false);
     }
 
-    /**
-     * Filtra la lista de clientes mostrada en la tabla.
-     * Este método es invocado por el {@link ClienteFormularioBuscarController}.
-     */
     public void filtrarClientes() {
         Map<String, String> criterios = formularioBuscarClienteController.getCriteriosBusqueda();
         String filtroId = criterios.get("id").toLowerCase();
@@ -130,32 +123,35 @@ public class VentaFinalizarController implements Initializable {
     }
 
     private void onClienteSeleccionado(Cliente cliente) {
-        System.out.println("onClienteSeleccionado llamado. Cliente: " + (cliente != null ? cliente.getNombre() : "null"));
-        listaDescuentos.getItems().clear();
-        if (cliente != null) {
-            ObservableList<Descuento> descuentos = FXCollections.observableArrayList(descuentoDAO.listarDescuentosPorCliente(cliente.getId()));
-            System.out.println("Descuentos encontrados para el cliente: " + descuentos.size());
-            descuentos.forEach(d -> d.seleccionadoProperty().addListener((obs, oldVal, newVal) -> recalcularTotales()));
-            listaDescuentos.setItems(descuentos);
-            listaDescuentos.setDisable(descuentos.isEmpty());
-            System.out.println("Lista de descuentos deshabilitada: " + listaDescuentos.isDisabled());
+        if (cliente != null && cliente.getId() != 0) {
+            List<Descuento> descuentos = descuentoDAO.listarDescuentosPorCliente(cliente.getId());
+            descuentoTablaController.setDescuentos(descuentos);
+            
+            boolean hayDescuentos = !descuentos.isEmpty();
+            descuentoTablaController.getTablaDescuentos().setDisable(!hayDescuentos);
+            zonaDescuentos.setVisible(true);
+            zonaDescuentos.setManaged(true);
         } else {
-            listaDescuentos.setDisable(true);
-            System.out.println("Cliente nulo, lista de descuentos deshabilitada.");
+            descuentoTablaController.setDescuentos(new ArrayList<>());
+            descuentoTablaController.getTablaDescuentos().setDisable(true);
+            zonaDescuentos.setVisible(false);
+            zonaDescuentos.setManaged(false);
         }
         recalcularTotales();
     }
 
     private void recalcularTotales() {
-        double porcentajeDescuentoTotal = listaDescuentos.getItems().stream()
-                .filter(Descuento::isSeleccionado)
+        double porcentajeDescuentoTotal = descuentoTablaController.getDescuentosSeleccionados().stream()
                 .mapToDouble(Descuento::getPorcentaje)
                 .sum();
 
-        double totalFinal = subtotal * (1 - (porcentajeDescuentoTotal / 100.0));
+        double subtotalConDescuento = subtotal * (1 - (porcentajeDescuentoTotal / 100.0));
+        double iva = subtotalConDescuento * TASA_IVA;
+        double totalFinal = subtotalConDescuento + iva;
 
         labelSubtotal.setText(String.format("%.2f€", subtotal));
         labelDescuento.setText(String.format("%.2f%%", porcentajeDescuentoTotal));
+        labelIva.setText(String.format("%.2f€", iva));
         labelTotalFinal.setText(String.format("%.2f€", totalFinal));
     }
 
@@ -163,14 +159,11 @@ public class VentaFinalizarController implements Initializable {
     private void finalizarVenta() {
         Cliente clienteSeleccionado = clienteTablaController.getClienteSeleccionado();
         if (clienteSeleccionado == null) {
-            Alerta.mostrarAlertaTemporal(Alert.AlertType.WARNING, "Advertencia", null, "Debe seleccionar un cliente.");
+            Alerta.mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", null, "Debe seleccionar un cliente.");
             return;
         }
 
-        List<Descuento> descuentosSeleccionados = listaDescuentos.getItems().stream()
-                .filter(Descuento::isSeleccionado)
-                .collect(Collectors.toList());
-
+        List<Descuento> descuentosSeleccionados = descuentoTablaController.getDescuentosSeleccionados();
         double totalFinal = Double.parseDouble(labelTotalFinal.getText().replace("€", "").replace(",", "."));
 
         Venta nuevaVenta = new Venta(
@@ -184,27 +177,19 @@ public class VentaFinalizarController implements Initializable {
 
         try {
             ventaDAO.guardarVenta(nuevaVenta);
-            // FacturaPDFGenerator.generateInvoicePDF(nuevaVenta);
-            Alerta.mostrarAlertaTemporal(Alert.AlertType.INFORMATION, "Éxito", "Venta guardada correctamente.", "Se ha generado la factura en: " /*+ FacturaPDFGenerator.getInvoiceFilePath()*/);
-
-            // Abrir el PDF generado
-            /*
-            if (Desktop.isDesktopSupported()) {
-                new Thread(() -> {
-                    try {
-                        File myFile = new File(FacturaPDFGenerator.getInvoiceFilePath());
-                        Desktop.getDesktop().open(myFile);
-                    } catch (IOException ex) {
-                        System.err.println("Error al abrir el PDF: " + ex.getMessage());
-                    }
-                }).start();
+            Alerta.mostrarAlertaTemporal(Alert.AlertType.INFORMATION, "Éxito", "Venta guardada correctamente.", null);
+            
+            // Generar y mostrar factura
+            FacturaPDFGenerator.generateInvoicePDF(nuevaVenta);
+            File pdfFile = new File(FacturaPDFGenerator.getInvoiceFilePath());
+            if (pdfFile.exists()) {
+                Desktop.getDesktop().open(pdfFile);
             }
-            */
 
             mainController.mostrarVentas();
         } catch (Exception e) {
             e.printStackTrace();
-            Alerta.mostrarAlertaTemporal(Alert.AlertType.ERROR, "Error", "Error al guardar la venta", e.getMessage());
+            Alerta.mostrarError("Error al guardar o generar factura", e.getMessage());
         }
     }
 

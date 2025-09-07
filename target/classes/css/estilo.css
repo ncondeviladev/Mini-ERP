@@ -43,7 +43,7 @@
     /* --- Tipografía --- */
     -fx-font-family-base: "Segoe UI";
     -fx-font-family-header: "Roboto";
-    -fx-font-size-base: 13px;
+    -fx-font-size-base: 13;
 
     /* --- Aplicación de Estilos Base --- */
     -fx-font-family: -fx-font-family-base;
@@ -59,14 +59,14 @@
 }
 
 .titulo-panel {
-    -fx-font-size: 24px;
+    -fx-font-size: 24;
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
     -fx-font-family: -fx-font-family-header, sans-serif;
 }
 
 .subtitulo-panel {
-    -fx-font-size: 16px;
+    -fx-font-size: 16;
     -fx-font-weight: bold;
     -fx-text-fill: -fx-texto-color-titulo;
     -fx-font-family: -fx-font-family-header, sans-serif;

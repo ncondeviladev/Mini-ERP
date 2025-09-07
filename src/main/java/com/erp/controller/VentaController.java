@@ -64,7 +64,9 @@ public class VentaController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Ocultar el formulario de búsqueda al inicio
+        // Forzar la renderización inicial y luego ocultar
+        contenedorFormularioBusqueda.setVisible(true);
+        contenedorFormularioBusqueda.setManaged(true);
         contenedorFormularioBusqueda.setVisible(false);
         contenedorFormularioBusqueda.setManaged(false);
         
@@ -141,17 +143,14 @@ public class VentaController implements Initializable {
     private void mostrarOcultarFormularioBusqueda() {
         // Alternar la visibilidad del formulario de búsqueda
         boolean estaVisible = contenedorFormularioBusqueda.isVisible();
-        System.out.println("Estado actual del formulario de búsqueda: " + estaVisible);
         if (estaVisible) {
             contenedorFormularioBusqueda.setVisible(false);
             contenedorFormularioBusqueda.setMinHeight(0);
             contenedorFormularioBusqueda.setManaged(false);
-            System.out.println("Formulario de búsqueda ocultado.");
         } else {
             contenedorFormularioBusqueda.setVisible(true);
             contenedorFormularioBusqueda.setMinHeight(Region.USE_COMPUTED_SIZE);
             contenedorFormularioBusqueda.setManaged(true);
-            System.out.println("Formulario de búsqueda mostrado.");
         }
     }
 

@@ -2,6 +2,7 @@ package com.erp.controller;
 
 import com.erp.model.Cliente;
 import com.erp.model.DetalleVenta;
+import com.erp.controller.DescuentoController;
 import com.erp.utils.AnimationUtils;
 
 import javafx.collections.FXCollections;

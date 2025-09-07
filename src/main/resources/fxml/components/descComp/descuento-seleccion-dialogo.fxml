@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.layout.VBox?>
+
+<DialogPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.erp.controller.components.descComp.DescuentoSeleccionDialogoController"
+            prefWidth="600" prefHeight="400"
+            stylesheets="@../../../../css/estilo.css">
+    <content>
+        <VBox spacing="10" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <fx:include fx:id="descuentoTabla" source="descuento-tabla.fxml" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </content>
+    <buttonTypes>
+        <ButtonType fx:id="aplicarButton" text="Aplicar" buttonData="OK_DONE"/>
+        <ButtonType text="Cancelar" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+</DialogPane>
