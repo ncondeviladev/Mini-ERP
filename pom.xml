@@ -162,10 +162,7 @@ SQLite.
           <jlinkImageName>mini-erp</jlinkImageName>
           <noManPages>true</noManPages>
           <noHeaderFiles>true</noHeaderFiles>
-          <modules>
-            <module>javafx.controls</module>
-            <module>javafx.fxml</module>
-          </modules>
+
         </configuration>
       </plugin>
 
