@@ -41,14 +41,14 @@ SQLite.
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
-      <version>24.0.1</version>
+      <version>21.0.2</version>
     </dependency>
 
     <!-- JavaFX FXML para carga de vistas -->
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
-      <version>24.0.1</version>
+      <version>21.0.2</version>
     </dependency>
 
     <!-- Conector JDBC para SQLite -->

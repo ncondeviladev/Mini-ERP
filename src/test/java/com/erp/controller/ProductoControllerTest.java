@@ -32,15 +32,12 @@ public class ProductoControllerTest extends ApplicationTest {
      * probar lógica interna sin cambiar la visibilidad del método en el código de producción.
      */
     @Test
-    void testCapitalizar() throws Exception {
-        Method capitalizarMethod = ProductoController.class.getDeclaredMethod("capitalizar", String.class);
-        capitalizarMethod.setAccessible(true); // Permite invocar el método privado
-
-        assertEquals("Hola", capitalizarMethod.invoke(controller, "hola"));
-        assertEquals("Mundo", capitalizarMethod.invoke(controller, "MUNDO"));
-        assertEquals("Ya esta bien", capitalizarMethod.invoke(controller, "ya esta bien"));
-        assertEquals("Unico", capitalizarMethod.invoke(controller, "UNICO"));
-        assertEquals("", capitalizarMethod.invoke(controller, ""));
-        assertNull(capitalizarMethod.invoke(controller, null), "Un nulo de entrada debe devolver nulo.");
+    void testCapitalizar() {
+        assertEquals("Hola", controller.capitalizar("hola"));
+        assertEquals("Mundo", controller.capitalizar("MUNDO"));
+        assertEquals("Ya esta bien", controller.capitalizar("ya esta bien"));
+        assertEquals("Unico", controller.capitalizar("UNICO"));
+        assertEquals("", controller.capitalizar(""));
+        assertNull(controller.capitalizar(null), "Un nulo de entrada debe devolver nulo.");
     }
 }

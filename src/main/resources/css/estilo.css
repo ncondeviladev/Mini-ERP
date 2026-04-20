@@ -47,7 +47,7 @@
 
     /* --- Aplicación de Estilos Base --- */
     -fx-font-family: -fx-font-family-base;
-    -fx-font-size: -fx-font-size-base;
+    -fx-font-size: 13px;
     -fx-background-color: -fx-color-fondo;
 }
 
@@ -193,7 +193,7 @@
     -fx-padding: 8 10;
     -fx-text-fill: -fx-texto-color-base;
     -fx-prompt-text-fill: #A0AEC0;
-    -fx-font-size: -fx-font-size-base;
+    -fx-font-size: 13px;
     -fx-highlight-fill: -fx-color-primario;
     -fx-highlight-text-fill: -fx-texto-color-claro;
 }

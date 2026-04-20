@@ -28,6 +28,7 @@ class VentaDAOTest {
     private PreparedStatement mockPstmtDetalle;
     private PreparedStatement mockPstmtVentaDescuento;
     private ResultSet mockRs;
+    private MockedStatic<SQLiteConnector> mockedStatic;
 
     @BeforeEach
     void setUp() throws SQLException {
@@ -38,20 +39,22 @@ class VentaDAOTest {
         mockPstmtVentaDescuento = mock(PreparedStatement.class);
         mockRs = mock(ResultSet.class);
 
-        // Simular la conexión a la base de datos
-        try (MockedStatic<SQLiteConnector> mockedStatic = mockStatic(SQLiteConnector.class)) {
-            mockedStatic.when(SQLiteConnector::connect).thenReturn(mockConnection);
-            ventaDAO = new VentaDAO(); // Esto llamará a SQLiteConnector.connect()
-        } catch (RuntimeException e) {
-            // Si la conexión falla en el constructor, el test fallará aquí.
-            // Esto es para manejar el caso en que el mockStatic no funcione como se espera.
-            fail("Failed to mock SQLiteConnector.connect()", e);
-        }
+        // Simular la conexión a la base de datos de forma persistente durante el test
+        mockedStatic = mockStatic(SQLiteConnector.class);
+        mockedStatic.when(SQLiteConnector::connect).thenReturn(mockConnection);
+        ventaDAO = new VentaDAO();
 
         // Configurar comportamiento por defecto de la conexión
         when(mockConnection.prepareStatement(anyString(), anyInt())).thenReturn(mockPstmtVenta);
         when(mockConnection.prepareStatement(anyString())).thenReturn(mockPstmtDetalle, mockPstmtVentaDescuento);
         when(mockPstmtVenta.getGeneratedKeys()).thenReturn(mockRs);
+    }
+
+    @org.junit.jupiter.api.AfterEach
+    void tearDown() {
+        if (mockedStatic != null) {
+            mockedStatic.close();
+        }
     }
 
     /**

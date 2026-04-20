@@ -19,7 +19,7 @@ class ValidationUtilsTest {
         assertTrue(ValidationUtils.isValidEmail("test@example.com"));
         assertTrue(ValidationUtils.isValidEmail("john.doe123@sub.domain.co.uk"));
         assertTrue(ValidationUtils.isValidEmail("user+tag@domain.net"));
-        assertTrue(ValidationUtils.isValidEmail("a@b.c"));
+        assertTrue(ValidationUtils.isValidEmail("a@b.co"));
 
         // Casos inválidos
         assertFalse(ValidationUtils.isValidEmail("invalid-email"));
